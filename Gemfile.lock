@@ -75,6 +75,13 @@ GEM
       public_suffix (>= 2.0.2, < 7.0)
     ast (2.4.2)
     base64 (0.2.0)
+    better_html (2.1.1)
+      actionview (>= 6.0)
+      activesupport (>= 6.0)
+      ast (~> 2.0)
+      erubi (~> 1.4)
+      parser (>= 2.4)
+      smart_properties
     bigdecimal (3.1.8)
     bindex (0.8.1)
     bootsnap (1.18.4)
@@ -99,6 +106,13 @@ GEM
       irb (~> 1.10)
       reline (>= 0.3.8)
     drb (2.2.1)
+    erb_lint (0.6.0)
+      activesupport
+      better_html (>= 2.0.1)
+      parser (>= 2.7.1.4)
+      rainbow
+      rubocop (>= 1)
+      smart_properties
     erubi (1.13.0)
     globalid (1.2.1)
       activesupport (>= 6.1)
@@ -244,6 +258,7 @@ GEM
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
+    smart_properties (1.17.0)
     sprockets (4.2.1)
       concurrent-ruby (~> 1.0)
       rack (>= 2.2.4, < 4)
@@ -290,6 +305,7 @@ DEPENDENCIES
   brakeman
   capybara
   debug
+  erb_lint
   jbuilder
   jsbundling-rails
   pg (~> 1.1)
