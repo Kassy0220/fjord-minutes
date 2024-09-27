@@ -1,0 +1,11 @@
+---
+glob: "**/*.{html,text,js}{+*,}.erb"
+exclude:
+  - '**/vendor/**/*'
+  - '**/node_modules/**/*'
+EnableDefaultLinters: true
+linters:
+  ErbSafety:
+    enabled: true
+  SelfClosingTag:
+    enabled: false
