@@ -1,0 +1,8 @@
+#!/bin/bash
+
+set -e
+
+bundle exec rubocop
+bundle exec erblint --lint-all
+npm run lint:eslint
+npm run lint:prettier
