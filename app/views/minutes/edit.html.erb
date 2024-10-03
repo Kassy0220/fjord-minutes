@@ -3,6 +3,8 @@
 
   <%= render "form", minute: @minute %>
 
+  <%= content_tag :div, id: 'release_branch_form', data: {minuteId: @minute.id, releaseBranch: @minute.release_branch}.to_json do %><% end %>
+
   <%= link_to "Show this minute", @minute, class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
   <%= link_to "Back to minutes", minutes_path, class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
 </div>
