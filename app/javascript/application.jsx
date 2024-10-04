@@ -1,4 +1,4 @@
 import mountComponent from './mountComponent.jsx'
-import ReleaseInformation from './components/ReleaseInformation.jsx'
+import ReleaseInformationForm from './components/ReleaseInformationForm.jsx'
 
-mountComponent('release_branch_form', ReleaseInformation)
+mountComponent('release_branch_form', ReleaseInformationForm)
