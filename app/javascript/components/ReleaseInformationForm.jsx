@@ -56,7 +56,8 @@ function EditForm({ minuteId, description, content, setIsEditing }) {
     if (response.status === 200) {
       setIsEditing(false)
     } else {
-      console.log(response.statusText)
+      const errorData = await response.json()
+      console.error(errorData.errors.join(','))
     }
   }
 
