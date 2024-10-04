@@ -38,8 +38,8 @@ function EditForm({ minuteId, description, content, setIsEditing }) {
     e.preventDefault()
     const parameter =
       description === 'branch'
-        ? { release_branch: inputValue }
-        : { release_note: inputValue }
+        ? { minute: { release_branch: inputValue } }
+        : { minute: { release_note: inputValue } }
     const csrfToken = document.head.querySelector(
       'meta[name=csrf-token]'
     )?.content
