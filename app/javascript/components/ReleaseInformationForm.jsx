@@ -1,32 +1,45 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
 
-export default function ReleaseInformationForm({ minuteId, releaseBranch }) {
+export default function ReleaseInformationForm({
+  minuteId,
+  description,
+  content,
+}) {
   const [isEditing, setIsEditing] = useState(false)
+  const label = description === 'branch' ? 'リリースブランチ' : 'リリースノート'
 
-  return isEditing ? (
-    <EditForm
-      minuteId={minuteId}
-      releaseBranch={releaseBranch}
-      setIsEditing={setIsEditing}
-    />
-  ) : (
-    <ReleaseInformation
-      releaseBranch={releaseBranch}
-      setIsEditing={setIsEditing}
-    />
+  return (
+    <>
+      <div className="pl-8 before:content-[''] before:w-1.5 before:h-1.5 before:inline-block before:bg-black before:rounded-full before:mr-2 before:align-middle">
+        <span>{label}</span>
+      </div>
+      {isEditing ? (
+        <EditForm
+          minuteId={minuteId}
+          description={description}
+          content={content}
+          setIsEditing={setIsEditing}
+        />
+      ) : (
+        <ReleaseInformation content={content} setIsEditing={setIsEditing} />
+      )}
+    </>
   )
 }
 
-function EditForm({ minuteId, releaseBranch, setIsEditing }) {
-  const [inputValue, setInputValue] = useState(releaseBranch)
+function EditForm({ minuteId, description, content, setIsEditing }) {
+  const [inputValue, setInputValue] = useState(content)
   const handleInput = function (e) {
     setInputValue(e.target.value)
   }
 
   const handleClick = async function (e) {
     e.preventDefault()
-    const parameter = { release_branch: inputValue }
+    const parameter =
+      description === 'branch'
+        ? { release_branch: inputValue }
+        : { release_note: inputValue }
     const csrfToken = document.head.querySelector(
       'meta[name=csrf-token]'
     )?.content
@@ -48,8 +61,13 @@ function EditForm({ minuteId, releaseBranch, setIsEditing }) {
   }
 
   return (
-    <>
-      <input type="text" value={inputValue} onChange={handleInput} />
+    <div className="pl-16 before:content-[''] before:w-1.5 before:h-1.5 before:inline-block before:bg-white before:border before:border-black before:rounded-full before:mr-2 before:align-middle">
+      <input
+        type="text"
+        value={inputValue}
+        onChange={handleInput}
+        className="w-96"
+      />
       <button
         type="button"
         onClick={handleClick}
@@ -57,18 +75,15 @@ function EditForm({ minuteId, releaseBranch, setIsEditing }) {
       >
         更新
       </button>
-    </>
+    </div>
   )
 }
 
-function ReleaseInformation({ releaseBranch, setIsEditing }) {
+function ReleaseInformation({ content, setIsEditing }) {
   return (
     <>
-      <div className="pl-8 before:content-[''] before:w-1.5 before:h-1.5 before:inline-block before:bg-black before:rounded-full before:mr-2 before:align-middle">
-        <span>リリースブランチ</span>
-      </div>
       <div className="pl-16 before:content-[''] before:w-1.5 before:h-1.5 before:inline-block before:bg-white before:border before:border-black before:rounded-full before:mr-2 before:align-middle">
-        <span>{releaseBranch}</span>
+        <span>{content}</span>
         <button
           type="button"
           onClick={() => setIsEditing(true)}
@@ -83,16 +98,18 @@ function ReleaseInformation({ releaseBranch, setIsEditing }) {
 
 ReleaseInformationForm.propTypes = {
   minuteId: PropTypes.number,
-  releaseBranch: PropTypes.string,
+  description: PropTypes.string,
+  content: PropTypes.string,
 }
 
 EditForm.propTypes = {
   minuteId: PropTypes.number,
-  releaseBranch: PropTypes.string,
+  description: PropTypes.string,
+  content: PropTypes.string,
   setIsEditing: PropTypes.func,
 }
 
 ReleaseInformation.propTypes = {
-  releaseBranch: PropTypes.string,
+  content: PropTypes.string,
   setIsEditing: PropTypes.func,
 }
