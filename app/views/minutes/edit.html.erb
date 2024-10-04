@@ -6,6 +6,11 @@
   <%= content_tag :div, id: 'release_branch_form', data: {minuteId: @minute.id, description: 'branch', content: @minute.release_branch}.to_json do %><% end %>
   <%= content_tag :div, id: 'release_note_form', data: {minuteId: @minute.id, description: 'note', content: @minute.release_note}.to_json do %><% end %>
 
+  <h3 class="font-bold text-xl">デモ</h3>
+  <p>
+    今回のイテレーションで実装した機能をプロダクトオーナーに向けてデモします。（画面共有使用） 「お客様」相手にデモをするという設定なので、MTG前に事前に準備をしておくといいかもしれません。 テストデータなどは事前に準備しておいてください。
+  </p>
+
   <div class="mt-16">
     <%= link_to "Back to minutes", minutes_path, class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
     <%= link_to "Show this minute", @minute, class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
