@@ -1,11 +1,11 @@
 class API::MinutesController < API::BaseController
   def update
-    @minute = Minute.find(params[:id])
+    minute = Minute.find(params[:id])
 
-    if @minute.update(minute_params)
-      render json: @minute, status: :ok
+    if minute.update(minute_params)
+      render json: minute, status: :ok
     else
-      render json: minute.errors, status: :unprocessable_entity
+      render json: { errors: minute.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
