@@ -2,6 +2,7 @@ import { useState } from 'react'
 import dayjs from 'dayjs'
 import ja from 'dayjs/locale/ja'
 import weekday from 'dayjs/plugin/weekday'
+import holidayJP from '@holiday-jp/holiday_jp'
 import PropTypes from 'prop-types'
 
 dayjs.locale(ja)
@@ -79,10 +80,16 @@ function EditForm({ minuteId, date, setIsEditing }) {
 function NextMeetingDate({ date, setIsEditing }) {
   const formattedDate = dayjs(date).format('YYYY年MM月DD日')
   const weekday = dayjs(date).format('dd')
+  const isHoliday = holidayJP.isHoliday(new Date(date))
 
   return (
     <div className="pl-8 before:content-[''] before:w-1.5 before:h-1.5 before:inline-block before:bg-black before:rounded-full before:mr-2 before:align-middle">
       <span>{`${formattedDate} (${weekday})`}</span>
+      {isHoliday && (
+        <span className="text-red-600 ml-2">
+          ※{holidayJP.holidays[date].name}
+        </span>
+      )}
       <button
         type="button"
         onClick={() => setIsEditing(true)}
