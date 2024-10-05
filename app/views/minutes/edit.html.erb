@@ -1,15 +1,15 @@
 <div class="mx-auto md:w-2/3 w-full">
   <h1 class="font-bold text-4xl">ふりかえり・計画ミーティング<%= @minute.meeting_date.strftime('%Y年%m月%d日') %></h1>
 
-  <h3 class="font-bold text-xl">今週のリリースの確認</h3>
-  <p>木曜日の15時頃リリースします。</p>
-  <%= content_tag :div, id: 'release_branch_form', data: {minuteId: @minute.id, description: 'branch', content: @minute.release_branch}.to_json do %><% end %>
-  <%= content_tag :div, id: 'release_note_form', data: {minuteId: @minute.id, description: 'note', content: @minute.release_note}.to_json do %><% end %>
-
   <h3 class="font-bold text-xl">デモ</h3>
   <p>
     今回のイテレーションで実装した機能をプロダクトオーナーに向けてデモします。（画面共有使用） 「お客様」相手にデモをするという設定なので、MTG前に事前に準備をしておくといいかもしれません。 テストデータなどは事前に準備しておいてください。
   </p>
+
+  <h3 class="font-bold text-xl">今週のリリースの確認</h3>
+  <p>木曜日の15時頃リリースします。</p>
+  <%= content_tag :div, id: 'release_branch_form', data: {minuteId: @minute.id, description: 'branch', content: @minute.release_branch}.to_json do %><% end %>
+  <%= content_tag :div, id: 'release_note_form', data: {minuteId: @minute.id, description: 'note', content: @minute.release_note}.to_json do %><% end %>
 
   <h3 class="font-bold text-xl">その他</h3>
   <%= content_tag :div, id: 'other_form', data: {minuteId: @minute.id, content: @minute.other}.to_json do %><% end %>
