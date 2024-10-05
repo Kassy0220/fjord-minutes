@@ -14,6 +14,9 @@
   <h3 class="font-bold text-xl">その他</h3>
   <%= content_tag :div, id: 'other_form', data: {minuteId: @minute.id, content: @minute.other}.to_json do %><% end %>
 
+  <h3 class="font-bold text-xl">次回のMTG</h3>
+  <%= content_tag :div, id: 'next_meeting_date_form', data: {minuteId: @minute.id, nextMeetingDate: @minute.next_meeting_date}.to_json do %><% end %>
+
   <div class="mt-16">
     <%= link_to "Back to minutes", minutes_path, class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
     <%= link_to "Show this minute", @minute, class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
