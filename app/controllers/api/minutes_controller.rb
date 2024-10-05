@@ -12,6 +12,6 @@ class API::MinutesController < API::BaseController
   private
 
   def minute_params
-    params.require(:minute).permit(:release_branch, :release_note, :other)
+    params.require(:minute).permit(:release_branch, :release_note, :other, :next_meeting_date)
   end
 end
