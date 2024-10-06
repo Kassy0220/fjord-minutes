@@ -17,6 +17,13 @@ class API::Minutes::TopicsController < API::Minutes::ApplicationController
     end
   end
 
+  def destroy
+    topic = @minute.topics.find(params[:id])
+    topic.destroy!
+
+    head :no_content
+  end
+
   private
 
   def topic_params
