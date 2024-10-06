@@ -21,6 +21,7 @@ export default function TopicList({ minuteId, topics }) {
 
 function CreateForm({ minuteId }) {
   const [inputValue, setInputValue] = useState('')
+  const isEmpty = inputValue === ''
 
   const handleInput = function (e) {
     setInputValue(e.target.value)
@@ -28,6 +29,10 @@ function CreateForm({ minuteId }) {
 
   const handleClick = async function (e) {
     e.preventDefault()
+    if (isEmpty) {
+      return null
+    }
+
     const parameter = { topic: { content: inputValue } }
     const csrfToken = document.head.querySelector(
       'meta[name=csrf-token]'
@@ -61,7 +66,8 @@ function CreateForm({ minuteId }) {
       <button
         type="button"
         onClick={handleClick}
-        className="ml-2 py-1 px-2 border border-black"
+        disabled={isEmpty}
+        className="ml-2 py-1 px-2 border border-black disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200"
       >
         作成
       </button>
