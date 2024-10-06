@@ -17,6 +17,29 @@ export default function TopicList({ minuteId, topics }) {
 function Topic({ minuteId, topic }) {
   const [isEditing, setIsEditing] = useState(false)
 
+  const handleDelete = async function (e) {
+    e.preventDefault()
+    const csrfToken = document.head.querySelector(
+      'meta[name=csrf-token]'
+    )?.content
+
+    const response = await fetch(
+      `/api/minutes/${minuteId}/topics/${topic.id}`,
+      {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json; charset=utf-8',
+          'X-CSRF-Token': csrfToken,
+        },
+      }
+    )
+
+    if (response.status !== 204) {
+      const errorData = await response.json()
+      console.error(errorData.errors.join(','))
+    }
+  }
+
   return (
     <>
       {isEditing ? (
@@ -35,6 +58,13 @@ function Topic({ minuteId, topic }) {
             className="ml-2 py-1 px-2 border border-black"
           >
             編集
+          </button>
+          <button
+            type="button"
+            onClick={handleDelete}
+            className="ml-2 py-1 px-2 border border-black"
+          >
+            削除
           </button>
         </li>
       )}
