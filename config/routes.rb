@@ -5,7 +5,7 @@ Rails.application.routes.draw do
 
   namespace :api do
     resources :minutes, only: [ :update ] do
-      resources :topics, only: [ :create ], module: :minutes
+      resources :topics, only: [ :create, :update ], module: :minutes
     end
   end
 

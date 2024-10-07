@@ -8,6 +8,15 @@ class API::Minutes::TopicsController < API::Minutes::ApplicationController
     end
   end
 
+  def update
+    topic = @minute.topics.find(params[:id])
+    if topic.update(topic_params)
+      render json: topic, status: :ok
+    else
+      render json: { errors: topic.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
+
   private
 
   def topic_params
