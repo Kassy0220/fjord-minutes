@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
+import sendRequest from '../sendRequest.js'
 
 export default function TopicList({ minuteId, topics }) {
   return (
@@ -19,19 +20,11 @@ function Topic({ minuteId, topic }) {
 
   const handleDelete = async function (e) {
     e.preventDefault()
-    const csrfToken = document.head.querySelector(
-      'meta[name=csrf-token]'
-    )?.content
 
-    const response = await fetch(
+    const response = await sendRequest(
       `/api/minutes/${minuteId}/topics/${topic.id}`,
-      {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json; charset=utf-8',
-          'X-CSRF-Token': csrfToken,
-        },
-      }
+      'DELETE',
+      {}
     )
 
     if (response.status !== 204) {
@@ -87,18 +80,12 @@ function EditForm({ minuteId, topicId, content, setIsEditing }) {
     }
 
     const parameter = { topic: { content: inputValue } }
-    const csrfToken = document.head.querySelector(
-      'meta[name=csrf-token]'
-    )?.content
 
-    const response = await fetch(`/api/minutes/${minuteId}/topics/${topicId}`, {
-      method: 'PATCH',
-      body: JSON.stringify(parameter),
-      headers: {
-        'Content-Type': 'application/json; charset=utf-8',
-        'X-CSRF-Token': csrfToken,
-      },
-    })
+    const response = await sendRequest(
+      `/api/minutes/${minuteId}/topics/${topicId}`,
+      'PATCH',
+      parameter
+    )
 
     if (response.status === 200) {
       setIsEditing(false)
@@ -143,18 +130,12 @@ function CreateForm({ minuteId }) {
     }
 
     const parameter = { topic: { content: inputValue } }
-    const csrfToken = document.head.querySelector(
-      'meta[name=csrf-token]'
-    )?.content
 
-    const response = await fetch(`/api/minutes/${minuteId}/topics`, {
-      method: 'POST',
-      body: JSON.stringify(parameter),
-      headers: {
-        'Content-Type': 'application/json; charset=utf-8',
-        'X-CSRF-Token': csrfToken,
-      },
-    })
+    const response = await sendRequest(
+      `/api/minutes/${minuteId}/topics`,
+      'POST',
+      parameter
+    )
 
     if (response.status === 201) {
       setInputValue('')

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
+import sendRequest from '../sendRequest.js'
 
 export default function ReleaseInformationForm({
   minuteId,
@@ -40,18 +41,12 @@ function EditForm({ minuteId, description, content, setIsEditing }) {
       description === 'branch'
         ? { minute: { release_branch: inputValue } }
         : { minute: { release_note: inputValue } }
-    const csrfToken = document.head.querySelector(
-      'meta[name=csrf-token]'
-    )?.content
 
-    const response = await fetch(`/api/minutes/${minuteId}`, {
-      method: 'PATCH',
-      body: JSON.stringify(parameter),
-      headers: {
-        'Content-Type': 'application/json; charset=utf-8',
-        'X-CSRF-Token': csrfToken,
-      },
-    })
+    const response = await sendRequest(
+      `/api/minutes/${minuteId}`,
+      'PATCH',
+      parameter
+    )
 
     if (response.status === 200) {
       setIsEditing(false)
