@@ -4,6 +4,7 @@ import ja from 'dayjs/locale/ja'
 import weekday from 'dayjs/plugin/weekday'
 import holidayJP from '@holiday-jp/holiday_jp'
 import PropTypes from 'prop-types'
+import sendRequest from '../sendRequest.js'
 
 dayjs.locale(ja)
 dayjs.extend(weekday)
@@ -42,18 +43,12 @@ function EditForm({ minuteId, date, setIsEditing }) {
   const handleClick = async function (e) {
     e.preventDefault()
     const parameter = { minute: { next_meeting_date: inputValue } }
-    const csrfToken = document.head.querySelector(
-      'meta[name=csrf-token]'
-    )?.content
 
-    const response = await fetch(`/api/minutes/${minuteId}`, {
-      method: 'PATCH',
-      body: JSON.stringify(parameter),
-      headers: {
-        'Content-Type': 'application/json; charset=utf-8',
-        'X-CSRF-Token': csrfToken,
-      },
-    })
+    const response = await sendRequest(
+      `/api/minutes/${minuteId}`,
+      'PATCH',
+      parameter
+    )
 
     if (response.status === 200) {
       setIsEditing(false)
