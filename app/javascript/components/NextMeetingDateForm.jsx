@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import dayjs from 'dayjs'
 import ja from 'dayjs/locale/ja'
 import weekday from 'dayjs/plugin/weekday'
 import holidayJP from '@holiday-jp/holiday_jp'
 import PropTypes from 'prop-types'
 import sendRequest from '../sendRequest.js'
-import consumer from '../channels/consumer.js'
+import useChannel from '../hooks/useChannel.js'
 
 dayjs.locale(ja)
 dayjs.extend(weekday)
@@ -14,22 +14,12 @@ export default function NextMeetingDateForm({ minuteId, nextMeetingDate }) {
   const [date, setDate] = useState(nextMeetingDate)
   const [isEditing, setIsEditing] = useState(false)
 
-  useEffect(() => {
-    consumer.subscriptions.create(
-      { channel: 'MinuteChannel', id: minuteId },
-      {
-        received(data) {
-          if ('minute' in data.body) {
-            setDate(data.body.minute.next_meeting_date)
-          }
-        },
-      }
-    )
-
-    return () => {
-      consumer.disconnect()
+  const onReceivedData = function (data) {
+    if ('minute' in data.body) {
+      setDate(data.body.minute.next_meeting_date)
     }
-  }, [minuteId])
+  }
+  useChannel(minuteId, onReceivedData)
 
   return (
     <>

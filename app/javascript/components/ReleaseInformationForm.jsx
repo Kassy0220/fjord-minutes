@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import PropTypes from 'prop-types'
 import sendRequest from '../sendRequest.js'
-import consumer from '../channels/consumer.js'
+import useChannel from '../hooks/useChannel.js'
 
 export default function ReleaseInformationForm({
   minuteId,
@@ -11,24 +11,13 @@ export default function ReleaseInformationForm({
   const [informationContent, setInformationContent] = useState(content)
   const [isEditing, setIsEditing] = useState(false)
 
-  useEffect(() => {
-    consumer.subscriptions.create(
-      { channel: 'MinuteChannel', id: minuteId },
-      {
-        received(data) {
-          if ('minute' in data.body) {
-            const key = `release_${description}`
-            setInformationContent(data.body.minute[key])
-          }
-        },
-      }
-    )
-
-    return () => {
-      // WebSocket接続を切断する : https://github.com/rails/rails/blob/f903206386a9e7d125c13dcdaa22be65680f428c/actioncable/app/javascript/action_cable/consumer.js#L19
-      consumer.disconnect()
+  const onReceivedData = function (data) {
+    if ('minute' in data.body) {
+      const key = `release_${description}`
+      setInformationContent(data.body.minute[key])
     }
-  }, [description, minuteId])
+  }
+  useChannel(minuteId, onReceivedData)
 
   const label = description === 'branch' ? 'リリースブランチ' : 'リリースノート'
 
