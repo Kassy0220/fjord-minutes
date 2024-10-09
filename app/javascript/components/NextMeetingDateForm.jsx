@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import dayjs from 'dayjs'
 import ja from 'dayjs/locale/ja'
 import weekday from 'dayjs/plugin/weekday'
@@ -14,11 +14,11 @@ export default function NextMeetingDateForm({ minuteId, nextMeetingDate }) {
   const [date, setDate] = useState(nextMeetingDate)
   const [isEditing, setIsEditing] = useState(false)
 
-  const onReceivedData = function (data) {
+  const onReceivedData = useCallback(function (data) {
     if ('minute' in data.body) {
       setDate(data.body.minute.next_meeting_date)
     }
-  }
+  }, [])
   useChannel(minuteId, onReceivedData)
 
   return (

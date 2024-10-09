@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import PropTypes from 'prop-types'
 import sendRequest from '../sendRequest.js'
 import useChannel from '../hooks/useChannel.js'
@@ -6,11 +6,11 @@ import useChannel from '../hooks/useChannel.js'
 export default function TopicList({ minuteId, topics }) {
   const [allTopics, setAllTopics] = useState(topics)
 
-  const onReceivedData = function (data) {
+  const onReceivedData = useCallback(function (data) {
     if ('topics' in data.body) {
       setAllTopics(data.body.topics)
     }
-  }
+  }, [])
   useChannel(minuteId, onReceivedData)
 
   return (
