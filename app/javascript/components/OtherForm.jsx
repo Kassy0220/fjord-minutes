@@ -1,9 +1,25 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import sendRequest from '../sendRequest.js'
+import consumer from '../channels/consumer.js'
 
 export default function OtherForm({ minuteId, content }) {
   const [inputValue, setInputValue] = useState(content)
+
+  useEffect(() => {
+    consumer.subscriptions.create(
+      { channel: 'MinuteChannel', id: minuteId },
+      {
+        received(data) {
+          setInputValue(data.body.minute.other)
+        },
+      }
+    )
+
+    return () => {
+      consumer.disconnect()
+    }
+  }, [minuteId])
 
   const handleChange = function (e) {
     setInputValue(e.target.value)
