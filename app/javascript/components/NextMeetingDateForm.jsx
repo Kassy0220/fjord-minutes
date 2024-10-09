@@ -1,27 +1,40 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import dayjs from 'dayjs'
 import ja from 'dayjs/locale/ja'
 import weekday from 'dayjs/plugin/weekday'
 import holidayJP from '@holiday-jp/holiday_jp'
 import PropTypes from 'prop-types'
 import sendRequest from '../sendRequest.js'
+import consumer from '../channels/consumer.js'
 
 dayjs.locale(ja)
 dayjs.extend(weekday)
 
 export default function NextMeetingDateForm({ minuteId, nextMeetingDate }) {
+  const [date, setDate] = useState(nextMeetingDate)
   const [isEditing, setIsEditing] = useState(false)
+
+  useEffect(() => {
+    consumer.subscriptions.create(
+      { channel: 'MinuteChannel', id: minuteId },
+      {
+        received(data) {
+          setDate(data.body.minute.next_meeting_date)
+        },
+      }
+    )
+
+    return () => {
+      consumer.disconnect()
+    }
+  }, [minuteId])
 
   return (
     <>
       {isEditing ? (
-        <EditForm
-          minuteId={minuteId}
-          date={nextMeetingDate}
-          setIsEditing={setIsEditing}
-        />
+        <EditForm minuteId={minuteId} date={date} setIsEditing={setIsEditing} />
       ) : (
-        <NextMeetingDate date={nextMeetingDate} setIsEditing={setIsEditing} />
+        <NextMeetingDate date={date} setIsEditing={setIsEditing} />
       )}
       <div className="pl-16 before:content-[''] before:w-1.5 before:h-1.5 before:inline-block before:bg-white before:border before:border-black before:rounded-full before:mr-2 before:align-middle">
         <span>昼の部：15:00-16:00</span>
