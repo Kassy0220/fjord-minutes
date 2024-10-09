@@ -19,7 +19,9 @@ export default function NextMeetingDateForm({ minuteId, nextMeetingDate }) {
       { channel: 'MinuteChannel', id: minuteId },
       {
         received(data) {
-          setDate(data.body.minute.next_meeting_date)
+          if ('minute' in data.body) {
+            setDate(data.body.minute.next_meeting_date)
+          }
         },
       }
     )

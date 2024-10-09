@@ -11,7 +11,9 @@ export default function OtherForm({ minuteId, content }) {
       { channel: 'MinuteChannel', id: minuteId },
       {
         received(data) {
-          setInputValue(data.body.minute.other)
+          if ('minute' in data.body) {
+            setInputValue(data.body.minute.other)
+          }
         },
       }
     )
