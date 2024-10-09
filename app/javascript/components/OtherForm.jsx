@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import PropTypes from 'prop-types'
 import sendRequest from '../sendRequest.js'
 import useChannel from '../hooks/useChannel.js'
@@ -6,11 +6,11 @@ import useChannel from '../hooks/useChannel.js'
 export default function OtherForm({ minuteId, content }) {
   const [inputValue, setInputValue] = useState(content)
 
-  const onReceivedData = function (data) {
+  const onReceivedData = useCallback(function (data) {
     if ('minute' in data.body) {
       setInputValue(data.body.minute.other)
     }
-  }
+  }, [])
   useChannel(minuteId, onReceivedData)
 
   const handleChange = function (e) {

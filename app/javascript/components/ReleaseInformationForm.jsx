@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import PropTypes from 'prop-types'
 import sendRequest from '../sendRequest.js'
 import useChannel from '../hooks/useChannel.js'
@@ -11,12 +11,15 @@ export default function ReleaseInformationForm({
   const [informationContent, setInformationContent] = useState(content)
   const [isEditing, setIsEditing] = useState(false)
 
-  const onReceivedData = function (data) {
-    if ('minute' in data.body) {
-      const key = `release_${description}`
-      setInformationContent(data.body.minute[key])
-    }
-  }
+  const onReceivedData = useCallback(
+    function (data) {
+      if ('minute' in data.body) {
+        const key = `release_${description}`
+        setInformationContent(data.body.minute[key])
+      }
+    },
+    [description]
+  )
   useChannel(minuteId, onReceivedData)
 
   const label = description === 'branch' ? 'リリースブランチ' : 'リリースノート'
