@@ -1,27 +1,17 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import PropTypes from 'prop-types'
 import sendRequest from '../sendRequest.js'
-import consumer from '../channels/consumer.js'
+import useChannel from '../hooks/useChannel.js'
 
 export default function OtherForm({ minuteId, content }) {
   const [inputValue, setInputValue] = useState(content)
 
-  useEffect(() => {
-    consumer.subscriptions.create(
-      { channel: 'MinuteChannel', id: minuteId },
-      {
-        received(data) {
-          if ('minute' in data.body) {
-            setInputValue(data.body.minute.other)
-          }
-        },
-      }
-    )
-
-    return () => {
-      consumer.disconnect()
+  const onReceivedData = function (data) {
+    if ('minute' in data.body) {
+      setInputValue(data.body.minute.other)
     }
-  }, [minuteId])
+  }
+  useChannel(minuteId, onReceivedData)
 
   const handleChange = function (e) {
     setInputValue(e.target.value)
