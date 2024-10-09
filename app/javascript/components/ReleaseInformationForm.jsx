@@ -16,8 +16,10 @@ export default function ReleaseInformationForm({
       { channel: 'MinuteChannel', id: minuteId },
       {
         received(data) {
-          const key = `release_${description}`
-          setInformationContent(data.body.minute[key])
+          if ('minute' in data.body) {
+            const key = `release_${description}`
+            setInformationContent(data.body.minute[key])
+          }
         },
       }
     )

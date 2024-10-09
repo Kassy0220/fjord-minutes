@@ -1,12 +1,32 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import sendRequest from '../sendRequest.js'
+import consumer from '../channels/consumer.js'
 
 export default function TopicList({ minuteId, topics }) {
+  const [allTopics, setAllTopics] = useState(topics)
+
+  useEffect(() => {
+    consumer.subscriptions.create(
+      { channel: 'MinuteChannel', id: minuteId },
+      {
+        received(data) {
+          if ('topics' in data.body) {
+            setAllTopics(data.body.topics)
+          }
+        },
+      }
+    )
+
+    return () => {
+      consumer.disconnect()
+    }
+  }, [minuteId])
+
   return (
     <>
       <ul>
-        {topics.map((topic) => (
+        {allTopics.map((topic) => (
           <Topic key={topic.id} minuteId={minuteId} topic={topic} />
         ))}
       </ul>
