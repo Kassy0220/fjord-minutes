@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  devise_for :members
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   root "home#index"
   resources :minutes
@@ -8,6 +7,11 @@ Rails.application.routes.draw do
     resources :minutes, only: [ :update ] do
       resources :topics, only: [ :create, :update, :destroy ], module: :minutes
     end
+  end
+
+  devise_for :members
+  devise_scope :member do
+    get "/auth/:provider/callback" => "authentications#create"
   end
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
