@@ -36,6 +36,12 @@ gem "tailwindcss-rails", "~> 2.7"
 
 gem "devise"
 
+gem "omniauth"
+
+gem "omniauth-github"
+
+gem "omniauth-rails_csrf_protection"
+
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
 
