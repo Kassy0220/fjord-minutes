@@ -112,6 +112,7 @@ GEM
       railties (>= 4.1.0)
       responders
       warden (~> 1.2.3)
+    dotenv (3.1.4)
     drb (2.2.1)
     erb_lint (0.6.0)
       activesupport
@@ -381,6 +382,7 @@ DEPENDENCIES
   capybara
   debug
   devise
+  dotenv
   erb_lint
   jbuilder
   jsbundling-rails
