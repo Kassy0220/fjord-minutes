@@ -9,8 +9,8 @@ Rails.application.routes.draw do
     end
   end
 
-  devise_for :members
-  devise_for :admins
+  devise_for :members, skip: :all
+  devise_for :admins, skip: :all
   devise_scope :member do
     get "/auth/:provider/callback" => "authentications#create"
   end
