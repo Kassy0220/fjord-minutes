@@ -1,11 +1,17 @@
-<h1 class="font-bold text-4xl">
-  <%= "#{current_member.name}のページ" %>
-</h1>
-
-<div>
-  <% if current_member.avatar_url %>
-    <%= image_tag(current_member.avatar_url, size: '100x100', alt: 'メンバーのGitHubアカウントの画像') %>
+<div class="w-full">
+  <% if notice.present? %>
+    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
   <% end %>
 
-  <p>所属コース : <%= current_member.course.name %></p>
+  <h1 class="font-bold text-4xl">
+    <%= "#{current_member.name}のページ" %>
+  </h1>
+
+  <div>
+    <% if current_member.avatar_url %>
+      <%= image_tag(current_member.avatar_url, size: '100x100', alt: 'メンバーのGitHubアカウントの画像') %>
+    <% end %>
+
+    <p>所属コース : <%= current_member.course.name %></p>
+  </div>
 </div>
