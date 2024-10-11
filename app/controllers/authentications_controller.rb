@@ -1,13 +1,15 @@
 class AuthenticationsController < Devise::OmniauthCallbacksController
+  ADMIN_EMAILS = [ ENV["KOMAGATA_EMAIL"], ENV["MACHIDATA_EMAIL"], ENV["KASSY_EMAIL"] ].freeze
   include Devise::Controllers::Rememberable
   skip_before_action :verify_authenticity_token, only: [ :create ]
 
   def create
-    @member = Member.from_omniauth(request.env["omniauth.auth"], request.env["omniauth.params"])
+    @member_or_admin = admin?(request.env["omniauth.auth"].info.email) ? Admin.from_omniauth(request.env["omniauth.auth"])
+                                                                       : Member.from_omniauth(request.env["omniauth.auth"], request.env["omniauth.params"])
 
-    if @member.persisted?
-      sign_in_and_redirect @member
-      remember_me @member
+    if @member_or_admin.persisted?
+      sign_in_and_redirect @member_or_admin
+      remember_me @member_or_admin
       set_flash_message(:notice, :success, kind: "GitHub") if is_navigational_format?
     else
       session["devise.github_data"] = request.env["omniauth.auth"].except(:extra)
@@ -24,6 +26,12 @@ class AuthenticationsController < Devise::OmniauthCallbacksController
   def failure
     set_flash_message! :alert, :failure, kind: OmniAuth::Utils.camelize(failed_strategy.name), reason: failure_message
     redirect_to root_path
+  end
+
+  private
+
+  def admin?(email)
+    ADMIN_EMAILS.include? email
   end
 
   protected
