@@ -1,0 +1,11 @@
+<h1 class="font-bold text-4xl">
+  <%= "#{current_member.name}のページ" %>
+</h1>
+
+<div>
+  <% if current_member.avatar_url %>
+    <%= image_tag(current_member.avatar_url, size: '100x100', alt: 'メンバーのGitHubアカウントの画像') %>
+  <% end %>
+
+  <p>所属コース : <%= current_member.course.name %></p>
+</div>

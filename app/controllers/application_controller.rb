@@ -3,7 +3,6 @@ class ApplicationController < ActionController::Base
   allow_browser versions: :modern
 
   def after_sign_in_path_for(resource)
-    # 暫定的なパス
-    minutes_path
+    root_path
   end
 end
