@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   end
 
   devise_for :members
+  devise_for :admins
   devise_scope :member do
     get "/auth/:provider/callback" => "authentications#create"
   end
