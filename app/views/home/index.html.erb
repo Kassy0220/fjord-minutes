@@ -15,4 +15,15 @@
       <% end %>
     <% end %>
   </div>
+
+  <% if Rails.env.development? %>
+    <div>
+      <p>Developerでログイン</p>
+      <% Course.all.each do |course| %>
+        <%= form_tag("/auth/developer?course_id=#{course.id}", method: 'post', data: {turbo: false}) do %>
+          <button type='submit' class="ml-2 mt-2 py-1 px-2 border border-black hover:text-white hover:bg-black"><%= course.name %></button>
+        <% end %>
+      <% end %>
+    </div>
+  <% end %>
 </div>
