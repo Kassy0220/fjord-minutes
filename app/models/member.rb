@@ -5,6 +5,7 @@ class Member < ApplicationRecord
          :rememberable, :validatable
 
   belongs_to :course
+  has_many :attendances
 
   def self.from_omniauth(auth, params)
     find_or_create_by(provider: auth.provider, uid: auth.uid) do |member|
