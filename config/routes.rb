@@ -1,7 +1,9 @@
 Rails.application.routes.draw do
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   root "home#index"
-  resources :minutes
+  resources :minutes do
+    resources :attendances, only: [ :new, :create ], module: :minutes
+  end
 
   namespace :api do
     resources :minutes, only: [ :update ] do
