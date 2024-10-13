@@ -54,7 +54,15 @@ document.addEventListener('DOMContentLoaded', () => {
     button.addEventListener('change', handleChange)
   })
 
-  toggleForm()
+  const isStatusChecked =
+    attendanceForm.elements['attendance[status]'].value !== ''
+  if (isStatusChecked) {
+    toggleForm()
+  } else {
+    // 出欠が未選択の場合、まず出欠を入力してもらうために他の入力欄を隠しておく
+    hidePresentField()
+    hideAbsentField()
+  }
 
   // 出席時間帯のラジオボタンを2度クリックするとチェックを消せるようにする処理
   const timeRadioButtons = document.querySelectorAll(
