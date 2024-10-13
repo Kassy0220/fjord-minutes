@@ -3,6 +3,7 @@ import ReleaseInformationForm from './components/ReleaseInformationForm.jsx'
 import TopicList from './components/TopicList.jsx'
 import OtherForm from './components/OtherForm.jsx'
 import NextMeetingDateForm from './components/NextMeetingDateForm.jsx'
+import './toggleAttendanceForm'
 
 mountComponent('release_branch_form', ReleaseInformationForm)
 mountComponent('release_note_form', ReleaseInformationForm)
