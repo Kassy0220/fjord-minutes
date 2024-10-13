@@ -1,8 +1,8 @@
 <div class="mx-auto md:w-2/3 w-full">
   <h1 class="font-bold text-4xl">出席登録</h1>
 
-  <div id='attendance_form'>
-    <%= form_with(model: [ @minute, @attendance ], class: "contents") do |form| %>
+  <div>
+    <%= form_with(model: [ @minute, @attendance ], id: "attendance_form", class: "contents") do |form| %>
       <% if @attendance.errors.any? %>
         <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-lg mt-3">
           <h2><%= pluralize(@attendance.errors.count, "error") %> prohibited this attendance from being saved:</h2>
@@ -23,7 +23,7 @@
         <%= form.label :status_absent, "欠席" %>
       </div>
 
-      <div class="my-5">
+      <div class="my-5 present_entry_field">
         <p>出席時間帯</p>
         <%= form.radio_button :time, "day" %>
         <%= form.label :time_day, "昼の部" %>
@@ -31,12 +31,12 @@
         <%= form.label :time_night, "夜の部" %>
       </div>
 
-      <div class="my-5">
+      <div class="my-5 absent_entry_field">
         <%= form.label :absence_reason %>
         <%= form.text_field :absence_reason %>
       </div>
 
-      <div class="my-5">
+      <div class="my-5 absent_entry_field">
         <%= form.label :progress_report %>
         <%= form.text_field :progress_report %>
       </div>
