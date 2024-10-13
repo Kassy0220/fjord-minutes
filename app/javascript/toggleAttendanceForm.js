@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return null
   }
 
+  // 出欠のラジオボタンでフォームの表示を切り替える処理
   const statusRadioButtons = document.querySelectorAll(
     '[name="attendance[status]"]'
   )
@@ -54,4 +55,21 @@ document.addEventListener('DOMContentLoaded', () => {
   })
 
   toggleForm()
+
+  // 出席時間帯のラジオボタンを2度クリックするとチェックを消せるようにする処理
+  const timeRadioButtons = document.querySelectorAll(
+    '[name="attendance[time]"]'
+  )
+  let lastCheckedTimeRadioButton = null
+
+  timeRadioButtons.forEach((button) => {
+    button.addEventListener('click', function () {
+      if (lastCheckedTimeRadioButton === this) {
+        this.checked = false
+        lastCheckedTimeRadioButton = null
+      } else {
+        lastCheckedTimeRadioButton = this
+      }
+    })
+  })
 })
