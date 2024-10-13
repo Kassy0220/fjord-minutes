@@ -6,10 +6,10 @@ class Minutes::AttendancesController < Minutes::ApplicationController
   end
 
   def create
-    attendance = @minute.attendances.new(attendance_params)
-    attendance.member_id = current_member.id
+    @attendance = @minute.attendances.new(attendance_params)
+    @attendance.member_id = current_member.id
 
-    if attendance.save
+    if @attendance.save
       redirect_to edit_minute_url(@minute), notice: "Attendance was successfully created."
     else
       render :new, status: :unprocessable_entity
