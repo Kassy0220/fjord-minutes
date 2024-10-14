@@ -9,6 +9,11 @@
 
   <h1 class="font-bold text-4xl">ふりかえり・計画ミーティング<%= @minute.meeting_date.strftime('%Y年%m月%d日') %></h1>
 
+  <h2 class="font-bold text-2xl">ふりかえり</h2>
+
+  <h3 class="font-bold text-xl">メンバー</h3>
+  <%= content_tag :div, id: 'attendees_list', data: {minuteId: @minute.id}.to_json do %><% end %>
+
   <h3 class="font-bold text-xl">デモ</h3>
   <p>
     今回のイテレーションで実装した機能をプロダクトオーナーに向けてデモします。（画面共有使用） 「お客様」相手にデモをするという設定なので、MTG前に事前に準備をしておくといいかもしれません。 テストデータなどは事前に準備しておいてください。
