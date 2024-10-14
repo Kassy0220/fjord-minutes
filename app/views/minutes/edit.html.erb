@@ -34,6 +34,14 @@
   <h3 class="font-bold text-xl">次回のMTG</h3>
   <%= content_tag :div, id: 'next_meeting_date_form', data: {minuteId: @minute.id, nextMeetingDate: @minute.next_meeting_date}.to_json do %><% end %>
 
+  <h2 class="font-bold text-2xl">計画ミーティング</h2>
+  <ul>
+    <li class="pl-8 before:content-[''] before:w-1.5 before:h-1.5 before:inline-block before:bg-black before:rounded-full before:mr-2 before:align-middle text-sky-600 underline">プランニングポーカー</li>
+  </ul>
+
+  <h2 class="font-bold text-2xl">欠席者</h2>
+  <%= content_tag :div, id: 'absentees_list', data: {minuteId: @minute.id}.to_json do %><% end %>
+
   <div class="mt-16">
     <%= link_to "Back to minutes", minutes_path, class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
     <%= link_to "Show this minute", @minute, class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
