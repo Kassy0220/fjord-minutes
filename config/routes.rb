@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   namespace :api do
     resources :minutes, only: [ :update ] do
       resources :topics, only: [ :create, :update, :destroy ], module: :minutes
+      resources :attendances, only: [ :index ], module: :minutes
     end
   end
 
