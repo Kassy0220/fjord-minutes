@@ -20,3 +20,10 @@ json.absentees do
     json.progress_report attendance.progress_report
   end
 end
+
+json.unexcused_absentees do
+  json.array! @unexcused_absentees do |absentee|
+    json.member_id absentee.id
+    json.name absentee.name
+  end
+end
