@@ -32,7 +32,7 @@ function Absentee({ name, absence_reason, progress_report }) {
         href={`https://github.com/${name}`}
         className="pl-8 before:content-[''] before:w-1.5 before:h-1.5 before:inline-block before:bg-black before:rounded-full before:mr-2 before:align-middle text-sky-600 underline"
       >
-        {name}
+        {`@${name}`}
       </a>
       <ul>
         <li className="pl-16 before:content-[''] before:w-1.5 before:h-1.5 before:inline-block before:bg-white before:border before:border-black before:rounded-full before:mr-2 before:align-middle">
