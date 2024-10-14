@@ -18,7 +18,9 @@ export default function UnexcusedAbsenteesList({ minuteId }) {
           key={absentee.member_id}
           className="pl-8 before:content-[''] before:w-1.5 before:h-1.5 before:inline-block before:bg-black before:rounded-full before:mr-2 before:align-middle text-sky-600 underline"
         >
-          <a href={`https://github.com/${absentee.name}`}>{absentee.name}</a>
+          <a
+            href={`https://github.com/${absentee.name}`}
+          >{`@${absentee.name}`}</a>
         </li>
       ))}
     </ul>
