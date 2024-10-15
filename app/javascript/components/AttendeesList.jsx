@@ -2,7 +2,7 @@ import useSWR from 'swr'
 import fetcher from '../fetcher.js'
 import PropTypes from 'prop-types'
 
-export default function AttendeesList({ minuteId }) {
+export default function AttendeesList({ minuteId, currentMemberId, isAdmin }) {
   const { data, error, isLoading } = useSWR(
     `/api/minutes/${minuteId}/attendances`,
     fetcher
@@ -18,11 +18,19 @@ export default function AttendeesList({ minuteId }) {
         <ul>
           <li className="pl-8 before:content-[''] before:w-1.5 before:h-1.5 before:inline-block before:bg-white before:border before:border-black before:rounded-full before:mr-2 before:align-middle">
             昼
-            <Attendees attendees={data.day_attendees} />
+            <Attendees
+              attendees={data.day_attendees}
+              currentMemberId={currentMemberId}
+              isAdmin={isAdmin}
+            />
           </li>
           <li className="pl-8 before:content-[''] before:w-1.5 before:h-1.5 before:inline-block before:bg-white before:border before:border-black before:rounded-full before:mr-2 before:align-middle">
             夜
-            <Attendees attendees={data.night_attendees} />
+            <Attendees
+              attendees={data.night_attendees}
+              currentMemberId={currentMemberId}
+              isAdmin={isAdmin}
+            />
           </li>
         </ul>
       </li>
@@ -56,7 +64,7 @@ export default function AttendeesList({ minuteId }) {
   )
 }
 
-function Attendees({ attendees }) {
+function Attendees({ attendees, currentMemberId, isAdmin }) {
   return (
     <ul>
       {attendees.map((attendee) => (
@@ -68,6 +76,14 @@ function Attendees({ attendees }) {
             href={`https://github.com/${attendee.name}`}
             className="text-sky-600 underline"
           >{`@${attendee.name}`}</a>
+          {!isAdmin && currentMemberId === attendee.member_id && (
+            <a
+              href={`/attendances/${attendee.attendance_id}/edit`}
+              className="inline-block ml-2 py-1 px-2 border border-black"
+            >
+              出席編集
+            </a>
+          )}
         </li>
       ))}
     </ul>
@@ -76,8 +92,12 @@ function Attendees({ attendees }) {
 
 AttendeesList.propTypes = {
   minuteId: PropTypes.number,
+  currentMemberId: PropTypes.number,
+  isAdmin: PropTypes.bool,
 }
 
 Attendees.propTypes = {
   attendees: PropTypes.array,
+  currentMemberId: PropTypes.number,
+  isAdmin: PropTypes.bool,
 }

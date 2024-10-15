@@ -12,4 +12,8 @@ class Admin < ApplicationRecord
       member.password = Devise.friendly_token[0, 20]
     end
   end
+
+  def admin?
+    true
+  end
 end
