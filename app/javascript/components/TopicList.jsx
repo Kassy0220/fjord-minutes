@@ -3,7 +3,12 @@ import PropTypes from 'prop-types'
 import sendRequest from '../sendRequest.js'
 import useChannel from '../hooks/useChannel.js'
 
-export default function TopicList({ minuteId, topics }) {
+export default function TopicList({
+  minuteId,
+  topics,
+  currentDevelopmentMemberId,
+  currentDevelopmentMemberType,
+}) {
   const [allTopics, setAllTopics] = useState(topics)
 
   const onReceivedData = useCallback(function (data) {
@@ -17,7 +22,13 @@ export default function TopicList({ minuteId, topics }) {
     <>
       <ul>
         {allTopics.map((topic) => (
-          <Topic key={topic.id} minuteId={minuteId} topic={topic} />
+          <Topic
+            key={topic.id}
+            minuteId={minuteId}
+            topic={topic}
+            currentDevelopmentMemberId={currentDevelopmentMemberId}
+            currentDevelopmentMemberType={currentDevelopmentMemberType}
+          />
         ))}
       </ul>
       <CreateForm minuteId={minuteId} />
@@ -25,7 +36,12 @@ export default function TopicList({ minuteId, topics }) {
   )
 }
 
-function Topic({ minuteId, topic }) {
+function Topic({
+  minuteId,
+  topic,
+  currentDevelopmentMemberId,
+  currentDevelopmentMemberType,
+}) {
   const [isEditing, setIsEditing] = useState(false)
 
   const handleDelete = async function (e) {
@@ -55,24 +71,37 @@ function Topic({ minuteId, topic }) {
       ) : (
         <li className="pl-8 mb-2 before:content-[''] before:w-1.5 before:h-1.5 before:inline-block before:bg-black before:rounded-full before:mr-2 before:align-middle">
           <span>{topic.content}</span>
-          <button
-            type="button"
-            onClick={() => setIsEditing(true)}
-            className="ml-2 py-1 px-2 border border-black"
-          >
-            編集
-          </button>
-          <button
-            type="button"
-            onClick={handleDelete}
-            className="ml-2 py-1 px-2 border border-black"
-          >
-            削除
-          </button>
+          {isMine(
+            topic.topicable_id,
+            topic.topicable_type,
+            currentDevelopmentMemberId,
+            currentDevelopmentMemberType
+          ) && (
+            <>
+              <button
+                type="button"
+                onClick={() => setIsEditing(true)}
+                className="ml-2 py-1 px-2 border border-black"
+              >
+                編集
+              </button>
+              <button
+                type="button"
+                onClick={handleDelete}
+                className="ml-2 py-1 px-2 border border-black"
+              >
+                削除
+              </button>
+            </>
+          )}
         </li>
       )}
     </>
   )
+}
+
+function isMine(topicableId, topicableType, memberId, memberType) {
+  return topicableId === memberId && topicableType === memberType
 }
 
 function EditForm({ minuteId, topicId, content, setIsEditing }) {
@@ -178,11 +207,15 @@ function CreateForm({ minuteId }) {
 TopicList.propTypes = {
   minuteId: PropTypes.number,
   topics: PropTypes.array,
+  currentDevelopmentMemberId: PropTypes.number,
+  currentDevelopmentMemberType: PropTypes.string,
 }
 
 Topic.propTypes = {
   minuteId: PropTypes.number,
   topic: PropTypes.object,
+  currentDevelopmentMemberId: PropTypes.number,
+  currentDevelopmentMemberType: PropTypes.string,
 }
 
 EditForm.propTypes = {
