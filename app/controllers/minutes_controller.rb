@@ -18,6 +18,7 @@ class MinutesController < ApplicationController
 
   # GET /minutes/1/edit
   def edit
+    @topics = @minute.topics.order(:created_at)
   end
 
   # POST /minutes or /minutes.json

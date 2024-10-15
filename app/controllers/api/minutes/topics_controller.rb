@@ -1,6 +1,7 @@
 class API::Minutes::TopicsController < API::Minutes::ApplicationController
   def create
-    topic = @minute.topics.new(topic_params)
+    topic = current_development_member.topics.new(topic_params)
+    topic.minute_id = @minute.id
     if topic.save
       render json: @minute, status: :created
       broadcast_to_channel
@@ -10,7 +11,7 @@ class API::Minutes::TopicsController < API::Minutes::ApplicationController
   end
 
   def update
-    topic = @minute.topics.find(params[:id])
+    topic = current_development_member.topics.find(params[:id])
     if topic.update(topic_params)
       render json: topic, status: :ok
       broadcast_to_channel
@@ -20,7 +21,7 @@ class API::Minutes::TopicsController < API::Minutes::ApplicationController
   end
 
   def destroy
-    topic = @minute.topics.find(params[:id])
+    topic = current_development_member.topics.find(params[:id])
     topic.destroy!
 
     head :no_content
@@ -34,6 +35,6 @@ class API::Minutes::TopicsController < API::Minutes::ApplicationController
   end
 
   def broadcast_to_channel
-    MinuteChannel.broadcast_to(@minute, body: { topics: @minute.topics.order(:created_at).as_json(only: [ :id, :content ]) })
+    MinuteChannel.broadcast_to(@minute, body: { topics: @minute.topics.order(:created_at).as_json(only: [ :id, :content, :topicable_id, :topicable_type ], include: { topicable: { only: [ :name ] } }) })
   end
 end
