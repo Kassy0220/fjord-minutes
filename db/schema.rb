@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_10_13_005451) do
+ActiveRecord::Schema[7.2].define(version: 2024_10_15_072227) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -81,7 +81,10 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_13_005451) do
     t.bigint "minute_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "topicable_id"
+    t.string "topicable_type"
     t.index ["minute_id"], name: "index_topics_on_minute_id"
+    t.index ["topicable_id", "topicable_type"], name: "index_topics_on_topicable_id_and_topicable_type"
   end
 
   add_foreign_key "attendances", "members"
