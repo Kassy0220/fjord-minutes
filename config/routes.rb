@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   resources :minutes do
     resources :attendances, only: [ :new, :create ], module: :minutes
   end
+  resources :attendances, only: [ :edit, :update ]
 
   namespace :api do
     resources :minutes, only: [ :update ] do

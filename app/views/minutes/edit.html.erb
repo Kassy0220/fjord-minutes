@@ -12,7 +12,7 @@
   <h2 class="font-bold text-2xl">ふりかえり</h2>
 
   <h3 class="font-bold text-xl">メンバー</h3>
-  <%= content_tag :div, id: 'attendees_list', data: {minuteId: @minute.id}.to_json do %><% end %>
+  <%= content_tag :div, id: 'attendees_list', data: {minuteId: @minute.id, currentMemberId: current_development_member.id, isAdmin: current_development_member.admin?}.to_json do %><% end %>
 
   <h3 class="font-bold text-xl">デモ</h3>
   <p>
@@ -40,7 +40,7 @@
   </ul>
 
   <h2 class="font-bold text-2xl">欠席者</h2>
-  <%= content_tag :div, id: 'absentees_list', data: {minuteId: @minute.id}.to_json do %><% end %>
+  <%= content_tag :div, id: 'absentees_list', data: {minuteId: @minute.id, currentMemberId: current_development_member.id, isAdmin: current_development_member.admin?}.to_json do %><% end %>
 
   <h3 class="font-bold text-xl">連絡なし</h3>
   <%= content_tag :div, id: 'unexcused_absentees_list', data: {minuteId: @minute.id}.to_json do %><% end %>

@@ -16,4 +16,8 @@ class Member < ApplicationRecord
       member.course_id = params["course_id"].to_i
     end
   end
+
+  def admin?
+    false
+  end
 end
