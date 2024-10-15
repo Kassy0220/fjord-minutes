@@ -2,7 +2,11 @@ import useSWR from 'swr'
 import fetcher from '../fetcher.js'
 import PropTypes from 'prop-types'
 
-export default function UnexcusedAbsenteesList({ minuteId }) {
+export default function UnexcusedAbsenteesList({
+  minuteId,
+  currentMemberId,
+  isAdmin,
+}) {
   const { data, error, isLoading } = useSWR(
     `/api/minutes/${minuteId}/attendances`,
     fetcher
@@ -16,11 +20,20 @@ export default function UnexcusedAbsenteesList({ minuteId }) {
       {data.unexcused_absentees.map((absentee) => (
         <li
           key={absentee.member_id}
-          className="pl-8 before:content-[''] before:w-1.5 before:h-1.5 before:inline-block before:bg-black before:rounded-full before:mr-2 before:align-middle text-sky-600 underline"
+          className="pl-8 before:content-[''] before:w-1.5 before:h-1.5 before:inline-block before:bg-black before:rounded-full before:mr-2 before:align-middle"
         >
           <a
             href={`https://github.com/${absentee.name}`}
+            className="text-sky-600 underline"
           >{`@${absentee.name}`}</a>
+          {!isAdmin && currentMemberId === absentee.member_id && (
+            <a
+              href={`/minutes/${minuteId}/attendances/new`}
+              className="inline-block ml-2 py-1 px-2 border border-black"
+            >
+              出席登録
+            </a>
+          )}
         </li>
       ))}
     </ul>
@@ -29,4 +42,6 @@ export default function UnexcusedAbsenteesList({ minuteId }) {
 
 UnexcusedAbsenteesList.propTypes = {
   minuteId: PropTypes.number,
+  currentMemberId: PropTypes.number,
+  isAdmin: PropTypes.bool,
 }
