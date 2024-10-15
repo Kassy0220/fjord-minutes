@@ -70,7 +70,9 @@ function Topic({
         />
       ) : (
         <li className="pl-8 mb-2 before:content-[''] before:w-1.5 before:h-1.5 before:inline-block before:bg-black before:rounded-full before:mr-2 before:align-middle">
-          <span>{topic.content}</span>
+          <span>
+            {topic.content}({topic.topicable.name})
+          </span>
           {isMine(
             topic.topicable_id,
             topic.topicable_type,
