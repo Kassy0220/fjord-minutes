@@ -43,7 +43,7 @@
   <%= content_tag :div, id: 'absentees_list', data: {minuteId: @minute.id, currentMemberId: current_development_member.id, isAdmin: current_development_member.admin?}.to_json do %><% end %>
 
   <h3 class="font-bold text-xl">連絡なし</h3>
-  <%= content_tag :div, id: 'unexcused_absentees_list', data: {minuteId: @minute.id}.to_json do %><% end %>
+  <%= content_tag :div, id: 'unexcused_absentees_list', data: {minuteId: @minute.id, currentMemberId: current_development_member.id, isAdmin: current_development_member.admin?}.to_json do %><% end %>
 
   <div class="mt-16">
     <%= link_to "Back to minutes", minutes_path, class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
