@@ -1,10 +1,10 @@
 class AttendancesController < ApplicationController
   def edit
-    @attendance = Attendance.find(params[:id])
+    @attendance = current_member.attendances.find(params[:id])
   end
 
   def update
-    @attendance = Attendance.find(params[:id])
+    @attendance = current_member.attendances.find(params[:id])
     remove_unnecessary_values
 
     if @attendance.update(attendance_params)
