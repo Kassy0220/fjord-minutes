@@ -4,6 +4,8 @@ class Admin < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :rememberable, :validatable
 
+  has_many :topics, as: :topicable
+
   def self.from_omniauth(auth)
     find_or_create_by(provider: auth.provider, uid: auth.uid) do |member|
       member.email = auth.info.email
