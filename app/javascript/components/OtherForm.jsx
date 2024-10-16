@@ -4,14 +4,28 @@ import sendRequest from '../sendRequest.js'
 import useChannel from '../hooks/useChannel.js'
 
 export default function OtherForm({ minuteId, content, isAdmin }) {
-  const [inputValue, setInputValue] = useState(content)
+  const [otherContent, setOtherContent] = useState(content)
 
   const onReceivedData = useCallback(function (data) {
     if ('minute' in data.body) {
-      setInputValue(data.body.minute.other)
+      setOtherContent(data.body.minute.other)
     }
   }, [])
   useChannel(minuteId, onReceivedData)
+
+  return (
+    <>
+      {isAdmin ? (
+        <EditForm minuteId={minuteId} content={otherContent} />
+      ) : (
+        <p>{otherContent}</p>
+      )}
+    </>
+  )
+}
+
+function EditForm({ minuteId, content }) {
+  const [inputValue, setInputValue] = useState(content)
 
   const handleChange = function (e) {
     setInputValue(e.target.value)
@@ -35,24 +49,18 @@ export default function OtherForm({ minuteId, content, isAdmin }) {
 
   return (
     <>
-      {isAdmin ? (
-        <>
-          <textarea
-            value={inputValue}
-            onChange={handleChange}
-            className="w-[400px] resize-y align-middle field-sizing-content"
-          />
-          <button
-            type="button"
-            onClick={handleClick}
-            className="ml-2 py-1 px-2 border border-black"
-          >
-            更新
-          </button>
-        </>
-      ) : (
-        <p>{inputValue}</p>
-      )}
+      <textarea
+        value={inputValue}
+        onChange={handleChange}
+        className="w-[400px] resize-y align-middle field-sizing-content"
+      />
+      <button
+        type="button"
+        onClick={handleClick}
+        className="ml-2 py-1 px-2 border border-black"
+      >
+        更新
+      </button>
     </>
   )
 }
@@ -61,4 +69,9 @@ OtherForm.propTypes = {
   minuteId: PropTypes.number,
   content: PropTypes.string,
   isAdmin: PropTypes.bool,
+}
+
+EditForm.propTypes = {
+  minuteId: PropTypes.number,
+  content: PropTypes.string,
 }
