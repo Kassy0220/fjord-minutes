@@ -25,24 +25,26 @@ export default function ReleaseInformationForm({
   const label = description === 'branch' ? 'リリースブランチ' : 'リリースノート'
 
   return (
-    <>
-      <div className="pl-8 before:content-[''] before:w-1.5 before:h-1.5 before:inline-block before:bg-black before:rounded-full before:mr-2 before:align-middle">
+    <ul>
+      <li>
         <span>{label}</span>
-      </div>
-      {isEditing ? (
-        <EditForm
-          minuteId={minuteId}
-          description={description}
-          content={informationContent}
-          setIsEditing={setIsEditing}
-        />
-      ) : (
-        <ReleaseInformation
-          content={informationContent}
-          setIsEditing={setIsEditing}
-        />
-      )}
-    </>
+        <ul>
+          {isEditing ? (
+            <EditForm
+              minuteId={minuteId}
+              description={description}
+              content={informationContent}
+              setIsEditing={setIsEditing}
+            />
+          ) : (
+            <ReleaseInformation
+              content={informationContent}
+              setIsEditing={setIsEditing}
+            />
+          )}
+        </ul>
+      </li>
+    </ul>
   )
 }
 
@@ -74,7 +76,7 @@ function EditForm({ minuteId, description, content, setIsEditing }) {
   }
 
   return (
-    <div className="pl-16 before:content-[''] before:w-1.5 before:h-1.5 before:inline-block before:bg-white before:border before:border-black before:rounded-full before:mr-2 before:align-middle">
+    <li>
       <input
         type="text"
         value={inputValue}
@@ -88,24 +90,22 @@ function EditForm({ minuteId, description, content, setIsEditing }) {
       >
         更新
       </button>
-    </div>
+    </li>
   )
 }
 
 function ReleaseInformation({ content, setIsEditing }) {
   return (
-    <>
-      <div className="pl-16 before:content-[''] before:w-1.5 before:h-1.5 before:inline-block before:bg-white before:border before:border-black before:rounded-full before:mr-2 before:align-middle">
-        <span>{content}</span>
-        <button
-          type="button"
-          onClick={() => setIsEditing(true)}
-          className="ml-2 py-1 px-2 border border-black"
-        >
-          編集
-        </button>
-      </div>
-    </>
+    <li>
+      <span>{content}</span>
+      <button
+        type="button"
+        onClick={() => setIsEditing(true)}
+        className="ml-2 py-1 px-2 border border-black"
+      >
+        編集
+      </button>
+    </li>
   )
 }
 

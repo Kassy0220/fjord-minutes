@@ -22,19 +22,27 @@ export default function NextMeetingDateForm({ minuteId, nextMeetingDate }) {
   useChannel(minuteId, onReceivedData)
 
   return (
-    <>
-      {isEditing ? (
-        <EditForm minuteId={minuteId} date={date} setIsEditing={setIsEditing} />
-      ) : (
-        <NextMeetingDate date={date} setIsEditing={setIsEditing} />
-      )}
-      <div className="pl-16 before:content-[''] before:w-1.5 before:h-1.5 before:inline-block before:bg-white before:border before:border-black before:rounded-full before:mr-2 before:align-middle">
-        <span>昼の部：15:00-16:00</span>
-      </div>
-      <div className="pl-16 before:content-[''] before:w-1.5 before:h-1.5 before:inline-block before:bg-white before:border before:border-black before:rounded-full before:mr-2 before:align-middle">
-        <span>夜の部：22:00-23:00</span>
-      </div>
-    </>
+    <ul>
+      <li>
+        {isEditing ? (
+          <EditForm
+            minuteId={minuteId}
+            date={date}
+            setIsEditing={setIsEditing}
+          />
+        ) : (
+          <NextMeetingDate date={date} setIsEditing={setIsEditing} />
+        )}
+        <ul>
+          <li>
+            <span>昼の部：15:00-16:00</span>
+          </li>
+          <li>
+            <span>夜の部：22:00-23:00</span>
+          </li>
+        </ul>
+      </li>
+    </ul>
   )
 }
 
@@ -64,7 +72,7 @@ function EditForm({ minuteId, date, setIsEditing }) {
   }
 
   return (
-    <div className="pl-8 before:content-[''] before:w-1.5 before:h-1.5 before:inline-block before:bg-black before:rounded-full before:mr-2 before:align-middle">
+    <>
       <input type="date" value={inputValue} onChange={handleInput} />
       <button
         type="button"
@@ -73,7 +81,7 @@ function EditForm({ minuteId, date, setIsEditing }) {
       >
         更新
       </button>
-    </div>
+    </>
   )
 }
 
@@ -83,7 +91,7 @@ function NextMeetingDate({ date, setIsEditing }) {
   const isHoliday = holidayJP.isHoliday(new Date(date))
 
   return (
-    <div className="pl-8 before:content-[''] before:w-1.5 before:h-1.5 before:inline-block before:bg-black before:rounded-full before:mr-2 before:align-middle">
+    <>
       <span>{`${formattedDate} (${weekday})`}</span>
       {isHoliday && (
         <span className="text-red-600 ml-2">
@@ -97,7 +105,7 @@ function NextMeetingDate({ date, setIsEditing }) {
       >
         編集
       </button>
-    </div>
+    </>
   )
 }
 
