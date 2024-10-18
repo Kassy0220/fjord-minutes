@@ -69,7 +69,7 @@ function Topic({
           setIsEditing={setIsEditing}
         />
       ) : (
-        <li className="pl-8">
+        <li>
           <span>
             {topic.content}({topic.topicable.name})
           </span>

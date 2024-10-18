@@ -27,7 +27,7 @@ export default function AbsenteesList({ minuteId, currentMemberId, isAdmin }) {
 
 function Absentee({ absentee, currentMemberId, isAdmin }) {
   return (
-    <li className="pl-8">
+    <li>
       <a
         href={`https://github.com/${absentee.name}`}
         className="text-sky-600 underline"
@@ -43,8 +43,8 @@ function Absentee({ absentee, currentMemberId, isAdmin }) {
         </a>
       )}
       <ul>
-        <li className="pl-8">欠席理由: {absentee.absence_reason}</li>
-        <li className="pl-8">今週の進捗: {absentee.progress_report}</li>
+        <li>欠席理由: {absentee.absence_reason}</li>
+        <li>今週の進捗: {absentee.progress_report}</li>
       </ul>
     </li>
   )
