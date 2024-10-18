@@ -1,4 +1,6 @@
 class API::MinutesController < API::BaseController
+  before_action :authenticate_admin!
+
   def update
     minute = Minute.find(params[:id])
 
