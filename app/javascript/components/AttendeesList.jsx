@@ -13,10 +13,10 @@ export default function AttendeesList({ minuteId, currentMemberId, isAdmin }) {
 
   return (
     <ul>
-      <li className="pl-8">
+      <li>
         プログラマー
         <ul>
-          <li className="pl-8">
+          <li>
             昼
             <Attendees
               attendees={data.day_attendees}
@@ -24,7 +24,7 @@ export default function AttendeesList({ minuteId, currentMemberId, isAdmin }) {
               isAdmin={isAdmin}
             />
           </li>
-          <li className="pl-8">
+          <li>
             夜
             <Attendees
               attendees={data.night_attendees}
@@ -34,10 +34,10 @@ export default function AttendeesList({ minuteId, currentMemberId, isAdmin }) {
           </li>
         </ul>
       </li>
-      <li className="pl-8">
+      <li>
         プロダクトオーナー
         <ul>
-          <li className="pl-8">
+          <li>
             <a
               href="https://github.com/machida"
               className="text-sky-600 underline"
@@ -47,10 +47,10 @@ export default function AttendeesList({ minuteId, currentMemberId, isAdmin }) {
           </li>
         </ul>
       </li>
-      <li className="pl-8">
+      <li>
         スクラムマスター
         <ul>
-          <li className="pl-8">
+          <li>
             <a
               href="https://github.com/komagata"
               className="text-sky-600 underline"
@@ -68,7 +68,7 @@ function Attendees({ attendees, currentMemberId, isAdmin }) {
   return (
     <ul>
       {attendees.map((attendee) => (
-        <li key={attendee.attendance_id} className="pl-8">
+        <li key={attendee.attendance_id}>
           <a
             href={`https://github.com/${attendee.name}`}
             className="text-sky-600 underline"
