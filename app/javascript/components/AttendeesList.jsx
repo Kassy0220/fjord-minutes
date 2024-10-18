@@ -13,10 +13,10 @@ export default function AttendeesList({ minuteId, currentMemberId, isAdmin }) {
 
   return (
     <ul>
-      <li className="pl-8 before:content-[''] before:w-1.5 before:h-1.5 before:inline-block before:bg-black before:rounded-full before:mr-2 before:align-middle">
+      <li className="pl-8">
         プログラマー
         <ul>
-          <li className="pl-8 before:content-[''] before:w-1.5 before:h-1.5 before:inline-block before:bg-white before:border before:border-black before:rounded-full before:mr-2 before:align-middle">
+          <li className="pl-8">
             昼
             <Attendees
               attendees={data.day_attendees}
@@ -24,7 +24,7 @@ export default function AttendeesList({ minuteId, currentMemberId, isAdmin }) {
               isAdmin={isAdmin}
             />
           </li>
-          <li className="pl-8 before:content-[''] before:w-1.5 before:h-1.5 before:inline-block before:bg-white before:border before:border-black before:rounded-full before:mr-2 before:align-middle">
+          <li className="pl-8">
             夜
             <Attendees
               attendees={data.night_attendees}
@@ -34,10 +34,10 @@ export default function AttendeesList({ minuteId, currentMemberId, isAdmin }) {
           </li>
         </ul>
       </li>
-      <li className="pl-8 before:content-[''] before:w-1.5 before:h-1.5 before:inline-block before:bg-black before:rounded-full before:mr-2 before:align-middle">
+      <li className="pl-8">
         プロダクトオーナー
         <ul>
-          <li className="pl-8 before:content-[''] before:w-1.5 before:h-1.5 before:inline-block before:bg-white before:border before:border-black before:rounded-full before:mr-2 before:align-middle">
+          <li className="pl-8">
             <a
               href="https://github.com/machida"
               className="text-sky-600 underline"
@@ -47,10 +47,10 @@ export default function AttendeesList({ minuteId, currentMemberId, isAdmin }) {
           </li>
         </ul>
       </li>
-      <li className="pl-8 before:content-[''] before:w-1.5 before:h-1.5 before:inline-block before:bg-black before:rounded-full before:mr-2 before:align-middle">
+      <li className="pl-8">
         スクラムマスター
         <ul>
-          <li className="pl-8 before:content-[''] before:w-1.5 before:h-1.5 before:inline-block before:bg-white before:border before:border-black before:rounded-full before:mr-2 before:align-middle">
+          <li className="pl-8">
             <a
               href="https://github.com/komagata"
               className="text-sky-600 underline"
@@ -68,10 +68,7 @@ function Attendees({ attendees, currentMemberId, isAdmin }) {
   return (
     <ul>
       {attendees.map((attendee) => (
-        <li
-          key={attendee.attendance_id}
-          className="relative before:absolute before:left-8 before:top-1/2 before:w-1.5 before:h-1.5 before:bg-black before:rounded-sm before:transform before:-translate-y-1/2 before:mr-2 pl-12"
-        >
+        <li key={attendee.attendance_id} className="pl-8">
           <a
             href={`https://github.com/${attendee.name}`}
             className="text-sky-600 underline"
