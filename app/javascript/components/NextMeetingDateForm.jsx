@@ -10,7 +10,11 @@ import useChannel from '../hooks/useChannel.js'
 dayjs.locale(ja)
 dayjs.extend(weekday)
 
-export default function NextMeetingDateForm({ minuteId, nextMeetingDate }) {
+export default function NextMeetingDateForm({
+  minuteId,
+  nextMeetingDate,
+  isAdmin,
+}) {
   const [date, setDate] = useState(nextMeetingDate)
   const [isEditing, setIsEditing] = useState(false)
 
@@ -31,7 +35,11 @@ export default function NextMeetingDateForm({ minuteId, nextMeetingDate }) {
             setIsEditing={setIsEditing}
           />
         ) : (
-          <NextMeetingDate date={date} setIsEditing={setIsEditing} />
+          <NextMeetingDate
+            date={date}
+            setIsEditing={setIsEditing}
+            isAdmin={isAdmin}
+          />
         )}
         <ul>
           <li>
@@ -85,7 +93,7 @@ function EditForm({ minuteId, date, setIsEditing }) {
   )
 }
 
-function NextMeetingDate({ date, setIsEditing }) {
+function NextMeetingDate({ date, setIsEditing, isAdmin }) {
   const formattedDate = dayjs(date).format('YYYY年MM月DD日')
   const weekday = dayjs(date).format('dd')
   const isHoliday = holidayJP.isHoliday(new Date(date))
@@ -98,13 +106,15 @@ function NextMeetingDate({ date, setIsEditing }) {
           ※{holidayJP.holidays[date].name}
         </span>
       )}
-      <button
-        type="button"
-        onClick={() => setIsEditing(true)}
-        className="ml-2 py-1 px-2 border border-black"
-      >
-        編集
-      </button>
+      {isAdmin && (
+        <button
+          type="button"
+          onClick={() => setIsEditing(true)}
+          className="ml-2 py-1 px-2 border border-black"
+        >
+          編集
+        </button>
+      )}
     </>
   )
 }
@@ -112,6 +122,7 @@ function NextMeetingDate({ date, setIsEditing }) {
 NextMeetingDateForm.propTypes = {
   minuteId: PropTypes.number,
   nextMeetingDate: PropTypes.string,
+  isAdmin: PropTypes.bool,
 }
 
 EditForm.propTypes = {
@@ -123,4 +134,5 @@ EditForm.propTypes = {
 NextMeetingDate.propTypes = {
   date: PropTypes.string,
   setIsEditing: PropTypes.func,
+  isAdmin: PropTypes.bool,
 }

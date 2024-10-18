@@ -7,6 +7,7 @@ export default function ReleaseInformationForm({
   minuteId,
   description,
   content,
+  isAdmin,
 }) {
   const [informationContent, setInformationContent] = useState(content)
   const [isEditing, setIsEditing] = useState(false)
@@ -40,6 +41,7 @@ export default function ReleaseInformationForm({
             <ReleaseInformation
               content={informationContent}
               setIsEditing={setIsEditing}
+              isAdmin={isAdmin}
             />
           )}
         </ul>
@@ -94,17 +96,19 @@ function EditForm({ minuteId, description, content, setIsEditing }) {
   )
 }
 
-function ReleaseInformation({ content, setIsEditing }) {
+function ReleaseInformation({ content, setIsEditing, isAdmin }) {
   return (
     <li>
       <span>{content}</span>
-      <button
-        type="button"
-        onClick={() => setIsEditing(true)}
-        className="ml-2 py-1 px-2 border border-black"
-      >
-        編集
-      </button>
+      {isAdmin && (
+        <button
+          type="button"
+          onClick={() => setIsEditing(true)}
+          className="ml-2 py-1 px-2 border border-black"
+        >
+          編集
+        </button>
+      )}
     </li>
   )
 }
@@ -113,6 +117,7 @@ ReleaseInformationForm.propTypes = {
   minuteId: PropTypes.number,
   description: PropTypes.string,
   content: PropTypes.string,
+  isAdmin: PropTypes.bool,
 }
 
 EditForm.propTypes = {
@@ -125,4 +130,5 @@ EditForm.propTypes = {
 ReleaseInformation.propTypes = {
   content: PropTypes.string,
   setIsEditing: PropTypes.func,
+  isAdmin: PropTypes.bool,
 }
