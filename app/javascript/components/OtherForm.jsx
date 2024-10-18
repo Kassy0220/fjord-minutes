@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import sendRequest from '../sendRequest.js'
 import useChannel from '../hooks/useChannel.js'
 
-export default function OtherForm({ minuteId, content }) {
+export default function OtherForm({ minuteId, content, isAdmin }) {
   const [inputValue, setInputValue] = useState(content)
 
   const onReceivedData = useCallback(function (data) {
@@ -35,18 +35,24 @@ export default function OtherForm({ minuteId, content }) {
 
   return (
     <>
-      <textarea
-        value={inputValue}
-        onChange={handleChange}
-        className="w-[400px] resize-y align-middle field-sizing-content"
-      />
-      <button
-        type="button"
-        onClick={handleClick}
-        className="ml-2 py-1 px-2 border border-black"
-      >
-        更新
-      </button>
+      {isAdmin ? (
+        <>
+          <textarea
+            value={inputValue}
+            onChange={handleChange}
+            className="w-[400px] resize-y align-middle field-sizing-content"
+          />
+          <button
+            type="button"
+            onClick={handleClick}
+            className="ml-2 py-1 px-2 border border-black"
+          >
+            更新
+          </button>
+        </>
+      ) : (
+        <p>{inputValue}</p>
+      )}
     </>
   )
 }
@@ -54,4 +60,5 @@ export default function OtherForm({ minuteId, content }) {
 OtherForm.propTypes = {
   minuteId: PropTypes.number,
   content: PropTypes.string,
+  isAdmin: PropTypes.bool,
 }
