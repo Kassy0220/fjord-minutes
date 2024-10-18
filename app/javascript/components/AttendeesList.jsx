@@ -18,19 +18,29 @@ export default function AttendeesList({ minuteId, currentMemberId, isAdmin }) {
         <ul>
           <li>
             昼
-            <Attendees
-              attendees={data.day_attendees}
-              currentMemberId={currentMemberId}
-              isAdmin={isAdmin}
-            />
+            <ul>
+              {data.day_attendees.map((attendee) => (
+                <Attendee
+                  key={attendee.attendance_id}
+                  attendee={attendee}
+                  currentMemberId={currentMemberId}
+                  isAdmin={isAdmin}
+                />
+              ))}
+            </ul>
           </li>
           <li>
             夜
-            <Attendees
-              attendees={data.night_attendees}
-              currentMemberId={currentMemberId}
-              isAdmin={isAdmin}
-            />
+            <ul>
+              {data.night_attendees.map((attendee) => (
+                <Attendee
+                  key={attendee.attendance_id}
+                  attendee={attendee}
+                  currentMemberId={currentMemberId}
+                  isAdmin={isAdmin}
+                />
+              ))}
+            </ul>
           </li>
         </ul>
       </li>
@@ -64,26 +74,22 @@ export default function AttendeesList({ minuteId, currentMemberId, isAdmin }) {
   )
 }
 
-function Attendees({ attendees, currentMemberId, isAdmin }) {
+function Attendee({ attendee, currentMemberId, isAdmin }) {
   return (
-    <ul>
-      {attendees.map((attendee) => (
-        <li key={attendee.attendance_id}>
-          <a
-            href={`https://github.com/${attendee.name}`}
-            className="text-sky-600 underline"
-          >{`@${attendee.name}`}</a>
-          {!isAdmin && currentMemberId === attendee.member_id && (
-            <a
-              href={`/attendances/${attendee.attendance_id}/edit`}
-              className="inline-block ml-2 py-1 px-2 border border-black"
-            >
-              出席編集
-            </a>
-          )}
-        </li>
-      ))}
-    </ul>
+    <li key={attendee.attendance_id}>
+      <a
+        href={`https://github.com/${attendee.name}`}
+        className="text-sky-600 underline"
+      >{`@${attendee.name}`}</a>
+      {!isAdmin && currentMemberId === attendee.member_id && (
+        <a
+          href={`/attendances/${attendee.attendance_id}/edit`}
+          className="inline-block ml-2 py-1 px-2 border border-black"
+        >
+          出席編集
+        </a>
+      )}
+    </li>
   )
 }
 
@@ -93,8 +99,8 @@ AttendeesList.propTypes = {
   isAdmin: PropTypes.bool,
 }
 
-Attendees.propTypes = {
-  attendees: PropTypes.array,
+Attendee.propTypes = {
+  attendee: PropTypes.object,
   currentMemberId: PropTypes.number,
   isAdmin: PropTypes.bool,
 }
