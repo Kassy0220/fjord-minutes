@@ -27,10 +27,10 @@ export default function AbsenteesList({ minuteId, currentMemberId, isAdmin }) {
 
 function Absentee({ absentee, currentMemberId, isAdmin }) {
   return (
-    <li>
+    <li className="pl-8">
       <a
         href={`https://github.com/${absentee.name}`}
-        className="pl-8 before:content-[''] before:w-1.5 before:h-1.5 before:inline-block before:bg-black before:rounded-full before:mr-2 before:align-middle text-sky-600 underline"
+        className="text-sky-600 underline"
       >
         {`@${absentee.name}`}
       </a>
@@ -43,12 +43,8 @@ function Absentee({ absentee, currentMemberId, isAdmin }) {
         </a>
       )}
       <ul>
-        <li className="pl-16 before:content-[''] before:w-1.5 before:h-1.5 before:inline-block before:bg-white before:border before:border-black before:rounded-full before:mr-2 before:align-middle">
-          欠席理由: {absentee.absence_reason}
-        </li>
-        <li className="pl-16 before:content-[''] before:w-1.5 before:h-1.5 before:inline-block before:bg-white before:border before:border-black before:rounded-full before:mr-2 before:align-middle">
-          今週の進捗: {absentee.progress_report}
-        </li>
+        <li className="pl-8">欠席理由: {absentee.absence_reason}</li>
+        <li className="pl-8">今週の進捗: {absentee.progress_report}</li>
       </ul>
     </li>
   )

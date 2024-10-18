@@ -69,7 +69,7 @@ function Topic({
           setIsEditing={setIsEditing}
         />
       ) : (
-        <li className="pl-8 mb-2 before:content-[''] before:w-1.5 before:h-1.5 before:inline-block before:bg-black before:rounded-full before:mr-2 before:align-middle">
+        <li className="pl-8">
           <span>
             {topic.content}({topic.topicable.name})
           </span>

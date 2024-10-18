@@ -18,10 +18,7 @@ export default function UnexcusedAbsenteesList({
   return (
     <ul>
       {data.unexcused_absentees.map((absentee) => (
-        <li
-          key={absentee.member_id}
-          className="pl-8 before:content-[''] before:w-1.5 before:h-1.5 before:inline-block before:bg-black before:rounded-full before:mr-2 before:align-middle"
-        >
+        <li key={absentee.member_id} className="pl-8">
           <a
             href={`https://github.com/${absentee.name}`}
             className="text-sky-600 underline"
