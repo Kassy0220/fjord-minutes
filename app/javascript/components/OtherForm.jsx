@@ -2,6 +2,8 @@ import { useState, useCallback } from 'react'
 import PropTypes from 'prop-types'
 import sendRequest from '../sendRequest.js'
 import useChannel from '../hooks/useChannel.js'
+import { marked } from 'marked'
+import DOMPurify from 'dompurify'
 
 export default function OtherForm({ minuteId, content, isAdmin }) {
   const [otherContent, setOtherContent] = useState(content)
@@ -18,7 +20,7 @@ export default function OtherForm({ minuteId, content, isAdmin }) {
       {isAdmin ? (
         <EditForm minuteId={minuteId} content={otherContent} />
       ) : (
-        <p>{otherContent}</p>
+        <Other content={otherContent} />
       )}
     </>
   )
@@ -65,6 +67,14 @@ function EditForm({ minuteId, content }) {
   )
 }
 
+function Other({ content }) {
+  const sanitizedHTML = { __html: DOMPurify.sanitize(marked.parse(content)) }
+
+  return (
+    <div className="markdown-body" dangerouslySetInnerHTML={sanitizedHTML} />
+  )
+}
+
 OtherForm.propTypes = {
   minuteId: PropTypes.number,
   content: PropTypes.string,
@@ -73,5 +83,9 @@ OtherForm.propTypes = {
 
 EditForm.propTypes = {
   minuteId: PropTypes.number,
+  content: PropTypes.string,
+}
+
+Other.propTypes = {
   content: PropTypes.string,
 }
