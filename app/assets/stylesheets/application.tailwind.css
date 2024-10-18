@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+    ul {
+        @apply list-disc list-inside [&_ul]:list-[revert];
+    }
+    ol {
+        @apply list-decimal list-inside;
+    }
+}
+
 @layer utilities {
     .field-sizing-content {
         /*field-sizingはまだ実験的機能でTailwindに実装されていないため、カスタムCSSという形で追加する*/
