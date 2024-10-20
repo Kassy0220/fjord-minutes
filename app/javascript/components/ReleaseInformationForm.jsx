@@ -83,13 +83,9 @@ function EditForm({ minuteId, description, content, setIsEditing }) {
         type="text"
         value={inputValue}
         onChange={handleInput}
-        className="w-96"
+        className="input_type_text"
       />
-      <button
-        type="button"
-        onClick={handleClick}
-        className="ml-2 py-1 px-2 border border-black"
-      >
+      <button type="button" onClick={handleClick} className="button">
         更新
       </button>
     </li>
@@ -104,7 +100,7 @@ function ReleaseInformation({ content, setIsEditing, isAdmin }) {
         <button
           type="button"
           onClick={() => setIsEditing(true)}
-          className="ml-2 py-1 px-2 border border-black"
+          className="button"
         >
           編集
         </button>
