@@ -70,9 +70,7 @@ function EditForm({ minuteId, content }) {
 function Other({ content }) {
   const sanitizedHTML = { __html: DOMPurify.sanitize(marked.parse(content)) }
 
-  return (
-    <div className="markdown-body" dangerouslySetInnerHTML={sanitizedHTML} />
-  )
+  return <div dangerouslySetInnerHTML={sanitizedHTML} />
 }
 
 OtherForm.propTypes = {
