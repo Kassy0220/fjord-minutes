@@ -6,6 +6,7 @@ import holidayJP from '@holiday-jp/holiday_jp'
 import PropTypes from 'prop-types'
 import sendRequest from '../sendRequest.js'
 import useChannel from '../hooks/useChannel.js'
+import { Datepicker } from 'flowbite-react'
 
 dayjs.locale(ja)
 dayjs.extend(weekday)
@@ -55,15 +56,17 @@ export default function NextMeetingDateForm({
 }
 
 function EditForm({ minuteId, date, setIsEditing }) {
-  const [inputValue, setInputValue] = useState(date)
+  const [inputValue, setInputValue] = useState(new Date(date))
 
-  const handleInput = function (e) {
-    setInputValue(e.target.value)
+  const handleInput = function (date) {
+    setInputValue(date)
   }
 
   const handleClick = async function (e) {
     e.preventDefault()
-    const parameter = { minute: { next_meeting_date: inputValue } }
+    const parameter = {
+      minute: { next_meeting_date: dayjs(inputValue).format('YYYY-MM-DD') },
+    }
 
     const response = await sendRequest(
       `/api/minutes/${minuteId}`,
@@ -80,16 +83,18 @@ function EditForm({ minuteId, date, setIsEditing }) {
   }
 
   return (
-    <>
-      <input type="date" value={inputValue} onChange={handleInput} />
-      <button
-        type="button"
-        onClick={handleClick}
-        className="ml-2 py-1 px-2 border border-black"
-      >
+    <div className="w-[400px]">
+      <Datepicker
+        language="ja"
+        showClearButton={false}
+        showTodayButton={false}
+        value={inputValue}
+        onChange={(date) => handleInput(date)}
+      />
+      <button type="button" onClick={handleClick} className="button mt-2">
         更新
       </button>
-    </>
+    </div>
   )
 }
 
@@ -110,7 +115,7 @@ function NextMeetingDate({ date, setIsEditing, isAdmin }) {
         <button
           type="button"
           onClick={() => setIsEditing(true)}
-          className="ml-2 py-1 px-2 border border-black"
+          className="button"
         >
           編集
         </button>
