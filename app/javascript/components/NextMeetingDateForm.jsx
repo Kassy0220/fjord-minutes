@@ -56,16 +56,16 @@ export default function NextMeetingDateForm({
 }
 
 function EditForm({ minuteId, date, setIsEditing }) {
-  const [inputValue, setInputValue] = useState(new Date(date))
+  const [selectedDate, setSelectedDate] = useState(new Date(date))
 
   const handleInput = function (date) {
-    setInputValue(date)
+    setSelectedDate(date)
   }
 
   const handleClick = async function (e) {
     e.preventDefault()
     const parameter = {
-      minute: { next_meeting_date: dayjs(inputValue).format('YYYY-MM-DD') },
+      minute: { next_meeting_date: dayjs(selectedDate).format('YYYY-MM-DD') },
     }
 
     const response = await sendRequest(
@@ -88,7 +88,7 @@ function EditForm({ minuteId, date, setIsEditing }) {
         language="ja"
         showClearButton={false}
         showTodayButton={false}
-        value={inputValue}
+        value={selectedDate}
         onChange={(date) => handleInput(date)}
       />
       <button type="button" onClick={handleClick} className="button mt-2">
