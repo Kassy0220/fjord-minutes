@@ -84,9 +84,9 @@ function Attendee({ attendee, currentMemberId, isAdmin }) {
       {!isAdmin && currentMemberId === attendee.member_id && (
         <a
           href={`/attendances/${attendee.attendance_id}/edit`}
-          className="inline-block ml-2 py-1 px-2 border border-black"
+          className="ps-4 no-underline hover:!no-underline"
         >
-          出席編集
+          <span className="button">出席編集</span>
         </a>
       )}
     </li>

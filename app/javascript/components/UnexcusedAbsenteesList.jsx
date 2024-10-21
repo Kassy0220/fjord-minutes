@@ -18,7 +18,7 @@ export default function UnexcusedAbsenteesList({
   return (
     <ul>
       {data.unexcused_absentees.map((absentee) => (
-        <li key={absentee.member_id}>
+        <li key={absentee.member_id} className="mb-4">
           <a
             href={`https://github.com/${absentee.name}`}
             className="text-sky-600 underline"
@@ -26,9 +26,9 @@ export default function UnexcusedAbsenteesList({
           {!isAdmin && currentMemberId === absentee.member_id && (
             <a
               href={`/minutes/${minuteId}/attendances/new`}
-              className="inline-block ml-2 py-1 px-2 border border-black"
+              className="ps-4 no-underline hover:!no-underline"
             >
-              出席登録
+              <span className="button">出席登録</span>
             </a>
           )}
         </li>
