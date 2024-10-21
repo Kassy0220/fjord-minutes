@@ -83,14 +83,14 @@ function Topic({
               <button
                 type="button"
                 onClick={() => setIsEditing(true)}
-                className="ml-2 py-1 px-2 border border-black"
+                className="button"
               >
                 編集
               </button>
               <button
                 type="button"
                 onClick={handleDelete}
-                className="ml-2 py-1 px-2 border border-black"
+                className="button_danger"
               >
                 削除
               </button>
@@ -137,22 +137,22 @@ function EditForm({ minuteId, topicId, content, setIsEditing }) {
   }
 
   return (
-    <div className="pl-16 before:content-[''] before:w-1.5 before:h-1.5 before:inline-block before:bg-white before:border before:border-black before:rounded-full before:mr-2 before:align-middle">
+    <li>
       <input
         type="text"
         value={inputValue}
         onChange={handleInput}
-        className="field-sizing-content max-w-[600px]"
+        className="input_type_text max-w-[800px]"
       />
       <button
         type="button"
         onClick={handleClick}
         disabled={isEmpty}
-        className="ml-2 py-1 px-2 border border-black disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200"
+        className="button disabled:bg-slate-50 disabled:text-slate-500 disabled:border disabled:border-gray-300 disabled:hover:cursor-not-allowed"
       >
         更新
       </button>
-    </div>
+    </li>
   )
 }
 
@@ -192,13 +192,13 @@ function CreateForm({ minuteId }) {
         type="text"
         value={inputValue}
         onChange={handleInput}
-        className="w-[400px]"
+        className="input_type_text"
       />
       <button
         type="button"
         onClick={handleClick}
         disabled={isEmpty}
-        className="ml-2 py-1 px-2 border border-black disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200"
+        className="button disabled:bg-slate-50 disabled:text-slate-500 disabled:border disabled:border-gray-300 disabled:hover:cursor-not-allowed"
       >
         作成
       </button>
