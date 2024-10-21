@@ -1,4 +1,5 @@
 const defaultTheme = require('tailwindcss/defaultTheme')
+const flowbite = require('flowbite-react/tailwind')
 
 module.exports = {
   content: [
@@ -7,6 +8,7 @@ module.exports = {
     './app/javascript/**/*.{js,jsx}',
     './app/views/**/*.{erb,haml,html,slim}',
     './node_modules/flowbite/**/*.js',
+    flowbite.content(),
   ],
   theme: {
     extend: {
@@ -20,5 +22,6 @@ module.exports = {
     require('@tailwindcss/typography'),
     require('@tailwindcss/container-queries'),
     require('flowbite/plugin'),
+    flowbite.plugin(),
   ],
 }
