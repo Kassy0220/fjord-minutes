@@ -8,6 +8,8 @@ import AbsenteesList from './components/AbsenteesList.jsx'
 import UnexcusedAbsenteesList from './components/UnexcusedAbsenteesList.jsx'
 import './toggleAttendanceForm'
 
+import 'flowbite'
+
 mountComponent('attendees_list', AttendeesList)
 mountComponent('release_branch_form', ReleaseInformationForm)
 mountComponent('release_note_form', ReleaseInformationForm)
