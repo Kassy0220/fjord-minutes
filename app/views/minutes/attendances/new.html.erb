@@ -1,5 +1,5 @@
-<div class="mx-auto md:w-2/3 w-full">
-  <h1 class="font-bold text-4xl">出席登録</h1>
+<div class="mx-auto w-full">
+  <h1 class="font-bold text-4xl text-center">出席登録</h1>
 
   <div>
     <%= form_with(model: [ @minute, @attendance ], id: "attendance_form", class: "contents") do |form| %>
@@ -15,34 +15,34 @@
         </div>
       <% end %>
 
-      <div class="my-5">
+      <div class="my-5 text-center">
         <p>出欠</p>
         <%= form.radio_button :status, "present" %>
-        <%= form.label :status_present, "出席" %>
+        <%= form.label :status_present, "出席", class: "mr-10" %>
         <%= form.radio_button :status, "absent" %>
         <%= form.label :status_absent, "欠席" %>
       </div>
 
-      <div class="my-5 present_entry_field">
+      <div class="my-5 text-center present_entry_field">
         <p>出席時間帯</p>
         <%= form.radio_button :time, "day" %>
-        <%= form.label :time_day, "昼の部" %>
+        <%= form.label :time_day, "昼の部", class: "mr-10" %>
         <%= form.radio_button :time, "night" %>
         <%= form.label :time_night, "夜の部" %>
       </div>
 
-      <div class="my-5 absent_entry_field">
-        <%= form.label :absence_reason %>
-        <%= form.text_field :absence_reason %>
+      <div class="my-5 text-center absent_entry_field">
+        <%= form.label :absence_reason, "欠席理由" %>
+        <%= form.text_field :absence_reason, class: 'input_type_text' %>
       </div>
 
-      <div class="my-5 absent_entry_field">
-        <%= form.label :progress_report %>
-        <%= form.text_field :progress_report %>
+      <div class="my-5 text-center absent_entry_field">
+        <%= form.label :progress_report, "進捗報告" %>
+        <%= form.text_field :progress_report, class: 'input_type_text' %>
       </div>
 
-      <div class="inline">
-        <%= form.submit '出席を登録', class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer" %>
+      <div class="text-center">
+        <%= form.submit '出席を登録', class: "button" %>
       </div>
     <% end %>
   </div>
