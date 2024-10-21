@@ -54,13 +54,9 @@ function EditForm({ minuteId, content }) {
       <textarea
         value={inputValue}
         onChange={handleChange}
-        className="w-[400px] resize-y align-middle field-sizing-content"
+        className="textarea"
       />
-      <button
-        type="button"
-        onClick={handleClick}
-        className="ml-2 py-1 px-2 border border-black"
-      >
+      <button type="button" onClick={handleClick} className="button">
         更新
       </button>
     </>
