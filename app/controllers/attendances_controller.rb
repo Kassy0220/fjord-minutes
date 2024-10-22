@@ -1,10 +1,13 @@
 class AttendancesController < ApplicationController
   def edit
     @attendance = current_member.attendances.find(params[:id])
+    redirect_to edit_minute_url(@attendance.minute), alert: "You cannot edit attendance of finished meeting!" if @attendance.minute.already_finished?
   end
 
   def update
     @attendance = current_member.attendances.find(params[:id])
+    redirect_to edit_minute_url(@attendance.minute), alert: "You cannot edit attendance of finished meeting!" if @attendance.minute.already_finished?
+
     remove_unnecessary_values
 
     if @attendance.update(attendance_params)
