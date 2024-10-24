@@ -139,6 +139,7 @@ GEM
     globalid (1.2.1)
       activesupport (>= 6.1)
     hashie (5.0.0)
+    holiday_jp (0.8.1)
     i18n (1.14.6)
       concurrent-ruby (~> 1.0)
     io-console (0.7.2)
@@ -415,6 +416,7 @@ DEPENDENCIES
   dotenv
   erb_lint
   factory_bot_rails
+  holiday_jp
   jbuilder
   jsbundling-rails
   launchy
