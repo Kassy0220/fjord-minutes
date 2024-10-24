@@ -8,6 +8,7 @@ RSpec.describe "OmniauthLogins", type: :system do
 
   context 'as a member' do
     before do
+      Rails.application.env_config['devise.mapping'] = Devise.mappings[:member]
       OmniAuth.config.add_mock(:github, { uid: '123456',
                                           info: { nickname: 'alice',
                                                   email: 'alice@example.com',
@@ -35,6 +36,7 @@ RSpec.describe "OmniauthLogins", type: :system do
 
   context 'as an admin' do
     before do
+      Rails.application.env_config['devise.mapping'] = Devise.mappings[:member]
       OmniAuth.config.add_mock(:github, { uid: '123456',
                                           info: { nickname: 'kassy0220',
                                                   email: 'kassy0220@example.com',
