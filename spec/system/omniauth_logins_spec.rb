@@ -54,4 +54,22 @@ RSpec.describe "OmniauthLogins", type: :system do
       expect(page).to have_content '管理者名 : kassy0220'
     end
   end
+
+  context 'failure login' do
+    before do
+      FactoryBot.create(:rails_course)
+      FactoryBot.create(:front_end_course)
+
+      Rails.application.env_config['devise.mapping'] = Devise.mappings[:member]
+      OmniAuth.config.mock_auth[:github] = :invalid_credentials
+    end
+
+    scenario 'redirect root page when login fails' do
+      visit root_path
+      click_button 'Railsエンジニアコースでログイン'
+
+      expect(current_path).to eq root_path
+      expect(page).to have_content 'Could not authenticate you from GitHub'
+    end
+  end
 end
