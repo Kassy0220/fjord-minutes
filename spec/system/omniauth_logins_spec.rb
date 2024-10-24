@@ -1,11 +1,13 @@
 require 'rails_helper'
 
 RSpec.describe "OmniauthLogins", type: :system do
+  before do
+    FactoryBot.create(:rails_course)
+    FactoryBot.create(:front_end_course)
+  end
+
   context 'as a member' do
     before do
-      FactoryBot.create(:rails_course)
-      FactoryBot.create(:front_end_course)
-
       OmniAuth.config.add_mock(:github, { uid: '123456',
                                           info: { nickname: 'alice',
                                                   email: 'alice@example.com',
@@ -33,9 +35,6 @@ RSpec.describe "OmniauthLogins", type: :system do
 
   context 'as an admin' do
     before do
-      FactoryBot.create(:rails_course)
-      FactoryBot.create(:front_end_course)
-
       OmniAuth.config.add_mock(:github, { uid: '123456',
                                           info: { nickname: 'kassy0220',
                                                   email: 'kassy0220@example.com',
@@ -57,9 +56,6 @@ RSpec.describe "OmniauthLogins", type: :system do
 
   context 'failure login' do
     before do
-      FactoryBot.create(:rails_course)
-      FactoryBot.create(:front_end_course)
-
       Rails.application.env_config['devise.mapping'] = Devise.mappings[:member]
       OmniAuth.config.mock_auth[:github] = :invalid_credentials
     end
