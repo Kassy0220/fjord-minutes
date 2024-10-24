@@ -1,5 +1,4 @@
 class AuthenticationsController < Devise::OmniauthCallbacksController
-  ADMIN_EMAILS = [ ENV["KOMAGATA_EMAIL"], ENV["MACHIDATA_EMAIL"], ENV["KASSY_EMAIL"] ].freeze
   include Devise::Controllers::Rememberable
   skip_before_action :verify_authenticity_token, only: [ :create ]
 
@@ -31,7 +30,8 @@ class AuthenticationsController < Devise::OmniauthCallbacksController
   private
 
   def admin?(email)
-    ADMIN_EMAILS.include? email
+    admin_emails = [ ENV.fetch("KOMAGATA_EMAIL", "no_email"), ENV.fetch("MACHIDA_EMAIL", "no_email"), ENV.fetch("KASSY_EMAIL", "no_email") ]
+    admin_emails.include? email
   end
 
   protected
