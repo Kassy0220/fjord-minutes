@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   root "home#index"
   resources :minutes do
     resources :attendances, only: [ :new, :create ], module: :minutes
+    resources :exports, only: [ :create ], module: :minutes
   end
   resources :attendances, only: [ :edit, :update ]
 
