@@ -8,7 +8,9 @@
 
     <%= content_tag :div, id: 'markdown_preview', data: {markdown: MarkdownBuilder.build(@minute)}.to_json, class: 'mb-4' do %><% end %>
 
-    <%= button_to 'GitHub Wiki にエクスポート', minute_exports_path(@minute), form: { class: 'text-center' },  class: 'button m-auto' %>
+    <% if current_development_member.admin? %>
+      <%= button_to 'GitHub Wiki にエクスポート', minute_exports_path(@minute), form: { class: 'text-center' },  class: 'button m-auto' %>
+    <% end %>
 
     <%= link_to "Edit this minute", edit_minute_path(@minute), class: "mt-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
     <%= link_to "Back to minutes", minutes_path, class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
