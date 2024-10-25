@@ -136,6 +136,11 @@ GEM
       logger
     faraday-net_http (3.3.0)
       net-http
+    git (2.3.1)
+      activesupport (>= 5.0)
+      addressable (~> 2.8)
+      process_executer (~> 1.1)
+      rchardet (~> 1.8)
     globalid (1.2.1)
       activesupport (>= 6.1)
     hashie (5.0.0)
@@ -228,6 +233,7 @@ GEM
       ast (~> 2.4.1)
       racc
     pg (1.5.8)
+    process_executer (1.2.0)
     psych (5.1.2)
       stringio
     public_suffix (6.0.1)
@@ -276,6 +282,7 @@ GEM
       zeitwerk (~> 2.6)
     rainbow (3.1.1)
     rake (13.2.1)
+    rchardet (1.8.0)
     rdoc (6.7.0)
       psych (>= 4.0.0)
     redis (5.3.0)
@@ -416,6 +423,7 @@ DEPENDENCIES
   dotenv
   erb_lint
   factory_bot_rails
+  git
   holiday_jp
   jbuilder
   jsbundling-rails
