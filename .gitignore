@@ -38,3 +38,10 @@
 !/app/assets/builds/.keep
 
 /node_modules
+
+# Ignore github credential file.
+/.netrc
+
+# Igore cloned repository
+/bootcamp_wiki_repository
+/agent_wiki_repository
