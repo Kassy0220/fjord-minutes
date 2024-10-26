@@ -16,7 +16,7 @@ export default function AttendeesList({ minuteId, currentMemberId, isAdmin }) {
       <li>
         プログラマー
         <ul>
-          <li>
+          <li id="day_attendees">
             昼
             <ul>
               {data.day_attendees.map((attendee) => (
@@ -29,7 +29,7 @@ export default function AttendeesList({ minuteId, currentMemberId, isAdmin }) {
               ))}
             </ul>
           </li>
-          <li>
+          <li id="night_attendees">
             夜
             <ul>
               {data.night_attendees.map((attendee) => (
