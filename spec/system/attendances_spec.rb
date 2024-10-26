@@ -83,5 +83,14 @@ RSpec.describe "Attendances", type: :system do
         expect(page).to have_content 'You already registered attendance!'
       end
     end
+
+    scenario 'user cannot create attendance to already finished meeting' do
+      login_as @member
+      travel_to @minute.meeting_date.days_since(1) do
+        visit new_minute_attendance_path(@minute)
+        expect(current_path).to eq edit_minute_path(@minute)
+        expect(page).to have_content 'You cannot attend finished meeting!'
+      end
+    end
   end
 end
