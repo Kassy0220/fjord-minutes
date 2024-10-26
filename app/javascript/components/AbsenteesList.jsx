@@ -12,7 +12,7 @@ export default function AbsenteesList({ minuteId, currentMemberId, isAdmin }) {
   if (isLoading) return <p>読み込み中</p>
 
   return (
-    <ul>
+    <ul id="absentees">
       {data.absentees.map((absentee) => (
         <Absentee
           key={absentee.attendance_id}
