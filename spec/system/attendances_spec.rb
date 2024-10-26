@@ -69,5 +69,19 @@ RSpec.describe "Attendances", type: :system do
         end
       end
     end
+
+    scenario 'user cannot create attendance twice' do
+      login_as @member
+      travel_to @minute.meeting_date.days_ago(1) do
+        visit new_minute_attendance_path(@minute)
+        choose '出席'
+        choose '昼の部'
+        click_button '出席を登録'
+
+        visit new_minute_attendance_path(@minute)
+        expect(current_path).to eq edit_minute_path(@minute)
+        expect(page).to have_content 'You already registered attendance!'
+      end
+    end
   end
 end
