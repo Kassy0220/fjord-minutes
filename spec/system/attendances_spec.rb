@@ -92,5 +92,34 @@ RSpec.describe "Attendances", type: :system do
         expect(page).to have_content 'You cannot attend finished meeting!'
       end
     end
+
+    scenario 'user cannot create attendance with invalid input', js: true do
+      login_as @member
+      travel_to @minute.meeting_date.days_ago(1) do
+        visit new_minute_attendance_path(@minute)
+
+        click_button '出席を登録'
+        expect(page).to have_content 'Status can\'t be blank'
+
+        choose '欠席'
+        fill_in '欠席理由', with: '仕事の都合。'
+        fill_in '進捗報告', with: '今週の進捗は特にありません。'
+        choose '出席'
+        click_button '出席を登録'
+        expect(page).to have_content 'Time can\'t be blank'
+        expect(page).to have_content 'Absence reason must be blank'
+        expect(page).to have_content 'Progress report must be blank'
+
+        choose '出席'
+        choose '昼の部'
+        choose '欠席'
+        fill_in '欠席理由', with: ''
+        fill_in '進捗報告', with: ''
+        click_button '出席を登録'
+        expect(page).to have_content 'Time must be blank'
+        expect(page).to have_content 'Absence reason can\'t be blank'
+        expect(page).to have_content 'Progress report can\'t be blank'
+      end
+    end
   end
 end
