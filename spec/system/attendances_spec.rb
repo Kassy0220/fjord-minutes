@@ -14,10 +14,10 @@ RSpec.describe "Attendances", type: :system do
       rails_course = FactoryBot.create(:rails_course)
       @minute = FactoryBot.create(:minute, course: rails_course)
       @member = FactoryBot.create(:member, course: rails_course)
+      login_as @member
     end
 
     scenario 'user can create day attendance', js: true do
-      login_as @member
       travel_to @minute.meeting_date.days_ago(1) do
         visit new_minute_attendance_path(@minute)
         choose '出席'
@@ -34,7 +34,6 @@ RSpec.describe "Attendances", type: :system do
     end
 
     scenario 'user can create night attendance', js: true do
-      login_as @member
       travel_to @minute.meeting_date.days_ago(1) do
         visit new_minute_attendance_path(@minute)
         choose '出席'
@@ -51,7 +50,6 @@ RSpec.describe "Attendances", type: :system do
     end
 
     scenario 'user can create absence', js: true do
-      login_as @member
       travel_to @minute.meeting_date.days_ago(1) do
         visit new_minute_attendance_path(@minute)
         choose '欠席'
@@ -71,7 +69,6 @@ RSpec.describe "Attendances", type: :system do
     end
 
     scenario 'user cannot create attendance twice' do
-      login_as @member
       travel_to @minute.meeting_date.days_ago(1) do
         visit new_minute_attendance_path(@minute)
         choose '出席'
@@ -85,7 +82,6 @@ RSpec.describe "Attendances", type: :system do
     end
 
     scenario 'user cannot create attendance to already finished meeting' do
-      login_as @member
       travel_to @minute.meeting_date.days_since(1) do
         visit new_minute_attendance_path(@minute)
         expect(current_path).to eq edit_minute_path(@minute)
@@ -94,7 +90,6 @@ RSpec.describe "Attendances", type: :system do
     end
 
     scenario 'user cannot create attendance with invalid input', js: true do
-      login_as @member
       travel_to @minute.meeting_date.days_ago(1) do
         visit new_minute_attendance_path(@minute)
 
