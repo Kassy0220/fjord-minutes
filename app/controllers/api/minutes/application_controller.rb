@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class API::Minutes::ApplicationController < API::BaseController
   before_action :set_minute
 
