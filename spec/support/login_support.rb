@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module LoginSupport
   def login_as(member)
     OmniAuth.config.add_mock(:github, { uid: member.uid,
