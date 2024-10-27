@@ -4,7 +4,7 @@
 
 @layer base {
     ul {
-        @apply list-disc list-inside pl-8 [&_ul]:list-[revert];
+        @apply list-disc pl-8 [&_ul]:list-[revert];
     }
     ol {
         @apply list-decimal list-inside pl-8;
