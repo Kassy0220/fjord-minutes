@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Member < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable, :recoverable and :omniauthable
@@ -5,8 +7,8 @@ class Member < ApplicationRecord
          :rememberable, :validatable
 
   belongs_to :course
-  has_many :attendances
-  has_many :topics, as: :topicable
+  has_many :attendances, dependent: :destroy
+  has_many :topics, as: :topicable, dependent: :destroy
 
   def self.from_omniauth(auth, params)
     find_or_create_by(provider: auth.provider, uid: auth.uid) do |member|
@@ -14,7 +16,7 @@ class Member < ApplicationRecord
       member.name = auth.info.nickname
       member.avatar_url = auth.info.image
       member.password = Devise.friendly_token[0, 20]
-      member.course_id = params["course_id"].to_i
+      member.course_id = params['course_id'].to_i
     end
   end
 
