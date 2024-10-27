@@ -1,6 +1,8 @@
-class Course < ApplicationRecord
-  enum :meeting_week, [ :odd, :even ], suffix: true
+# frozen_string_literal: true
 
-  has_many :minutes, dependent: :destroy
-  has_many :members
+class Course < ApplicationRecord
+  enum :meeting_week, { odd: 0, even: 1 }, suffix: true
+
+  has_many :minutes, dependent: :restrict_with_exception
+  has_many :members, dependent: :restrict_with_exception
 end
