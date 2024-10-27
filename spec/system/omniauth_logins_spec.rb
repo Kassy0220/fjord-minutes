@@ -1,12 +1,14 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-RSpec.describe "OmniauthLogins", type: :system do
+RSpec.describe 'OmniauthLogins', type: :system do
   before do
     FactoryBot.create(:rails_course)
     FactoryBot.create(:front_end_course)
   end
 
-  context 'as a member' do
+  context 'when as a member' do
     before do
       Rails.application.env_config['devise.mapping'] = Devise.mappings[:member]
       OmniAuth.config.add_mock(:github, { uid: '123456',
@@ -34,7 +36,7 @@ RSpec.describe "OmniauthLogins", type: :system do
     end
   end
 
-  context 'as an admin' do
+  context 'when as an admin' do
     before do
       Rails.application.env_config['devise.mapping'] = Devise.mappings[:member]
       OmniAuth.config.add_mock(:github, { uid: '123456',
@@ -56,7 +58,7 @@ RSpec.describe "OmniauthLogins", type: :system do
     end
   end
 
-  context 'failure login' do
+  context 'when failure login' do
     before do
       Rails.application.env_config['devise.mapping'] = Devise.mappings[:member]
       OmniAuth.config.mock_auth[:github] = :invalid_credentials

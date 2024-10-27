@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-RSpec.describe "Homes", type: :system do
-  scenario "user can access top page" do
+RSpec.describe 'Homes', type: :system do
+  scenario 'user can access top page' do
     FactoryBot.create(:rails_course)
     FactoryBot.create(:front_end_course)
 
