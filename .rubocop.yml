@@ -22,3 +22,9 @@ AllCops:
 RSpec/StringAsInstanceDoubleConstant:
   Enabled: true
 
+RSpec/MultipleExpectations:
+  Enabled: false
+
+RSpec/ExampleLength:
+  Enabled: false
+
