@@ -106,11 +106,6 @@ function NextMeetingDate({ date, setIsEditing, isAdmin }) {
   return (
     <>
       <span>{`${formattedDate} (${weekday})`}</span>
-      {isHoliday && (
-        <span className="text-red-600 ml-2">
-          ※{holidayJP.holidays[date].name}
-        </span>
-      )}
       {isAdmin && (
         <button
           type="button"
@@ -119,6 +114,29 @@ function NextMeetingDate({ date, setIsEditing, isAdmin }) {
         >
           編集
         </button>
+      )}
+      {isHoliday && (
+        <p className="flex !m-0 pl-2">
+          <svg
+            className="w-6 h-6 text-yellow-300 dark:text-white inline-block mr-1"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              fillRule="evenodd"
+              d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v5a1 1 0 1 0 2 0V8Zm-1 7a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H12Z"
+              clipRule="evenodd"
+            />
+          </svg>
+          <span className="underline">
+            次回開催日は{holidayJP.holidays[date].name}
+            です。もしミーティングをお休みにする場合は、開催日を変更しましょう。
+          </span>
+        </p>
       )}
     </>
   )
