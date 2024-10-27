@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
   devise_group :development_member, contains: %i[member admin]
   before_action :authenticate_development_member!
 
-  def after_sign_in_path_for
+  def after_sign_in_path_for(_resource)
     root_path
   end
 
