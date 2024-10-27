@@ -64,7 +64,9 @@ function EditForm({ minuteId, content }) {
 }
 
 function Other({ content }) {
-  const sanitizedHTML = { __html: DOMPurify.sanitize(marked.parse(content)) }
+  const sanitizedHTML = {
+    __html: DOMPurify.sanitize(marked.parse(content, [{ gfm: true }])),
+  }
 
   return <div dangerouslySetInnerHTML={sanitizedHTML} />
 }
