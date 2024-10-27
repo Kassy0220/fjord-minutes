@@ -4,7 +4,9 @@ import DOMPurify from 'dompurify'
 import PropTypes from 'prop-types'
 
 export default function MarkdownPreview({ markdown }) {
-  const sanitizedHTML = { __html: DOMPurify.sanitize(marked.parse(markdown)) }
+  const sanitizedHTML = {
+    __html: DOMPurify.sanitize(marked.parse(markdown, [{ gfm: true }])),
+  }
 
   return (
     <Tabs aria-label="Default tabs" variant="default" theme={customTheme}>
