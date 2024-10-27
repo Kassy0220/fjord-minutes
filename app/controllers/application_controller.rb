@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 class ApplicationController < ActionController::Base
   # Only allow modern browsers supporting webp images, web push, badges, import maps, CSS nesting, and CSS :has.
   allow_browser versions: :modern
-  devise_group :development_member, contains: [ :member, :admin ]
+  devise_group :development_member, contains: %i[member admin]
   before_action :authenticate_development_member!
 
-  def after_sign_in_path_for(resource)
+  def after_sign_in_path_for
     root_path
   end
 

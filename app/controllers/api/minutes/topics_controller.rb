@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class API::Minutes::TopicsController < API::Minutes::ApplicationController
   def create
     topic = current_development_member.topics.new(topic_params)
@@ -35,6 +37,8 @@ class API::Minutes::TopicsController < API::Minutes::ApplicationController
   end
 
   def broadcast_to_channel
-    MinuteChannel.broadcast_to(@minute, body: { topics: @minute.topics.order(:created_at).as_json(only: [ :id, :content, :topicable_id, :topicable_type ], include: { topicable: { only: [ :name ] } }) })
+    MinuteChannel.broadcast_to(@minute,
+                               body: { topics: @minute.topics.order(:created_at).as_json(only: %i[id content topicable_id topicable_type],
+                                                                                         include: { topicable: { only: [:name] } }) })
   end
 end

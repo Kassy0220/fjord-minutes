@@ -1,17 +1,19 @@
+# frozen_string_literal: true
+
 class AttendancesController < ApplicationController
   def edit
     @attendance = current_member.attendances.find(params[:id])
-    redirect_to edit_minute_url(@attendance.minute), alert: "You cannot edit attendance of finished meeting!" if @attendance.minute.already_finished?
+    redirect_to edit_minute_url(@attendance.minute), alert: 'You cannot edit attendance of finished meeting!' if @attendance.minute.already_finished?
   end
 
   def update
     @attendance = current_member.attendances.find(params[:id])
-    redirect_to edit_minute_url(@attendance.minute), alert: "You cannot edit attendance of finished meeting!" if @attendance.minute.already_finished?
+    redirect_to edit_minute_url(@attendance.minute), alert: 'You cannot edit attendance of finished meeting!' if @attendance.minute.already_finished?
 
     remove_unnecessary_values
 
     if @attendance.update(attendance_params)
-      redirect_to edit_minute_path(@attendance.minute_id), notice: "Attendance was successfully updated."
+      redirect_to edit_minute_path(@attendance.minute_id), notice: 'Attendance was successfully updated.'
     else
       render :edit, status: :unprocessable_entity
     end
@@ -24,10 +26,10 @@ class AttendancesController < ApplicationController
   end
 
   def remove_unnecessary_values
-    if attendance_params["status"] == "present"
+    if attendance_params['status'] == 'present'
       @attendance.absence_reason = nil
       @attendance.progress_report = nil
-    elsif attendance_params["status"] == "absent"
+    elsif attendance_params['status'] == 'absent'
       @attendance.time = nil
     end
   end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class API::MinutesController < API::BaseController
   before_action :authenticate_admin!
 
@@ -6,7 +8,7 @@ class API::MinutesController < API::BaseController
 
     if minute.update(minute_params)
       render json: minute, status: :ok
-      MinuteChannel.broadcast_to(minute, body: { minute: minute.as_json(only: [ :release_branch, :release_note, :other, :next_meeting_date ]) })
+      MinuteChannel.broadcast_to(minute, body: { minute: minute.as_json(only: %i[release_branch release_note other next_meeting_date]) })
     else
       render json: { errors: minute.errors.full_messages }, status: :unprocessable_entity
     end

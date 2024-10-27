@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class API::Minutes::AttendancesController < API::Minutes::ApplicationController
   def index
     @attendances = @minute.attendances.includes(:member).order(:member_id)
