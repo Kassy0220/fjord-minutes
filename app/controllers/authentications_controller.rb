@@ -50,7 +50,7 @@ class AuthenticationsController < Devise::OmniauthCallbacksController
     error   = exception.error_reason if exception.respond_to?(:error_reason)
     error ||= exception.error        if exception.respond_to?(:error)
     error ||= (request.respond_to?(:get_header) ? request.get_header('omniauth.error.type') : request.env['omniauth.error.type']).to_s
-    error.to_s&.humanize if error # rubocop:disable Style/SafeNavigation
+    error.to_s.humanize if error # rubocop:disable Style/SafeNavigation
   end
 
   def translation_scope
