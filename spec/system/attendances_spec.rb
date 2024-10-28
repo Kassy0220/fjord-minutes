@@ -28,7 +28,7 @@ RSpec.describe 'Attendances', type: :system do
         click_button '出席を登録'
 
         expect(current_path).to eq edit_minute_path(minute)
-        expect(page).to have_content 'Attendance was successfully created.'
+        expect(page).to have_content '出席を登録しました'
         expect(page).to have_link '出席編集' # Reactコンポーネントの表示を待つため、先に出席編集ボタンの表示を確認する
         within('#day_attendees') do
           have_selector 'li', text: member.name
@@ -44,7 +44,7 @@ RSpec.describe 'Attendances', type: :system do
         click_button '出席を登録'
 
         expect(current_path).to eq edit_minute_path(minute)
-        expect(page).to have_content 'Attendance was successfully created.'
+        expect(page).to have_content '出席を登録しました'
         expect(page).to have_link '出席編集'
         within('#night_attendees') do
           have_selector 'li', text: member.name
@@ -61,7 +61,7 @@ RSpec.describe 'Attendances', type: :system do
         click_button '出席を登録'
 
         expect(current_path).to eq edit_minute_path(minute)
-        expect(page).to have_content 'Attendance was successfully created.'
+        expect(page).to have_content '出席を登録しました'
         expect(page).to have_link '出席編集'
         within('#absentees') do
           have_selector 'li', text: member.name
@@ -80,7 +80,7 @@ RSpec.describe 'Attendances', type: :system do
 
         visit new_minute_attendance_path(minute)
         expect(current_path).to eq edit_minute_path(minute)
-        expect(page).to have_content 'You already registered attendance!'
+        expect(page).to have_content 'すでに出席を登録済みです'
       end
     end
 
@@ -88,7 +88,7 @@ RSpec.describe 'Attendances', type: :system do
       travel_to minute.meeting_date.days_since(1) do
         visit new_minute_attendance_path(minute)
         expect(current_path).to eq edit_minute_path(minute)
-        expect(page).to have_content 'You cannot attend finished meeting!'
+        expect(page).to have_content '終了したミーティングには出席できません'
       end
     end
 
@@ -97,16 +97,16 @@ RSpec.describe 'Attendances', type: :system do
         visit new_minute_attendance_path(minute)
 
         click_button '出席を登録'
-        expect(page).to have_content 'Status can\'t be blank'
+        expect(page).to have_content '出席状況を入力してください'
 
         choose '欠席'
         fill_in '欠席理由', with: '仕事の都合。'
         fill_in '進捗報告', with: '今週の進捗は特にありません。'
         choose '出席'
         click_button '出席を登録'
-        expect(page).to have_content 'Time can\'t be blank'
-        expect(page).to have_content 'Absence reason must be blank'
-        expect(page).to have_content 'Progress report must be blank'
+        expect(page).to have_content '出席時間帯を入力してください'
+        expect(page).to have_content '欠席理由は入力しないでください'
+        expect(page).to have_content '進捗報告は入力しないでください'
 
         choose '出席'
         choose '昼の部'
@@ -114,9 +114,9 @@ RSpec.describe 'Attendances', type: :system do
         fill_in '欠席理由', with: ''
         fill_in '進捗報告', with: ''
         click_button '出席を登録'
-        expect(page).to have_content 'Time must be blank'
-        expect(page).to have_content 'Absence reason can\'t be blank'
-        expect(page).to have_content 'Progress report can\'t be blank'
+        expect(page).to have_content '出席時間帯は入力しないでください'
+        expect(page).to have_content '欠席理由を入力してください'
+        expect(page).to have_content '進捗報告を入力してください'
       end
     end
   end

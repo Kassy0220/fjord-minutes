@@ -1,11 +1,11 @@
 <div class="mx-auto w-full">
-  <h1 class="font-bold text-4xl text-center">出席編集</h1>
+  <h1 class="font-bold text-4xl text-center"><%= "#{Attendance.model_name.human}編集" %></h1>
 
   <div>
     <%= form_with(model: @attendance, id: "attendance_form", class: "contents") do |form| %>
       <% if @attendance.errors.any? %>
         <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-lg mt-3">
-          <h2><%= pluralize(@attendance.errors.count, "error") %> prohibited this attendance from being saved:</h2>
+          <h2>以下の項目で入力内容に誤りがあります:</h2>
 
           <ul>
             <% @attendance.errors.each do |error| %>
@@ -16,19 +16,19 @@
       <% end %>
 
       <div class="my-5 text-center">
-        <p>出欠</p>
+        <p><%= Attendance.human_attribute_name('status') %></p>
         <%= form.radio_button :status, "present" %>
-        <%= form.label :status_present, "出席", class: "mr-10" %>
+        <%= form.label :status_present, Attendance.human_attribute_name('status.present'), class: "mr-10" %>
         <%= form.radio_button :status, "absent" %>
-        <%= form.label :status_absent, "欠席" %>
+        <%= form.label :status_absent, Attendance.human_attribute_name('status.absent') %>
       </div>
 
       <div class="my-5 text-center present_entry_field">
-        <p>出席時間帯</p>
+        <p><%= Attendance.human_attribute_name('time') %></p>
         <%= form.radio_button :time, "day" %>
-        <%= form.label :time_day, "昼の部", class: "mr-10" %>
+        <%= form.label :time_day, Attendance.human_attribute_name('time.day'), class: "mr-10" %>
         <%= form.radio_button :time, "night" %>
-        <%= form.label :time_night, "夜の部" %>
+        <%= form.label :time_night, Attendance.human_attribute_name('time.night') %>
       </div>
 
       <div class="my-5 text-center absent_entry_field">
@@ -42,7 +42,7 @@
       </div>
 
       <div class="text-center">
-        <%= form.submit '出席を更新', class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer" %>
+        <%= form.submit "#{Attendance.model_name.human}を更新", class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer" %>
       </div>
     <% end %>
   </div>
