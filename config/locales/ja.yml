@@ -10,6 +10,7 @@ ja:
     models:
       admin: 管理者
       attendance: 出席
+      course: コース
     attributes:
       admin:
         email: メールアドレス
@@ -26,6 +27,9 @@ ja:
       attendance/time:
         day: 昼の部
         night: 夜の部
+      course:
+        name: コース名
+        meeting_week: ミーティング開催週
   date:
     abbr_day_names:
       - 日
