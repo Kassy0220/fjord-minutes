@@ -11,6 +11,7 @@ ja:
       admin: 管理者
       attendance: 出席
       course: コース
+      member: メンバー
     attributes:
       admin:
         email: メールアドレス
@@ -30,6 +31,10 @@ ja:
       course:
         name: コース名
         meeting_week: ミーティング開催週
+      member:
+        email: メールアドレス
+        password: パスワード
+        name: 名前
   date:
     abbr_day_names:
       - 日
