@@ -45,7 +45,7 @@ class AuthenticationsController < Devise::OmniauthCallbacksController
     request.respond_to?(:get_header) ? request.get_header('omniauth.error.strategy') : request.env['omniauth.error.strategy']
   end
 
-  def failure_message # rubocop:disable Metrics/PerceivedComplexity
+  def failure_message
     exception = request.respond_to?(:get_header) ? request.get_header('omniauth.error') : request.env['omniauth.error']
     error   = exception.error_reason if exception.respond_to?(:error_reason)
     error ||= exception.error        if exception.respond_to?(:error)
