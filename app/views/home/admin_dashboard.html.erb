@@ -8,7 +8,7 @@
   </h1>
 
   <div>
-    <p>管理者名 : <%= current_admin.name %></p>
+    <p><%= Admin.human_attribute_name(:name) %> : <%= current_admin.name %></p>
     <% if current_admin.avatar_url %>
       <%= image_tag(current_admin.avatar_url, size: '100x100', alt: '管理者のGitHubアカウントの画像') %>
     <% end %>
