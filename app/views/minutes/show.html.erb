@@ -12,6 +12,12 @@
       <%= button_to 'GitHub Wiki にエクスポート', minute_exports_path(@minute), form: { class: 'text-center' },  class: 'button m-auto' %>
     <% end %>
 
+    <% if @minute.exported? %>
+      <div class="text-center my-2">
+        <%= link_to 'GitHub Wikiで確認', github_wiki_url(@minute), target: "_blank", rel: "nofollow", class: 'text-sky-600 underline' %>
+      </div>
+    <% end %>
+
     <%= link_to "Edit this minute", edit_minute_path(@minute), class: "mt-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
     <%= link_to "Back to minutes", minutes_path, class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
     <div class="inline-block ml-2">
