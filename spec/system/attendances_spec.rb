@@ -8,7 +8,7 @@ RSpec.describe 'Attendances', type: :system do
     visit new_minute_attendance_path(minute)
 
     expect(current_path).to eq root_path
-    expect(page).to have_content 'You need to sign in or sign up before continuing.'
+    expect(page).to have_content 'ログインもしくはアカウント登録してください。'
   end
 
   context 'when logged in user' do

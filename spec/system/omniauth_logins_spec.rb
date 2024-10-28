@@ -21,7 +21,7 @@ RSpec.describe 'OmniauthLogins', type: :system do
       visit root_path
       click_button 'Railsエンジニアコースでログイン'
 
-      expect(page).to have_content 'Successfully authenticated from GitHub account.'
+      expect(page).to have_content 'GitHub アカウントによる認証に成功しました。'
       expect(page).to have_content 'aliceのページ'
       expect(page).to have_content '所属コース : Railsエンジニアコース'
       expect(page).to have_selector("img[src$='https://gyazo.com/40600d4c2f36e6ec49ec17af0ef610d3']")
@@ -31,7 +31,7 @@ RSpec.describe 'OmniauthLogins', type: :system do
       visit root_path
       click_button 'フロントエンドエンジニアコースでログイン'
 
-      expect(page).to have_content 'Successfully authenticated from GitHub account.'
+      expect(page).to have_content 'GitHub アカウントによる認証に成功しました。'
       expect(page).to have_content '所属コース : フロントエンドエンジニアコース'
     end
   end
@@ -52,7 +52,7 @@ RSpec.describe 'OmniauthLogins', type: :system do
       visit root_path
       click_button 'Railsエンジニアコースでログイン'
 
-      expect(page).to have_content 'Successfully authenticated from GitHub account.'
+      expect(page).to have_content 'GitHub アカウントによる認証に成功しました。'
       expect(page).to have_content '管理者用のダッシュボード'
       expect(page).to have_content '管理者名 : kassy0220'
     end
@@ -69,7 +69,7 @@ RSpec.describe 'OmniauthLogins', type: :system do
       click_button 'Railsエンジニアコースでログイン'
 
       expect(current_path).to eq root_path
-      expect(page).to have_content 'Could not authenticate you from GitHub'
+      expect(page).to have_content 'GitHub アカウントによる認証に失敗しました。'
     end
   end
 end
