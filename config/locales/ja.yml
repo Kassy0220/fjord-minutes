@@ -12,6 +12,7 @@ ja:
       attendance: 出席
       course: コース
       member: メンバー
+      minute: 議事録
     attributes:
       admin:
         email: メールアドレス
@@ -35,6 +36,12 @@ ja:
         email: メールアドレス
         password: パスワード
         name: 名前
+      minute:
+        release_branch: リリースブランチ
+        release_note: リリースノート
+        other: その他
+        meeting_date: ミーティング開催日
+        next_meeting_date: 次回ミーティング開催日
   date:
     abbr_day_names:
       - 日
