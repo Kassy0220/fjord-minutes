@@ -54,7 +54,7 @@ RSpec.describe 'OmniauthLogins', type: :system do
 
       expect(page).to have_content 'GitHub アカウントによる認証に成功しました。'
       expect(page).to have_content '管理者用のダッシュボード'
-      expect(page).to have_content '管理者名 : kassy0220'
+      expect(page).to have_content '名前 : kassy0220'
     end
   end
 
