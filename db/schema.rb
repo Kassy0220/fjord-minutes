@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_10_28_092105) do
+ActiveRecord::Schema[7.2].define(version: 2024_10_28_232014) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -75,6 +75,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_28_092105) do
     t.datetime "updated_at", null: false
     t.boolean "exported", default: false
     t.index ["course_id"], name: "index_minutes_on_course_id"
+    t.index ["meeting_date", "course_id"], name: "index_minutes_on_meeting_date_and_course_id", unique: true
   end
 
   create_table "topics", force: :cascade do |t|
