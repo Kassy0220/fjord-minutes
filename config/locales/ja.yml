@@ -9,11 +9,23 @@ ja:
           has_many: "%{record}が存在しているので削除できません"
     models:
       admin: 管理者
+      attendance: 出席
     attributes:
       admin:
         email: メールアドレス
         password: パスワード
         name: 名前
+      attendance:
+        status: 出席状況
+        time: 出席時間帯
+        absence_reason: 欠席理由
+        progress_report: 進捗報告
+      attendance/status:
+        present: 出席
+        absent: 欠席
+      attendance/time:
+        day: 昼の部
+        night: 夜の部
   date:
     abbr_day_names:
       - 日

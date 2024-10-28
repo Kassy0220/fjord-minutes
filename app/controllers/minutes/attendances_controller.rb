@@ -2,21 +2,21 @@
 
 class Minutes::AttendancesController < Minutes::ApplicationController
   def new
-    redirect_to edit_minute_url(@minute), alert: 'You already registered attendance!' if already_registered_attendance
-    redirect_to edit_minute_url(@minute), alert: 'You cannot attend finished meeting!' if @minute.already_finished?
+    redirect_to edit_minute_url(@minute), alert: 'すでに出席を登録済みです' if already_registered_attendance
+    redirect_to edit_minute_url(@minute), alert: '終了したミーティングには出席できません' if @minute.already_finished?
 
     @attendance = Attendance.new
   end
 
   def create
-    redirect_to edit_minute_url(@minute), alert: 'You already registered attendance!' if already_registered_attendance
-    redirect_to edit_minute_url(@minute), alert: 'You cannot attend finished meeting!' if @minute.already_finished?
+    redirect_to edit_minute_url(@minute), alert: 'すでに出席を登録済みです' if already_registered_attendance
+    redirect_to edit_minute_url(@minute), alert: '終了したミーティングには出席できません' if @minute.already_finished?
 
     @attendance = @minute.attendances.new(attendance_params)
     @attendance.member_id = current_member.id
 
     if @attendance.save
-      redirect_to edit_minute_url(@minute), notice: 'Attendance was successfully created.'
+      redirect_to edit_minute_url(@minute), notice: "#{Attendance.model_name.human}を登録しました"
     else
       render :new, status: :unprocessable_entity
     end
