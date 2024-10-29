@@ -3,6 +3,10 @@
 class MeetingDateCalculator
   DAY_OF_THE_WEEK_FOR_MEETING = { sun: 0, mon: 1, tue: 2, wed: 3, thu: 4, fri: 5, sat: 6 }[:wed]
 
+  def self.next_meeting_date(date, meeting_week)
+    new(date, meeting_week).next_meeting_date
+  end
+
   def initialize(date, meeting_week)
     @date = date
     @meeting_week = meeting_week
