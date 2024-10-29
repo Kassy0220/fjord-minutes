@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe MeetingDateCalculator, type: :model do
-  describe '#next_meeting_date' do
+  describe '.next_meeting_date' do
     let(:rails_course) { FactoryBot.build(:rails_course) }
     let(:front_end_course) { FactoryBot.build(:front_end_course) }
 
