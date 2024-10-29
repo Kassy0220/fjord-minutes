@@ -117,6 +117,7 @@ GEM
     devise-i18n (1.12.1)
       devise (>= 4.9.0)
     diff-lcs (1.5.1)
+    discord-notifier (1.0.3)
     dotenv (3.1.4)
     drb (2.2.1)
     erb_lint (0.6.0)
@@ -421,6 +422,7 @@ DEPENDENCIES
   debug
   devise
   devise-i18n
+  discord-notifier
   dotenv
   erb_lint
   factory_bot_rails
