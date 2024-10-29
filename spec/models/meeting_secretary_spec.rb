@@ -9,8 +9,11 @@ RSpec.describe MeetingSecretary, type: :model do
     let(:meeting_secretary) { described_class.new(rails_course) }
 
     it 'create minute of next meeting' do
+      allow(Discord::Notifier).to receive(:message).and_return(nil)
+
       travel_to latest_minute.meeting_date + 1.day do
         expect { meeting_secretary.create_minute }.to change(rails_course.minutes, :count).by(1)
+        expect(Discord::Notifier).to have_received(:message)
       end
 
       created_minute = rails_course.minutes.last
