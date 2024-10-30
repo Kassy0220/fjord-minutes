@@ -1,16 +1,18 @@
 # frozen_string_literal: true
 
 class GithubWikiManager
-  BOOTCAMP_WIKI_WORKING_DIRECTORY = Rails.root.join('bootcamp_wiki_repository').freeze
-  AGENT_WIKI_WORKING_DIRECTORY = Rails.root.join('agent_wiki_repository').freeze
+  CLONED_BOOTCAMP_WIKI_PATH = Rails.root.join('bootcamp_wiki_repository').freeze
+  CLONED_AGENT_WIKI_PATH = Rails.root.join('agent_wiki_repository').freeze
 
   def self.export_minute(minute)
-    new(minute).commit_and_push
+    new(minute.course).commit_and_push(minute)
   end
 
-  def initialize(minute)
-    @minute = minute
-    @working_directory = rails_course? ? BOOTCAMP_WIKI_WORKING_DIRECTORY : AGENT_WIKI_WORKING_DIRECTORY
+  attr_reader :working_directory
+
+  def initialize(course)
+    @course = course
+    @working_directory = rails_course? ? CLONED_BOOTCAMP_WIKI_PATH : CLONED_AGENT_WIKI_PATH
     wiki_url = rails_course? ? ENV.fetch('BOOTCAMP_WIKI_URL', nil) : ENV.fetch('AGENT_WIKI_URL', nil)
     @git = if Dir.exist?(@working_directory)
              Git.open(@working_directory, log: Logger.new($stdout))
@@ -19,10 +21,10 @@ class GithubWikiManager
            end
   end
 
-  def commit_and_push
+  def commit_and_push(minute)
     @git.pull
     set_github_account
-    commit_minute_markdown
+    commit_minute_markdown(minute)
 
     create_credential_file
     @git.push('origin', 'master') # GitHub Wiki のデフォルトブランチはmaster
@@ -35,14 +37,12 @@ class GithubWikiManager
     @git.config('user.email', ENV.fetch('GITHUB_USER_EMAIL', nil))
   end
 
-  def commit_minute_markdown
-    filepath = "#{@working_directory}/#{@minute.title}.md"
-    minute_markdown = MarkdownBuilder.build(@minute)
+  def commit_minute_markdown(minute)
+    filename = "#{minute.title}.md"
+    File.write(File.join(@working_directory, filename), MarkdownBuilder.build(minute))
 
-    File.write(filepath, minute_markdown)
-
-    @git.add("#{@minute.title}.md")
-    @git.commit("#{@minute.title}.mdを作成")
+    @git.add(filename)
+    @git.commit("#{filename} committed")
   end
 
   def create_credential_file
@@ -62,6 +62,6 @@ class GithubWikiManager
   end
 
   def rails_course?
-    @minute.course.name == 'Railsエンジニアコース'
+    @course.name == 'Railsエンジニアコース'
   end
 end
