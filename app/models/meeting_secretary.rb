@@ -4,7 +4,7 @@ class MeetingSecretary
   def self.prepare_for_meeting
     Course.find_each do |course|
       secretary = new(course)
-      secretary.create_minute
+      course.minutes.none? ? secretary.create_first_minute : secretary.create_minute
     end
   end
 
@@ -13,11 +13,6 @@ class MeetingSecretary
   end
 
   def create_minute
-    if @course.minutes.none?
-      create_first_minute
-      return
-    end
-
     latest_minute = @course.minutes.order(:created_at).last
     unless latest_minute.already_finished?
       leave_log("create_minute, #{@course.name}, not_executed, latest meeting isn't finished.")
@@ -31,8 +26,6 @@ class MeetingSecretary
     leave_log("create_minute, #{@course.name}, executed")
     Discord::Notifier.message(NotificationMessageBuilder.build(@course, new_minute), url: webhook_url)
   end
-
-  private
 
   def create_first_minute
     working_directory = GithubWikiManager.new(@course).working_directory
@@ -49,6 +42,8 @@ class MeetingSecretary
     leave_log("create_first_minute, #{@course.name}, executed")
     Discord::Notifier.message(NotificationMessageBuilder.build(@course, new_minute), url: webhook_url)
   end
+
+  private
 
   def get_latest_meeting_date_from_cloned_minutes(working_directory)
     Dir.glob('ふりかえり・計画ミーティング*', base: working_directory).map do |filename|
