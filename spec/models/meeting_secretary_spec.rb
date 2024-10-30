@@ -36,11 +36,10 @@ RSpec.describe MeetingSecretary, type: :model do
     before do
       allow(meeting_secretary).to receive_messages(get_latest_meeting_date_from_cloned_minutes: latest_meeting_date,
                                                    get_next_meeting_date_from_cloned_minutes: Date.new(2024, 11, 20))
+      allow(Discord::Notifier).to receive(:message).and_return(nil)
     end
 
     it 'create minute of next meeting' do
-      allow(Discord::Notifier).to receive(:message).and_return(nil)
-
       travel_to latest_meeting_date + 1.day do
         expect { meeting_secretary.create_first_minute }.to change(rails_course.minutes, :count).by(1)
         expect(Discord::Notifier).to have_received(:message)
@@ -62,6 +61,7 @@ RSpec.describe MeetingSecretary, type: :model do
       travel_to latest_meeting_date + 1.day do
         expect { meeting_secretary.create_first_minute }.to change(rails_course.minutes, :count).by(1)
         expect { meeting_secretary.create_first_minute }.to raise_error(ActiveRecord::RecordNotUnique)
+        expect(Discord::Notifier).to have_received(:message).once
       end
     end
   end
