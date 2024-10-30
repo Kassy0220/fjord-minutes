@@ -4,8 +4,8 @@ require 'rails_helper'
 
 RSpec.describe MeetingDateCalculator, type: :model do
   describe '.next_meeting_date' do
-    let(:rails_course) { FactoryBot.build(:rails_course) }
-    let(:front_end_course) { FactoryBot.build(:front_end_course) }
+    let(:rails_course) { FactoryBot.build(:rails_course, meeting_week: :odd) }
+    let(:front_end_course) { FactoryBot.build(:front_end_course, meeting_week: :even) }
 
     it 'returns two weeks later when meeting date is within two weeks' do
       meeting_date = Date.new(2024, 10, 2)
