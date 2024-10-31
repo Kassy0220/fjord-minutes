@@ -5,6 +5,7 @@ class MeetingSecretary
     Course.find_each do |course|
       secretary = new(course)
       course.minutes.none? ? secretary.create_first_minute : secretary.create_minute
+      secretary.notify_today_meeting
     end
   end
 
@@ -41,6 +42,28 @@ class MeetingSecretary
     new_minute = @course.minutes.create!(meeting_date:, next_meeting_date:)
     leave_log("create_first_minute, #{@course.name}, executed")
     Discord::Notifier.message(NotificationMessageBuilder.build(:minute_creation, @course, new_minute), url: webhook_url)
+  end
+
+  def notify_today_meeting
+    if @course.minutes.none?
+      leave_log("notify_today_meeting, #{@course.name}, not_executed, There are no minutes yet.")
+      return
+    end
+
+    latest_minute = @course.minutes.order(:created_at).last
+    unless latest_minute.meeting_date == Time.zone.today
+      leave_log("notify_today_meeting, #{@course.name}, not_executed, Today is not meeting day.")
+      return
+    end
+
+    if latest_minute.notified_at
+      leave_log("notify_today_meeting, #{@course.name}, not_executed, Notification was already sent.")
+      return
+    end
+
+    Discord::Notifier.message(NotificationMessageBuilder.build(:today_meeting, @course, latest_minute), url: webhook_url)
+    leave_log("notify_today_meeting, #{@course.name}, executed")
+    latest_minute.update!(notified_at: Time.zone.now)
   end
 
   private
