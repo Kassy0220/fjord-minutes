@@ -65,4 +65,41 @@ RSpec.describe MeetingSecretary, type: :model do
       end
     end
   end
+
+  describe '#notify_today_meeting' do
+    let(:rails_course) { FactoryBot.create(:rails_course) }
+    let(:latest_minute) { FactoryBot.create(:minute, course: rails_course) }
+    let(:meeting_secretary) { described_class.new(rails_course) }
+
+    before do
+      allow(Discord::Notifier).to receive(:message).and_return(nil)
+    end
+
+    it 'send discord notification' do
+      travel_to latest_minute.meeting_date do
+        meeting_secretary.notify_today_meeting
+        expect(Discord::Notifier).to have_received(:message)
+      end
+    end
+
+    it 'does not send notification when there is not minute' do
+      meeting_secretary.notify_today_meeting
+      expect(Discord::Notifier).not_to have_received(:message)
+    end
+
+    it 'does not send notification when today is not meeting date' do
+      travel_to latest_minute.meeting_date - 1.day do
+        meeting_secretary.notify_today_meeting
+        expect(Discord::Notifier).not_to have_received(:message)
+      end
+    end
+
+    it 'does not send notification when notification is already sent' do
+      travel_to latest_minute.meeting_date do
+        meeting_secretary.notify_today_meeting
+        meeting_secretary.notify_today_meeting
+        expect(Discord::Notifier).to have_received(:message).once
+      end
+    end
+  end
 end
