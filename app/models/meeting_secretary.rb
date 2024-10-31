@@ -71,7 +71,7 @@ class MeetingSecretary
   def get_latest_meeting_date_from_cloned_minutes(repository_path)
     Dir.glob('ふりかえり・計画ミーティング*', base: repository_path).map do |filename|
       _, year, month, day = *filename.match(/ふりかえり・計画ミーティング(\d{4})年(\d{2})月(\d{2})/)
-      Date.new(year.to_i, month.to_i, day.to_i)
+      Date.new(year.to_i, month.to_i, day.to_i) # Time.zone.today(返り値はDateクラス)と比較を行うために、Dateクラスでインスタンス化する
     end.max
   end
 
@@ -79,7 +79,7 @@ class MeetingSecretary
     filename = "ふりかえり・計画ミーティング#{meeting_date.strftime('%Y年%m月%d日')}.md"
     minute_content = File.read(File.join(repository_path, filename))
     _, year, month, day = *minute_content.match(/# 次回のMTG\n\n- (\d{4})年(\d{2})月(\d{2})日/)
-    Date.new(year.to_i, month.to_i, day.to_i)
+    Time.zone.local(year.to_i, month.to_i, day.to_i)
   end
 
   def webhook_url
