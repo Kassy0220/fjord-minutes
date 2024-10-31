@@ -29,15 +29,15 @@ class MeetingDateCalculator
   def all_meeting_days_in_month(year, month)
     meeting_days = []
 
-    first_day = Date.new(year, month, 1)
+    first_day = Time.zone.local(year, month, 1)
     last_day = first_day.end_of_month
 
     meeting_day = first_day
-    meeting_day += 1 until meeting_day.wday == DAY_OF_THE_WEEK_FOR_MEETING
+    meeting_day += 1.day until meeting_day.wday == DAY_OF_THE_WEEK_FOR_MEETING
 
     while meeting_day <= last_day
       meeting_days << meeting_day.day
-      meeting_day += 7
+      meeting_day += 7.days
     end
 
     meeting_days
