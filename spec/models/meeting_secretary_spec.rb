@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe MeetingSecretary, type: :model do
   describe '#create_minute' do
     let(:rails_course) { FactoryBot.create(:rails_course) }
-    let(:latest_minute) { FactoryBot.create(:minute, next_meeting_date: Date.new(2024, 11, 20), course: rails_course) }
+    let(:latest_minute) { FactoryBot.create(:minute, next_meeting_date: Time.zone.local(2024, 11, 20), course: rails_course) }
     let(:meeting_secretary) { described_class.new(rails_course) }
 
     it 'create minute of next meeting' do
@@ -35,7 +35,7 @@ RSpec.describe MeetingSecretary, type: :model do
 
     before do
       allow(meeting_secretary).to receive_messages(get_latest_meeting_date_from_cloned_minutes: latest_meeting_date,
-                                                   get_next_meeting_date_from_cloned_minutes: Date.new(2024, 11, 20))
+                                                   get_next_meeting_date_from_cloned_minutes: Time.zone.local(2024, 11, 20))
       allow(Discord::Notifier).to receive(:message).and_return(nil)
     end
 
