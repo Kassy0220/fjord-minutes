@@ -3,13 +3,14 @@
 class NotificationMessageBuilder
   include Rails.application.routes.url_helpers
   TEMPLATE_PATH_FOR_MINUTE_CREATION = 'config/templates/minute_creation_message.md'
+  TEMPLATE_PATH_FOR_TODAY_MEETING = 'config/templates/today_meeting_message.md'
 
-  def self.build(course, minute)
-    new.build(course, minute)
+  def self.build(message_type, course, minute)
+    new(message_type).build(course, minute)
   end
 
-  def initialize
-    @template = File.read(TEMPLATE_PATH_FOR_MINUTE_CREATION)
+  def initialize(message_type)
+    @template = File.read(template_path(message_type))
   end
 
   def build(course, minute)
@@ -18,6 +19,10 @@ class NotificationMessageBuilder
   end
 
   private
+
+  def template_path(type)
+    { minute_creation: TEMPLATE_PATH_FOR_MINUTE_CREATION, today_meeting: TEMPLATE_PATH_FOR_TODAY_MEETING }[type]
+  end
 
   def role_id
     ENV.fetch('TEAM_MEMBER_ROLE_ID', nil).to_i

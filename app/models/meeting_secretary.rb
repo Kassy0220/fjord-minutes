@@ -24,7 +24,7 @@ class MeetingSecretary
 
     new_minute = @course.minutes.create!(meeting_date:, next_meeting_date:)
     leave_log("create_minute, #{@course.name}, executed")
-    Discord::Notifier.message(NotificationMessageBuilder.build(@course, new_minute), url: webhook_url)
+    Discord::Notifier.message(NotificationMessageBuilder.build(:minute_creation, @course, new_minute), url: webhook_url)
   end
 
   def create_first_minute
@@ -40,7 +40,7 @@ class MeetingSecretary
 
     new_minute = @course.minutes.create!(meeting_date:, next_meeting_date:)
     leave_log("create_first_minute, #{@course.name}, executed")
-    Discord::Notifier.message(NotificationMessageBuilder.build(@course, new_minute), url: webhook_url)
+    Discord::Notifier.message(NotificationMessageBuilder.build(:minute_creation, @course, new_minute), url: webhook_url)
   end
 
   private
