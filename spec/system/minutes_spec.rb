@@ -130,4 +130,26 @@ RSpec.describe 'Minutes', type: :system do
       end
     end
   end
+
+  context 'when topic form' do
+    let!(:rails_course) { FactoryBot.create(:rails_course) }
+    let(:minute) { FactoryBot.create(:minute, course: rails_course) }
+    let(:member) { FactoryBot.create(:member, course: rails_course) }
+    let(:another_member) { FactoryBot.create(:member, :another_member, course: rails_course) }
+
+    before do
+      login_as another_member
+    end
+
+    it 'cannot edit and destroy topic created by others', :js do
+      minute.topics.create(content: 'テストが通らないのでどなたかペアプロをお願いします！', topicable: member)
+
+      visit edit_minute_path(minute)
+      within('#topics') do
+        expect(page).to have_selector 'li', text: 'テストが通らないのでどなたかペアプロをお願いします！(alice)'
+        expect(page).not_to have_selector 'button', text: '編集'
+        expect(page).not_to have_selector 'button', text: '削除'
+      end
+    end
+  end
 end
