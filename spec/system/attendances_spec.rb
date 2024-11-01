@@ -138,7 +138,7 @@ RSpec.describe 'Attendances', type: :system do
     end
 
     scenario 'member can edit attendance to absence', :js do
-      attendance = minute.attendances.create(status: :present, time: :day, member_id: member.id)
+      attendance = FactoryBot.create(:attendance, member:, minute:)
       travel_to minute.meeting_date.days_ago(1) do
         visit edit_minute_path(minute)
         within('#day_attendees') do
@@ -166,7 +166,7 @@ RSpec.describe 'Attendances', type: :system do
     end
 
     scenario 'member can edit absence to attendance', :js do
-      attendance = minute.attendances.create(status: :absent, absence_reason: '仕事の都合のため。', progress_report: '今週の進捗はありません。', member_id: member.id)
+      attendance = FactoryBot.create(:attendance, :absence, member:, minute:)
       travel_to minute.meeting_date.days_ago(1) do
         visit edit_minute_path(minute)
         within('#absentees') do
@@ -216,7 +216,7 @@ RSpec.describe 'Attendances', type: :system do
     end
 
     scenario 'member cannot update attendance with invalid input' do
-      minute.attendances.create(status: :present, time: :day, member_id: member.id)
+      FactoryBot.create(:attendance, member:, minute:)
       travel_to minute.meeting_date.days_ago(1) do
         visit edit_minute_path(minute)
         within('#day_attendees') do
@@ -242,7 +242,7 @@ RSpec.describe 'Attendances', type: :system do
     end
 
     scenario 'member cannot create attendance to already finished meeting' do
-      attendance = minute.attendances.create(status: :present, time: :day, member_id: member.id)
+      attendance = FactoryBot.create(:attendance, member:, minute:)
       travel_to minute.meeting_date + 1.day do
         visit edit_attendance_path(attendance)
         expect(current_path).to eq edit_minute_path(minute)
