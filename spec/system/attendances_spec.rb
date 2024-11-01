@@ -31,7 +31,7 @@ RSpec.describe 'Attendances', type: :system do
         expect(page).to have_content '出席を登録しました'
         expect(page).to have_link '出席編集' # Reactコンポーネントの表示を待つため、先に出席編集ボタンの表示を確認する
         within('#day_attendees') do
-          have_selector 'li', text: member.name
+          expect(page).to have_selector 'li', text: member.name
         end
       end
     end
@@ -47,7 +47,7 @@ RSpec.describe 'Attendances', type: :system do
         expect(page).to have_content '出席を登録しました'
         expect(page).to have_link '出席編集'
         within('#night_attendees') do
-          have_selector 'li', text: member.name
+          expect(page).to have_selector 'li', text: member.name
         end
       end
     end
@@ -64,9 +64,9 @@ RSpec.describe 'Attendances', type: :system do
         expect(page).to have_content '出席を登録しました'
         expect(page).to have_link '出席編集'
         within('#absentees') do
-          have_selector 'li', text: member.name
-          have_selector 'li', text: '欠席理由: 仕事の都合のため。'
-          have_selector 'li', text: '今週は依頼されたIssueを進めていました。来週にはPRを提出できそうです。'
+          expect(page).to have_selector 'li', text: member.name
+          expect(page).to have_selector 'li', text: '欠席理由: 仕事の都合のため。'
+          expect(page).to have_selector 'li', text: '今週は依頼されたIssueを進めていました。来週にはPRを提出できそうです。'
         end
       end
     end
