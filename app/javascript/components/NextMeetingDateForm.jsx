@@ -90,6 +90,7 @@ function EditForm({ minuteId, date, setIsEditing }) {
         showTodayButton={false}
         value={selectedDate}
         onChange={(date) => handleInput(date)}
+        id="next_meeting_date_field"
       />
       <button type="button" onClick={handleClick} className="button mt-2">
         更新

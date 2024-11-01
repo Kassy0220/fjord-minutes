@@ -63,6 +63,23 @@ RSpec.describe 'Minutes', type: :system do
       expect(page).to have_content '次のリリースは午前中に行いますのでご注意ください' # 非同期で議事録の更新が行われるまで待つ
       expect(minute.reload.other).to eq '次のリリースは午前中に行いますのでご注意ください'
     end
+
+    it 'can edit next meeting date', :js do
+      within('#next_meeting_date_form') do
+        expect(page).to have_content '2024年10月16日'
+
+        click_button '編集'
+        # 日付編集フォームの実装はflowbite-reactのDatepickerを使っているが、このコンポーネントは<input type="text">を返すようになっている
+        # 以下の手順で日付編集フォームを操作することができたので、一旦以下の方法でテストを実装する
+        # fill_in で日付編集フォームの日付選択欄を開く
+        # click_buttonで日付を選択する
+        fill_in 'next_meeting_date_field', with: Date.new(2024, 10, 23)
+        click_button '23日'
+        click_button '更新'
+        expect(page).not_to have_selector 'input'
+        expect(page).to have_content '2024年10月23日'
+      end
+    end
   end
 
   context 'when as member' do
