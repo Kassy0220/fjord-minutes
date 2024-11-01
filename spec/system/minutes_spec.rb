@@ -54,6 +54,25 @@ RSpec.describe 'Minutes', type: :system do
       end
     end
 
+    it 'can create, edit and delete topic', :js do
+      within('#topics') do
+        expect(find('button', text: '作成')).to be_disabled
+        fill_in 'new_topic_field', with: '今週ミートアップがありますのでぜひご参加を！'
+        click_button '作成'
+        expect(page).to have_selector 'li', text: '今週ミートアップがありますのでぜひご参加を！(admin)'
+        expect(page).to have_selector 'button', text: '編集'
+        expect(page).to have_selector 'button', text: '削除'
+
+        click_button '編集'
+        fill_in 'edit_topic_field', with: 'Issueが完了したら必ずcloseするようにしましょう'
+        click_button '更新'
+        expect(page).to have_selector 'li', text: 'Issueが完了したら必ずcloseするようにしましょう(admin)'
+
+        click_button '削除'
+        expect(page).not_to have_selector 'li', text: 'Issueが完了したら必ずcloseするようにしましょう(admin)'
+      end
+    end
+
     it 'can edit other', :js do
       within('#other_form') do
         expect(page).to have_selector 'textarea', text: '連絡事項は特にありません'

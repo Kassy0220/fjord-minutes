@@ -142,6 +142,7 @@ function EditForm({ minuteId, topicId, content, setIsEditing }) {
         type="text"
         value={inputValue}
         onChange={handleInput}
+        id="edit_topic_field"
         className="input_type_text max-w-[800px]"
       />
       <button
@@ -192,6 +193,7 @@ function CreateForm({ minuteId }) {
         type="text"
         value={inputValue}
         onChange={handleInput}
+        id="new_topic_field"
         className="input_type_text"
       />
       <button
