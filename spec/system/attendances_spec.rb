@@ -127,4 +127,42 @@ RSpec.describe 'Attendances', type: :system do
       end
     end
   end
+
+  context 'when edit attendance' do
+    let(:rails_course) { FactoryBot.create(:rails_course) }
+    let(:minute) { FactoryBot.create(:minute, course: rails_course) }
+    let(:member) { FactoryBot.create(:member, course: rails_course) }
+
+    before do
+      login_as member
+    end
+
+    scenario 'member can edit attendance to absence', :js do
+      attendance = minute.attendances.create(status: :present, time: :day, member_id: member.id)
+      travel_to minute.meeting_date.days_ago(1) do
+        visit edit_minute_path(minute)
+        within('#day_attendees') do
+          click_link '出席編集'
+        end
+        expect(current_path).to eq edit_attendance_path(attendance)
+        choose '昼の部'
+        choose '昼の部' # チェックがついている'昼の部'を2度クリックして、チェックを外す
+        choose '欠席'
+        fill_in '欠席理由', with: '体調不良のため。'
+        fill_in '進捗報告', with: 'PRのチームメンバーのレビューが通り、komagataさんにレビュー依頼をお願いしているところです。'
+        click_button '出席を更新'
+
+        expect(current_path).to eq edit_minute_path(minute)
+        expect(page).to have_content '出席を更新しました'
+        within('#day_attendees') do
+          expect(page).not_to have_selector 'li', text: member.name
+        end
+        within('#absentees') do
+          expect(page).to have_selector 'li', text: member.name
+          expect(page).to have_selector 'li', text: '欠席理由: 体調不良のため。'
+          expect(page).to have_selector 'li', text: 'PRのチームメンバーのレビューが通り、komagataさんにレビュー依頼をお願いしているところです。'
+        end
+      end
+    end
+  end
 end
