@@ -190,5 +190,29 @@ RSpec.describe 'Attendances', type: :system do
         end
       end
     end
+
+    scenario 'member treated as unexcused absentee can create attendance', :js do
+      travel_to minute.meeting_date.days_ago(1) do
+        visit edit_minute_path(minute)
+        within('#unexcused_absentees') do
+          expect(page).to have_selector 'li', text: member.name
+          expect(page).to have_selector 'a', text: '出席登録'
+          click_link '出席登録'
+        end
+        expect(current_path).to eq new_minute_attendance_path(minute)
+        choose '出席'
+        choose '昼の部'
+        click_button '出席を登録'
+
+        expect(current_path).to eq edit_minute_path(minute)
+        expect(page).to have_content '出席を登録しました'
+        within('#unexcused_absentees', visible: false) do
+          expect(page).not_to have_selector 'li', text: member.name
+        end
+        within('#day_attendees') do
+          expect(page).to have_selector 'li', text: member.name
+        end
+      end
+    end
   end
 end
