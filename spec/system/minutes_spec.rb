@@ -152,4 +152,22 @@ RSpec.describe 'Minutes', type: :system do
       end
     end
   end
+
+  context 'when next meeting date form' do
+    let!(:rails_course) { FactoryBot.create(:rails_course) }
+    let(:minute) { FactoryBot.create(:minute, next_meeting_date: Time.zone.local(2024, 10, 14), course: rails_course) }
+    let(:member) { FactoryBot.create(:member, course: rails_course) }
+
+    before do
+      login_as member
+      visit edit_minute_path(minute)
+    end
+
+    it 'display message when next meeting is holiday' do
+      within('#next_meeting_date_form') do
+        expect(page).to have_content '2024年10月14日'
+        expect(page).to have_content '次回開催日はスポーツの日です。もしミーティングをお休みにする場合は、開催日を変更しましょう。'
+      end
+    end
+  end
 end
