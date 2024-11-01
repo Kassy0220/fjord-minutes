@@ -13,7 +13,7 @@ RSpec.describe 'Minutes', type: :system do
       visit edit_minute_path(minute)
     end
 
-    it 'can access all edit form', :js do
+    scenario 'can access all edit form', :js do
       within('#release_branch_form') do
         expect(page).to have_selector 'button', text: '編集'
       end
@@ -32,7 +32,7 @@ RSpec.describe 'Minutes', type: :system do
       end
     end
 
-    it 'can edit release branch and release note', :js do
+    scenario 'can edit release branch and release note', :js do
       within('#release_branch_form') do
         expect(page).to have_content 'https://example.com/fjordllc/bootcamp/pull/1000'
 
@@ -54,7 +54,7 @@ RSpec.describe 'Minutes', type: :system do
       end
     end
 
-    it 'can create, edit and delete topic', :js do
+    scenario 'can create, edit and delete topic', :js do
       within('#topics') do
         expect(find('button', text: '作成')).to be_disabled
         fill_in 'new_topic_field', with: '今週ミートアップがありますのでぜひご参加を！'
@@ -73,7 +73,7 @@ RSpec.describe 'Minutes', type: :system do
       end
     end
 
-    it 'can edit other', :js do
+    scenario 'can edit other', :js do
       within('#other_form') do
         expect(page).to have_selector 'textarea', text: '連絡事項は特にありません'
         fill_in 'other_field', with: '次のリリースは午前中に行いますのでご注意ください'
@@ -83,7 +83,7 @@ RSpec.describe 'Minutes', type: :system do
       expect(minute.reload.other).to eq '次のリリースは午前中に行いますのでご注意ください'
     end
 
-    it 'can edit next meeting date', :js do
+    scenario 'can edit next meeting date', :js do
       within('#next_meeting_date_form') do
         expect(page).to have_content '2024年10月16日'
 
@@ -110,7 +110,7 @@ RSpec.describe 'Minutes', type: :system do
       login_as member
     end
 
-    it 'can access only topic edit form', :js do
+    scenario 'can access only topic edit form', :js do
       visit edit_minute_path(minute)
       within('#release_branch_form') do
         expect(page).not_to have_selector 'button', text: '編集'
@@ -141,7 +141,7 @@ RSpec.describe 'Minutes', type: :system do
       login_as another_member
     end
 
-    it 'cannot edit and destroy topic created by others', :js do
+    scenario 'cannot edit and destroy topic created by others', :js do
       minute.topics.create(content: 'テストが通らないのでどなたかペアプロをお願いします！', topicable: member)
 
       visit edit_minute_path(minute)
@@ -163,7 +163,7 @@ RSpec.describe 'Minutes', type: :system do
       visit edit_minute_path(minute)
     end
 
-    it 'display message when next meeting is holiday' do
+    scenario 'display message when next meeting is holiday' do
       within('#next_meeting_date_form') do
         expect(page).to have_content '2024年10月14日'
         expect(page).to have_content '次回開催日はスポーツの日です。もしミーティングをお休みにする場合は、開催日を変更しましょう。'
