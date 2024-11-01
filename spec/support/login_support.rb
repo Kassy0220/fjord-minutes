@@ -9,6 +9,17 @@ module LoginSupport
     visit root_path
     click_button "#{member.course.name}でログイン"
   end
+
+  def login_as_admin(admin)
+    allow(ENV).to receive(:fetch).and_call_original
+    allow(ENV).to receive(:fetch).with('KASSY_EMAIL', 'no_email').and_return(admin.email)
+    OmniAuth.config.add_mock(:github, { uid: admin.uid,
+                                        info: { nickname: admin.name,
+                                                email: admin.email,
+                                                image: admin.avatar_url } })
+    visit root_path
+    click_button 'Railsエンジニアコースでログイン'
+  end
 end
 
 RSpec.configure do |config|
