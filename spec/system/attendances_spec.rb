@@ -164,5 +164,31 @@ RSpec.describe 'Attendances', type: :system do
         end
       end
     end
+
+    scenario 'member can edit absence to attendance', :js do
+      attendance = minute.attendances.create(status: :absent, absence_reason: '仕事の都合のため。', progress_report: '今週の進捗はありません。', member_id: member.id)
+      travel_to minute.meeting_date.days_ago(1) do
+        visit edit_minute_path(minute)
+        within('#absentees') do
+          click_link '出席編集'
+        end
+        expect(current_path).to eq edit_attendance_path(attendance)
+        choose '欠席'
+        fill_in '欠席理由', with: ''
+        fill_in '進捗報告', with: ''
+        choose '出席'
+        choose '夜の部'
+        click_button '出席を更新'
+
+        expect(current_path).to eq edit_minute_path(minute)
+        expect(page).to have_content '出席を更新しました'
+        within('#absentees', visible: false) do
+          expect(page).not_to have_selector 'li', text: member.name
+        end
+        within('#night_attendees') do
+          expect(page).to have_selector 'li', text: member.name
+        end
+      end
+    end
   end
 end
