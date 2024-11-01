@@ -214,5 +214,31 @@ RSpec.describe 'Attendances', type: :system do
         end
       end
     end
+
+    scenario 'member cannot update attendance with invalid input' do
+      minute.attendances.create(status: :present, time: :day, member_id: member.id)
+      travel_to minute.meeting_date.days_ago(1) do
+        visit edit_minute_path(minute)
+        within('#day_attendees') do
+          click_link '出席編集'
+        end
+        choose '欠席'
+        fill_in '欠席理由', with: '体調不良のため。'
+        fill_in '進捗報告', with: '今週の進捗はありません。'
+        choose '出席'
+        choose '夜の部'
+        click_button '出席を更新'
+        expect(page).to have_content '欠席理由は入力しないでください'
+        expect(page).to have_content '進捗報告は入力しないでください'
+
+        choose '欠席'
+        fill_in '欠席理由', with: ''
+        fill_in '進捗報告', with: ''
+        click_button '出席を更新'
+        expect(page).to have_content '出席時間帯は入力しないでください'
+        expect(page).to have_content '欠席理由を入力してください'
+        expect(page).to have_content '進捗報告を入力してください'
+      end
+    end
   end
 end
