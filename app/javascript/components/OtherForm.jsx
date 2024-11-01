@@ -54,6 +54,7 @@ function EditForm({ minuteId, content }) {
       <textarea
         value={inputValue}
         onChange={handleChange}
+        id="other_field"
         className="textarea"
       />
       <button type="button" onClick={handleClick} className="button">
