@@ -71,6 +71,13 @@ RSpec.describe 'Attendances', type: :system do
       end
     end
 
+    scenario 'treated as unexcused absentees if member create neither attendance nor absence', :js do
+      visit edit_minute_path(minute)
+      within('#unexcused_absentees') do
+        expect(page).to have_selector 'li', text: 'alice'
+      end
+    end
+
     scenario 'member cannot create attendance twice' do
       travel_to minute.meeting_date.days_ago(1) do
         visit new_minute_attendance_path(minute)

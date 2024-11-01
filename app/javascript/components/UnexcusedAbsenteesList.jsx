@@ -16,7 +16,7 @@ export default function UnexcusedAbsenteesList({
   if (isLoading) return <p>読み込み中</p>
 
   return (
-    <ul>
+    <ul id="unexcused_absentees">
       {data.unexcused_absentees.map((absentee) => (
         <li key={absentee.member_id} className="mb-4">
           <a
