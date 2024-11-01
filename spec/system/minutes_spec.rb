@@ -53,6 +53,16 @@ RSpec.describe 'Minutes', type: :system do
         expect(page).to have_content 'https://example.com/fjordllc/bootcamp/pull/999'
       end
     end
+
+    it 'can edit other', :js do
+      within('#other_form') do
+        expect(page).to have_selector 'textarea', text: '連絡事項は特にありません'
+        fill_in 'other_field', with: '次のリリースは午前中に行いますのでご注意ください'
+        click_button '更新'
+      end
+      expect(page).to have_content '次のリリースは午前中に行いますのでご注意ください' # 非同期で議事録の更新が行われるまで待つ
+      expect(minute.reload.other).to eq '次のリリースは午前中に行いますのでご注意ください'
+    end
   end
 
   context 'when as member' do
