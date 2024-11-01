@@ -240,5 +240,14 @@ RSpec.describe 'Attendances', type: :system do
         expect(page).to have_content '進捗報告を入力してください'
       end
     end
+
+    scenario 'member cannot create attendance to already finished meeting' do
+      attendance = minute.attendances.create(status: :present, time: :day, member_id: member.id)
+      travel_to minute.meeting_date + 1.day do
+        visit edit_attendance_path(attendance)
+        expect(current_path).to eq edit_minute_path(minute)
+        expect(page).to have_content '終了したミーティングの出席は変更できません'
+      end
+    end
   end
 end
