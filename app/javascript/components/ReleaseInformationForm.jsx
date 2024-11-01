@@ -83,6 +83,7 @@ function EditForm({ minuteId, description, content, setIsEditing }) {
         type="text"
         value={inputValue}
         onChange={handleInput}
+        id={`release_${description}_field`}
         className="input_type_text"
       />
       <button type="button" onClick={handleClick} className="button">
