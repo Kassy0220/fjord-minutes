@@ -11,6 +11,11 @@
         <% @minutes.each do |minute| %>
           <li class="mb-4">
             <%= link_to "#{minute.title}", minute, class: "py-3 inline-block hover:underline" %>
+            <% if minute.exported? %>
+              <span class="ml-2">
+                <%= link_to 'GitHub Wikiで確認', github_wiki_url(minute), target: "_blank", rel: "nofollow", class: 'text-sky-600 hover:underline' %>
+              </span>
+            <% end %>
           </li>
         <% end %>
       </ul>
