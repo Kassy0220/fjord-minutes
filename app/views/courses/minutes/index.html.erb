@@ -4,6 +4,8 @@
       <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
     <% end %>
 
+    <%= render partial: 'course_tab', locals: { active_tab: @course } %>
+
     <h2 class="mb-8 text-2xl font-bold text-center"><%= "#{@course.name}の議事録" %></h2>
 
     <% active_tab = params[:year] ? params[:year].to_i : @course.meeting_years.last %>

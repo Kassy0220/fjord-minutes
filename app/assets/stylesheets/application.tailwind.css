@@ -31,6 +31,12 @@
     .textarea {
         @apply block p-2.5 min-w-[400px] field-sizing-content text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 inline-block align-middle focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500;
     }
+    .large_tab {
+        @apply inline-block p-4 rounded-t-lg text-gray-500 border border-gray-300 hover:text-gray-600 hover:bg-gray-50;
+    }
+    .active_large_tab {
+        @apply inline-block p-4 rounded-t-lg text-white font-bold bg-gray-600 border border-gray-300;
+    }
     .small_tab {
         @apply inline-block px-4 py-2 text-gray-600 border border-gray-600 rounded-3xl;
     }
