@@ -1,7 +1,7 @@
 <div>
   <% if course.minutes.any? %>
     <ul class="flex flex-wrap text-sm font-medium text-center text-gray-500 !list-none">
-      <% course.meeting_years.each do |year| %>
+      <% course.meeting_years.sort.each do |year| %>
         <li class="me-2">
           <%= link_to "#{year}年", course_minutes_path(course, year: year), class: active_tab == year ? 'active_small_tab' : 'small_tab' %>
         </li>
