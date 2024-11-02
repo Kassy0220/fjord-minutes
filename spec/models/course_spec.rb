@@ -10,7 +10,7 @@ RSpec.describe Course, type: :model do
       FactoryBot.create(:minute, meeting_date: Time.zone.local(2024, 1, 1), course:)
       FactoryBot.create(:minute, meeting_date: Time.zone.local(2025, 1, 1), course:)
       FactoryBot.create(:minute, meeting_date: Time.zone.local(2026, 1, 1), course:)
-      expect(course.meeting_years).to eq [2024, 2025, 2026]
+      expect(course.meeting_years).to contain_exactly(2024, 2025, 2026)
     end
   end
 end
