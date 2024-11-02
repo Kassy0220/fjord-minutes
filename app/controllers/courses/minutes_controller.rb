@@ -2,6 +2,7 @@
 
 class Courses::MinutesController < Courses::ApplicationController
   def index
-    @minutes = @course.minutes.order(:created_at)
+    year = params[:year] ? params[:year].to_i : @course.meeting_years.last
+    @minutes = @course.minutes.where(meeting_date: Time.zone.local(year, 1, 1, 0, 0, 0)..Time.zone.local(year, 12, 31, 23, 59, 59)).order(:created_at)
   end
 end
