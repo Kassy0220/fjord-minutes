@@ -5,4 +5,8 @@ class Course < ApplicationRecord
 
   has_many :minutes, dependent: :restrict_with_exception
   has_many :members, dependent: :restrict_with_exception
+
+  def meeting_years
+    minutes.map { |minute| minute.meeting_date.year }.uniq.sort
+  end
 end
