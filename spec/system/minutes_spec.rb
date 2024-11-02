@@ -178,7 +178,7 @@ RSpec.describe 'Minutes', type: :system do
   context 'when list the minutes' do
     let(:rails_course) { FactoryBot.create(:rails_course) }
     let(:front_end_course) { FactoryBot.create(:front_end_course) }
-    let(:member) { FactoryBot.create(:member) }
+    let(:member) { FactoryBot.create(:member, course: rails_course) }
 
     before do
       login_as member
@@ -230,6 +230,21 @@ RSpec.describe 'Minutes', type: :system do
       visit course_minutes_path(rails_course)
       expect(page).to have_link 'GitHub Wikiで確認', href: github_wiki_url(exported_minute)
       expect(page).not_to have_link 'GitHub Wikiで確認', href: github_wiki_url(not_exported_minute)
+    end
+
+    scenario 'can access minutes list for each course by tab' do
+      FactoryBot.create(:minute, meeting_date: Time.zone.local(2024, 10, 2), course: rails_course)
+      FactoryBot.create(:minute, meeting_date: Time.zone.local(2024, 10, 9), course: front_end_course)
+
+      visit course_minutes_path(rails_course)
+      expect(page).to have_link 'Railsエンジニアコース'
+      expect(page).to have_link 'フロントエンドエンジニアコース'
+
+      click_link 'Railsエンジニアコース'
+      expect(current_path).to eq course_minutes_path(rails_course)
+
+      click_link 'フロントエンドエンジニアコース'
+      expect(current_path).to eq course_minutes_path(front_end_course)
     end
   end
 end
