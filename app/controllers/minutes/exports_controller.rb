@@ -6,6 +6,6 @@ class Minutes::ExportsController < Minutes::ApplicationController
   def create
     GithubWikiManager.export_minute(@minute)
     @minute.update!(exported: true) unless @minute.exported?
-    redirect_to minutes_path, notice: 'GitHub Wikiに議事録を反映させました'
+    redirect_to course_minutes_path(@minute.course), notice: 'GitHub Wikiに議事録を反映させました'
   end
 end
