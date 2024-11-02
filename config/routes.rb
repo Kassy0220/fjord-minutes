@@ -6,6 +6,9 @@ Rails.application.routes.draw do
     resources :exports, only: [ :create ], module: :minutes
   end
   resources :attendances, only: [ :edit, :update ]
+  resources :courses, only: [] do
+    resources :minutes, only: [:index], module: :courses
+  end
 
   namespace :api do
     resources :minutes, only: [ :update ] do
