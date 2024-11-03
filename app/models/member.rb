@@ -9,6 +9,7 @@ class Member < ApplicationRecord
   belongs_to :course
   has_many :attendances, dependent: :destroy
   has_many :topics, as: :topicable, dependent: :destroy
+  has_many :hibernations, dependent: :destroy
 
   def self.from_omniauth(auth, params)
     find_or_create_by(provider: auth.provider, uid: auth.uid) do |member|
