@@ -247,4 +247,36 @@ RSpec.describe 'Minutes', type: :system do
       expect(current_path).to eq course_minutes_path(front_end_course)
     end
   end
+
+  context 'when show the minute' do
+    let(:rails_course) { FactoryBot.create(:rails_course) }
+    let(:member) { FactoryBot.create(:member, course: rails_course) }
+    let(:minute) { FactoryBot.create(:minute, course: rails_course) }
+
+    before do
+      login_as member
+    end
+
+    scenario 'show markdown and preview of the minute', :js do
+      visit minute_path(minute)
+      expect(page).to have_button 'Markdown'
+      expect(page).to have_button 'Preview'
+
+      click_button 'Markdown'
+      expect(page).to have_selector 'pre#raw_markdown'
+      expect(page).not_to have_selector 'div#markdown_preview'
+      within('#raw_markdown') do
+        expect(page).to have_content '# ふりかえり'
+        expect(page).not_to have_selector 'h1', text: 'ふりかえり'
+      end
+
+      click_button 'Preview'
+      expect(page).not_to have_selector 'pre#raw_markdown'
+      expect(page).to have_selector 'div#markdown_preview'
+      within('#markdown_preview') do
+        expect(page).not_to have_content '# ふりかえり'
+        expect(page).to have_selector 'h1', text: 'ふりかえり'
+      end
+    end
+  end
 end
