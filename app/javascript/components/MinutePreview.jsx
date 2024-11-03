@@ -11,10 +11,13 @@ export default function MinutePreview({ markdown }) {
   return (
     <Tabs aria-label="Default tabs" variant="default" theme={customTheme}>
       <Tabs.Item active title="Markdown">
-        <pre className="p-4 border">{markdown}</pre>
+        <pre id="raw_markdown" className="p-4 border">
+          {markdown}
+        </pre>
       </Tabs.Item>
       <Tabs.Item title="Preview">
         <div
+          id="markdown_preview"
           className="p-4 border markdown-body"
           dangerouslySetInnerHTML={sanitizedHTML}
         />
