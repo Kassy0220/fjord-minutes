@@ -15,5 +15,17 @@ FactoryBot.define do
       uid { 222_222 }
       name { 'bob' }
     end
+
+    trait :absent_member do
+      email { 'absentee@example.com' }
+      uid { 333_333 }
+      name { 'absentee' }
+    end
+
+    trait :unexcused_absent_member do
+      email { 'unexcused_absentee@example.com' }
+      uid { 444_444 }
+      name { 'unexcused_absentee' }
+    end
   end
 end
