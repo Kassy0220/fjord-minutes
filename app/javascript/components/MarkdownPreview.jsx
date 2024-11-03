@@ -10,10 +10,10 @@ export default function MarkdownPreview({ markdown }) {
 
   return (
     <Tabs aria-label="Default tabs" variant="default" theme={customTheme}>
-      <Tabs.Item active title="Raw">
+      <Tabs.Item active title="Markdown">
         <pre className="p-4 border">{markdown}</pre>
       </Tabs.Item>
-      <Tabs.Item title="Markdown">
+      <Tabs.Item title="Preview">
         <div
           className="p-4 border markdown-body"
           dangerouslySetInnerHTML={sanitizedHTML}
