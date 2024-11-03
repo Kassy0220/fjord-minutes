@@ -249,15 +249,12 @@ RSpec.describe 'Minutes', type: :system do
   end
 
   context 'when show the minute' do
-    let(:rails_course) { FactoryBot.create(:rails_course) }
+    let!(:rails_course) { FactoryBot.create(:rails_course) }
     let(:member) { FactoryBot.create(:member, course: rails_course) }
     let(:minute) { FactoryBot.create(:minute, course: rails_course) }
 
-    before do
-      login_as member
-    end
-
     scenario 'show markdown and preview of the minute', :js do
+      login_as member
       visit minute_path(minute)
       expect(page).to have_button 'Markdown'
       expect(page).to have_button 'Preview'
@@ -277,6 +274,30 @@ RSpec.describe 'Minutes', type: :system do
         expect(page).not_to have_content '# ふりかえり'
         expect(page).to have_selector 'h1', text: 'ふりかえり'
       end
+    end
+
+    scenario 'admin can export minute to GitHub Wiki' do
+      # GitHub Wikiリポジトリにpushされないようにする
+      allow(GithubWikiManager).to receive(:export_minute).and_call_original
+      allow(GithubWikiManager).to receive(:export_minute).with(minute).and_return(nil)
+
+      admin = FactoryBot.create(:admin)
+      login_as_admin admin
+      visit minute_path(minute)
+      expect(page).to have_button 'GitHub Wiki にエクスポート'
+      expect(page).not_to have_link 'GitHub Wikiで確認'
+
+      click_button 'GitHub Wiki にエクスポート'
+      expect(current_path).to eq course_minutes_path(minute.course)
+      expect(page).to have_content 'GitHub Wikiに議事録を反映させました'
+      visit minute_path(minute)
+      expect(page).to have_link 'GitHub Wikiで確認'
+    end
+
+    scenario 'member cannot export minute to GitHub Wiki' do
+      login_as member
+      visit minute_path(minute)
+      expect(page).not_to have_button 'GitHub Wiki にエクスポート'
     end
   end
 end
