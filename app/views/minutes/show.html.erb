@@ -6,7 +6,7 @@
 
     <h1 class="mb-8 text-4xl font-bold"><%= @minute.title %></h1>
 
-    <%= content_tag :div, id: 'markdown_preview', data: {markdown: MarkdownBuilder.build(@minute)}.to_json, class: 'mb-4' do %><% end %>
+    <%= content_tag :div, id: 'minute_preview', data: {markdown: MarkdownBuilder.build(@minute)}.to_json, class: 'mb-4' do %><% end %>
 
     <% if current_development_member.admin? %>
       <%= button_to 'GitHub Wiki にエクスポート', minute_exports_path(@minute), form: { class: 'text-center' },  class: 'button m-auto' %>
