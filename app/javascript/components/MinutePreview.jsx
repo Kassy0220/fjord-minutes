@@ -3,7 +3,7 @@ import { marked } from 'marked'
 import DOMPurify from 'dompurify'
 import PropTypes from 'prop-types'
 
-export default function MarkdownPreview({ markdown }) {
+export default function MinutePreview({ markdown }) {
   const sanitizedHTML = {
     __html: DOMPurify.sanitize(marked.parse(markdown, [{ gfm: true }])),
   }
@@ -41,6 +41,6 @@ const customTheme = {
   },
 }
 
-MarkdownPreview.propTypes = {
+MinutePreview.propTypes = {
   markdown: PropTypes.string,
 }

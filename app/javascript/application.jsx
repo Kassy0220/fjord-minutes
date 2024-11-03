@@ -6,7 +6,7 @@ import OtherForm from './components/OtherForm.jsx'
 import NextMeetingDateForm from './components/NextMeetingDateForm.jsx'
 import AbsenteesList from './components/AbsenteesList.jsx'
 import UnexcusedAbsenteesList from './components/UnexcusedAbsenteesList.jsx'
-import MarkdownPreview from './components/MarkdownPreview.jsx'
+import MinutePreview from './components/MinutePreview.jsx'
 import './toggleAttendanceForm'
 
 import 'flowbite'
@@ -19,4 +19,4 @@ mountComponent('other_form', OtherForm)
 mountComponent('next_meeting_date_form', NextMeetingDateForm)
 mountComponent('absentees_list', AbsenteesList)
 mountComponent('unexcused_absentees_list', UnexcusedAbsenteesList)
-mountComponent('markdown_preview', MarkdownPreview)
+mountComponent('minute_preview', MinutePreview)
