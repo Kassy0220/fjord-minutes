@@ -78,6 +78,32 @@ RSpec.describe 'Attendances', type: :system do
       end
     end
 
+    scenario 'hibernated member is not displayed as present, absent or unexcused absent', :js do
+      member.hibernations.create!
+      expect(member.hibernated?).to be true
+
+      visit edit_minute_path(minute)
+      within('#day_attendees') do
+        expect(page).not_to have_selector 'li', text: member.name
+      end
+      within('#night_attendees') do
+        expect(page).not_to have_selector 'li', text: member.name
+      end
+      within('#absentees', visible: false) do
+        expect(page).not_to have_selector 'li', text: member.name
+      end
+      within('#unexcused_absentees', visible: false) do
+        expect(page).not_to have_selector 'li', text: member.name
+      end
+
+      member.hibernations.last.update!(finished_at: Time.zone.today)
+      expect(member.hibernated?).to be false
+      visit edit_minute_path(minute)
+      within('#unexcused_absentees') do
+        expect(page).to have_selector 'li', text: member.name
+      end
+    end
+
     scenario 'member cannot create attendance twice' do
       travel_to minute.meeting_date.days_ago(1) do
         visit new_minute_attendance_path(minute)
