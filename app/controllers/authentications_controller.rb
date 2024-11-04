@@ -14,8 +14,13 @@ class AuthenticationsController < Devise::OmniauthCallbacksController
     if @member_or_admin.persisted?
       sign_in_and_redirect @member_or_admin
       remember_me @member_or_admin
-      @member_or_admin.hibernations.last.update!(finished_at: Time.zone.today) if @member_or_admin.is_a?(Member) && @member_or_admin.hibernated?
-      set_flash_message(:notice, :success, kind: 'GitHub') if is_navigational_format?
+      if @member_or_admin.admin? || !@member_or_admin.hibernated?
+        set_flash_message(:notice, :success, kind: 'GitHub')
+        return
+      end
+
+      @member_or_admin.hibernations.last.update!(finished_at: Time.zone.today)
+      set_flash_message(:notice, :success_with_hibernation)
     else
       session['devise.github_data'] = request.env['omniauth.auth'].except(:extra)
       redirect_to root_url
