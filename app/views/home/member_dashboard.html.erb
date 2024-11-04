@@ -13,5 +13,12 @@
     <% end %>
 
     <p>所属コース : <%= current_member.course.name %></p>
+
+    <div class="mt-4 text-center">
+      <%= link_to 'チーム開発を抜ける', logout_path, class: "text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm p-4 focus:outline-none",
+                                                  data: { turbo: true,
+                                                          turbo_method: :delete,
+                                                          turbo_confirm: "どちらかのケースに当てはまる場合に、チーム開発を抜けてください。\n\n・チーム開発を修了した\n・フィヨルドブートキャンプを休会したことに伴って、チーム開発をお休みする" } %>
+    </div>
   </div>
 </div>
