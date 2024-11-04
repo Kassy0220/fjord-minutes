@@ -18,10 +18,9 @@
       </div>
     <% end %>
 
-    <%= link_to "Edit this minute", edit_minute_path(@minute), class: "mt-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
-    <%= link_to "Back to minutes", minutes_path, class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
-    <div class="inline-block ml-2">
-      <%= button_to "Destroy this minute", @minute, method: :delete, class: "mt-2 rounded-lg py-3 px-5 bg-gray-100 font-medium" %>
+    <div class="my-8 text-center">
+      <%= link_to '議事録を編集する', edit_minute_path(@minute), class: "ml-4 text-blue-600 hover:underline" %>
+      <%= link_to "#{@minute.course.name}の議事録一覧", course_minutes_path(@minute.course), class: "ml-4 text-blue-600 hover:underline" %>
     </div>
   </div>
 </div>
