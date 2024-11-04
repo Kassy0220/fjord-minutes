@@ -1,55 +1,57 @@
-<div class="mx-auto w-full markdown-body">
-  <% if notice.present? %>
-    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
-  <% end %>
+<div class="mx-auto w-full">
+  <div class="markdown-body">
+    <% if notice.present? %>
+      <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
+    <% end %>
 
-  <% if alert.present? %>
-    <p class="py-2 px-3 bg-red-50 mb-5 text-red-500 font-medium rounded-lg inline-block" id="alert"><%= alert %></p>
-  <% end %>
+    <% if alert.present? %>
+      <p class="py-2 px-3 bg-red-50 mb-5 text-red-500 font-medium rounded-lg inline-block" id="alert"><%= alert %></p>
+    <% end %>
 
-  <h1><%= @minute.title %></h1>
+    <h1><%= @minute.title %></h1>
 
-  <h1>ふりかえり</h1>
+    <h1>ふりかえり</h1>
 
-  <h2>メンバー</h2>
-  <%= content_tag :div, id: 'attendees_list', data: {minuteId: @minute.id, currentMemberId: current_development_member.id, isAdmin: current_development_member.admin?}.to_json do %><% end %>
+    <h2>メンバー</h2>
+    <%= content_tag :div, id: 'attendees_list', data: {minuteId: @minute.id, currentMemberId: current_development_member.id, isAdmin: current_development_member.admin?}.to_json do %><% end %>
 
-  <h2>デモ</h2>
-  <p>
-    今回のイテレーションで実装した機能をプロダクトオーナーに向けてデモします。（画面共有使用） 「お客様」相手にデモをするという設定なので、MTG前に事前に準備をしておくといいかもしれません。 テストデータなどは事前に準備しておいてください。
-  </p>
+    <h2>デモ</h2>
+    <p>
+      今回のイテレーションで実装した機能をプロダクトオーナーに向けてデモします。（画面共有使用） 「お客様」相手にデモをするという設定なので、MTG前に事前に準備をしておくといいかもしれません。 テストデータなどは事前に準備しておいてください。
+    </p>
 
-  <h2>今週のリリースの確認</h2>
-  <p>木曜日の15時頃リリースします。</p>
-  <%= content_tag :div, id: 'release_branch_form', data: {minuteId: @minute.id, description: 'branch', content: @minute.release_branch, isAdmin: current_development_member.admin?}.to_json do %><% end %>
-  <%= content_tag :div, id: 'release_note_form', data: {minuteId: @minute.id, description: 'note', content: @minute.release_note, isAdmin: current_development_member.admin?}.to_json do %><% end %>
+    <h2>今週のリリースの確認</h2>
+    <p>木曜日の15時頃リリースします。</p>
+    <%= content_tag :div, id: 'release_branch_form', data: {minuteId: @minute.id, description: 'branch', content: @minute.release_branch, isAdmin: current_development_member.admin?}.to_json do %><% end %>
+    <%= content_tag :div, id: 'release_note_form', data: {minuteId: @minute.id, description: 'note', content: @minute.release_note, isAdmin: current_development_member.admin?}.to_json do %><% end %>
 
-  <h2>話題にしたいこと・心配事</h2>
-  <p>明確に共有すべき事・困っている事以外にも、気分的に心配な事などを話すためにあります。</p>
-  <%= content_tag :div, id: 'topics', data: { minuteId: @minute.id,
-                                              topics: @topics.as_json(only: [:id, :content, :topicable_id, :topicable_type], include: { topicable: { only: [:name] } }),
-                                              currentDevelopmentMemberId: current_development_member.id,
-                                              currentDevelopmentMemberType: current_development_member.class.name}.to_json do %><% end %>
+    <h2>話題にしたいこと・心配事</h2>
+    <p>明確に共有すべき事・困っている事以外にも、気分的に心配な事などを話すためにあります。</p>
+    <%= content_tag :div, id: 'topics', data: { minuteId: @minute.id,
+                                                topics: @topics.as_json(only: [:id, :content, :topicable_id, :topicable_type], include: { topicable: { only: [:name] } }),
+                                                currentDevelopmentMemberId: current_development_member.id,
+                                                currentDevelopmentMemberType: current_development_member.class.name}.to_json do %><% end %>
 
-  <h2>その他</h2>
-  <%= content_tag :div, id: 'other_form', data: {minuteId: @minute.id, content: @minute.other, isAdmin: current_development_member.admin?}.to_json do %><% end %>
+    <h2>その他</h2>
+    <%= content_tag :div, id: 'other_form', data: {minuteId: @minute.id, content: @minute.other, isAdmin: current_development_member.admin?}.to_json do %><% end %>
 
-  <h1>次回のMTG</h1>
-  <%= content_tag :div, id: 'next_meeting_date_form', data: {minuteId: @minute.id, nextMeetingDate: @minute.next_meeting_date, isAdmin: current_development_member.admin?}.to_json do %><% end %>
+    <h1>次回のMTG</h1>
+    <%= content_tag :div, id: 'next_meeting_date_form', data: {minuteId: @minute.id, nextMeetingDate: @minute.next_meeting_date, isAdmin: current_development_member.admin?}.to_json do %><% end %>
 
-  <h1>計画ミーティング</h1>
-  <ul>
-    <li>プランニングポーカー</li>
-  </ul>
+    <h1>計画ミーティング</h1>
+    <ul>
+      <li>プランニングポーカー</li>
+    </ul>
 
-  <h1>欠席者</h1>
-  <%= content_tag :div, id: 'absentees_list', data: {minuteId: @minute.id, currentMemberId: current_development_member.id, isAdmin: current_development_member.admin?}.to_json do %><% end %>
+    <h1>欠席者</h1>
+    <%= content_tag :div, id: 'absentees_list', data: {minuteId: @minute.id, currentMemberId: current_development_member.id, isAdmin: current_development_member.admin?}.to_json do %><% end %>
 
-  <h2>連絡なし</h2>
-  <%= content_tag :div, id: 'unexcused_absentees_list', data: {minuteId: @minute.id, currentMemberId: current_development_member.id, isAdmin: current_development_member.admin?}.to_json do %><% end %>
+    <h2>連絡なし</h2>
+    <%= content_tag :div, id: 'unexcused_absentees_list', data: {minuteId: @minute.id, currentMemberId: current_development_member.id, isAdmin: current_development_member.admin?}.to_json do %><% end %>
+  </div>
 
-  <div class="mt-16">
-    <%= link_to "Back to minutes", minutes_path, class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
-    <%= link_to "Show this minute", @minute, class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
+  <div class="my-8 text-center">
+    <%= link_to '議事録のプレビュー', @minute, class: "ml-4 text-blue-600 hover:underline" %>
+    <%= link_to "#{@minute.course.name}の議事録一覧", course_minutes_path(@minute.course), class: "ml-4 text-blue-600 hover:underline" %>
   </div>
 </div>
