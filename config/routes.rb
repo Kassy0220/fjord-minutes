@@ -21,6 +21,7 @@ Rails.application.routes.draw do
   devise_for :admins, skip: :all
   devise_scope :member do
     get "/auth/:provider/callback" => "authentications#create"
+    delete "logout", to: "members/sessions#destroy", as: "logout"
   end
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
