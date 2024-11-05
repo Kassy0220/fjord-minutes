@@ -38,7 +38,7 @@ class Member < ApplicationRecord
           .where(course_id:)
           .where(meeting_date: created_at..)
           .order(:meeting_date)
-          .pluck(:meeting_date, attendances: %i[id status time absence_reason])
-          .map { |minute| { date: minute[0], attendance_id: minute[1], status: minute[2], time: minute[3], absence_reason: minute[4] } }
+          .pluck(:id, :meeting_date, attendances: %i[status time absence_reason])
+          .map { |data| { minute_id: data[0], date: data[1], status: data[2], time: data[3], absence_reason: data[4] } }
   end
 end
