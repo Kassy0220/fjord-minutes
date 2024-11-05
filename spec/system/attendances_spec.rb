@@ -276,4 +276,19 @@ RSpec.describe 'Attendances', type: :system do
       end
     end
   end
+
+  context 'when admin' do
+    let!(:rails_course) { FactoryBot.create(:rails_course) }
+    let(:admin) { FactoryBot.create(:admin) }
+    let(:minute) { FactoryBot.create(:minute, course: rails_course) }
+
+    before do
+      login_as_admin admin
+    end
+
+    scenario 'admin cannot access create attendance page' do
+      visit new_minute_attendance_path(minute)
+      expect(current_path).to eq edit_minute_path(minute)
+    end
+  end
 end
