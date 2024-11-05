@@ -27,7 +27,7 @@ export default function OtherForm({ minuteId, content, isAdmin }) {
 }
 
 function EditForm({ minuteId, content }) {
-  const [inputValue, setInputValue] = useState(content)
+  const [inputValue, setInputValue] = useState(content ?? '')
 
   const handleChange = function (e) {
     setInputValue(e.target.value)
