@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Minutes::AttendancesController < Minutes::ApplicationController
+  before_action :redirect_admin_access, only: %i[new create]
+
   def new
     redirect_to edit_minute_url(@minute), alert: 'すでに出席を登録済みです' if already_registered_attendance
     redirect_to edit_minute_url(@minute), alert: '終了したミーティングには出席できません' if @minute.already_finished?
@@ -30,5 +32,9 @@ class Minutes::AttendancesController < Minutes::ApplicationController
 
   def already_registered_attendance
     @minute.attendances.where(member_id: current_member.id).any?
+  end
+
+  def redirect_admin_access
+    redirect_to edit_minute_url(@minute) if admin_signed_in?
   end
 end
