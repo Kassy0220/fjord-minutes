@@ -31,4 +31,14 @@ class Member < ApplicationRecord
   def hibernated?
     hibernations.where(finished_at: nil).any?
   end
+
+  def all_attendances
+    join_query = "LEFT JOIN (SELECT * FROM attendances WHERE member_id = #{id}) AS attendances ON minutes.id = attendances.minute_id"
+    Minute.joins(join_query)
+          .where(course_id:)
+          .where(meeting_date: created_at..)
+          .order(:meeting_date)
+          .pluck(:meeting_date, attendances: %i[id status time absence_reason])
+          .map { |minute| { date: minute[0], attendance_id: minute[1], status: minute[2], time: minute[3], absence_reason: minute[4] } }
+  end
 end
