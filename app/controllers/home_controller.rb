@@ -5,8 +5,12 @@ class HomeController < ApplicationController
 
   def index
     if current_development_member
-      template = admin_login? ? 'admin_dashboard' : 'member_dashboard'
-      render template
+      if admin_login?
+        render 'admin_dashboard'
+      else
+        @member = current_development_member
+        render 'members/show'
+      end
     else
       render 'index'
     end
