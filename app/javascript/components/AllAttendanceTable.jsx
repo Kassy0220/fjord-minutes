@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types'
-import { Table } from 'flowbite-react'
+import { Table, Tooltip } from 'flowbite-react'
 
 export default function AllAttendanceTable({ attendances }) {
   return (
     <div className="overflow-x-auto">
-      <Table theme={customTheme}>
+      <Table theme={customTableTheme}>
         <Table.Head>
           {attendances.map((attendance) => (
             <Table.HeadCell key={attendance.minute_id}>
@@ -19,6 +19,7 @@ export default function AllAttendanceTable({ attendances }) {
                 <AttendanceTableData
                   status={attendance.status}
                   time={attendance.time}
+                  absence_reason={attendance.absence_reason}
                 />
               </Table.Cell>
             ))}
@@ -29,11 +30,15 @@ export default function AllAttendanceTable({ attendances }) {
   )
 }
 
-function AttendanceTableData({ status, time }) {
+function AttendanceTableData({ status, time, absence_reason }) {
   if (status === 'present') {
     return <span>{attendance_time(time)}</span>
   } else if (status === 'absent') {
-    return <span>欠席</span>
+    return (
+      <Tooltip content={absence_reason} theme={customTooltipTheme}>
+        <span>欠席</span>
+      </Tooltip>
+    )
   } else {
     return <span>---</span>
   }
@@ -48,7 +53,7 @@ function attendance_time(time) {
   return { day: '昼', night: '夜' }[time]
 }
 
-const customTheme = {
+const customTableTheme = {
   root: {
     base: 'text-left text-sm',
     shadow:
@@ -69,6 +74,10 @@ const customTheme = {
   },
 }
 
+const customTooltipTheme = {
+  target: '', // デフォルトで設定されているw-fitを削除
+}
+
 AllAttendanceTable.propTypes = {
   attendances: PropTypes.array,
 }
@@ -76,4 +85,5 @@ AllAttendanceTable.propTypes = {
 AttendanceTableData.propTypes = {
   status: PropTypes.string,
   time: PropTypes.string,
+  absence_reason: PropTypes.string,
 }
