@@ -34,9 +34,10 @@ class Member < ApplicationRecord
 
   def all_attendances
     join_query = "LEFT JOIN (SELECT * FROM attendances WHERE member_id = #{id}) AS attendances ON minutes.id = attendances.minute_id"
+    target_period = hibernated? ? (created_at..hibernations.last.created_at) : (created_at..)
     Minute.joins(join_query)
           .where(course_id:)
-          .where(meeting_date: created_at..)
+          .where(meeting_date: target_period)
           .order(:meeting_date)
           .pluck(:id, :meeting_date, attendances: %i[status time absence_reason])
           .map { |data| { minute_id: data[0], date: data[1], status: data[2], time: data[3], absence_reason: data[4] } }
