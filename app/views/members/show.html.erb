@@ -7,7 +7,7 @@
     <%= "#{@member.name}さんの出席一覧(#{@member.course.name})" %>
   </h1>
 
-  <%= content_tag :div, id: 'all_attendance_table' do %><% end %>
+  <%= content_tag :div, id: 'all_attendance_table', class: "my-8", data: {attendances: @member.all_attendances}.to_json do %><% end %>
 
   <% if @member == current_development_member %>
     <div class="mt-4 text-center">
