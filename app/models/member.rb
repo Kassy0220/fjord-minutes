@@ -35,11 +35,26 @@ class Member < ApplicationRecord
   def all_attendances
     join_query = "LEFT JOIN (SELECT * FROM attendances WHERE member_id = #{id}) AS attendances ON minutes.id = attendances.minute_id"
     target_period = hibernated? ? (created_at..hibernations.last.created_at) : (created_at..)
-    Minute.joins(join_query)
-          .where(course_id:)
-          .where(meeting_date: target_period)
-          .order(:meeting_date)
-          .pluck(:id, :meeting_date, attendances: %i[status time absence_reason])
-          .map { |data| { minute_id: data[0], date: data[1], status: data[2], time: data[3], absence_reason: data[4] } }
+    attendances = Minute.joins(join_query)
+                        .where(course_id:)
+                        .where(meeting_date: target_period)
+                        .order(:meeting_date)
+                        .pluck(:id, :meeting_date, attendances: %i[status time absence_reason])
+                        .map { |data| { minute_id: data[0], date: data[1], status: data[2], time: data[3], absence_reason: data[4] } }
+    was_hibernated? ? apply_hibernation_period(attendances) : attendances
+  end
+
+  private
+
+  def was_hibernated?
+    hibernations.where.not(finished_at: nil).any?
+  end
+
+  def apply_hibernation_period(attendances)
+    hibernation_period = hibernations.where.not(finished_at: nil).map { |hibernation| hibernation.created_at.to_date..hibernation.finished_at }
+    attendances.map do |attendance|
+      hibernation_period.each { |period| attendance[:status] = 'hibernation' if period.cover?(attendance[:date]) }
+      attendance
+    end
   end
 end
