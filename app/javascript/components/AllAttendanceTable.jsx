@@ -65,6 +65,8 @@ function AttendanceTableData({ status, time, absence_reason }) {
         <span>欠席</span>
       </Tooltip>
     )
+  } else if (status === 'hibernation') {
+    return <span>休止</span>
   } else {
     return <span>---</span>
   }
