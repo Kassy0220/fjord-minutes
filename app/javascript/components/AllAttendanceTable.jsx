@@ -2,6 +2,21 @@ import PropTypes from 'prop-types'
 import { Table, Tooltip } from 'flowbite-react'
 
 export default function AllAttendanceTable({ attendances }) {
+  const attendancesPerYear = separateAttendancesByYear(attendances)
+
+  return (
+    <div>
+      {attendancesPerYear.map((annualAttendances) => (
+        <div key={annualAttendances.year} className="my-8">
+          <p className="mb-2 text-xl">{annualAttendances.year}年</p>
+          <AttendanceTable attendances={annualAttendances.attendances} />
+        </div>
+      ))}
+    </div>
+  )
+}
+
+function AttendanceTable({ attendances }) {
   return (
     <div className="overflow-x-auto">
       <Table theme={customTableTheme}>
@@ -44,6 +59,19 @@ function AttendanceTableData({ status, time, absence_reason }) {
   }
 }
 
+function separateAttendancesByYear(attendances) {
+  return attendances.reduce((attendancesPerYear, attendance) => {
+    const year = attendance.date.slice(0, 4)
+    const record = attendancesPerYear.find((record) => record.year === year)
+
+    record
+      ? record.attendances.push(attendance)
+      : attendancesPerYear.push({ year, attendances: [attendance] })
+
+    return attendancesPerYear
+  }, [])
+}
+
 function formatDate(date) {
   const matched_date = date.match(/\d{4}-(\d{2})-(\d{2})/)
   return `${matched_date[1]}/${matched_date[2]}`
@@ -79,6 +107,10 @@ const customTooltipTheme = {
 }
 
 AllAttendanceTable.propTypes = {
+  attendances: PropTypes.array,
+}
+
+AttendanceTable.propTypes = {
   attendances: PropTypes.array,
 }
 
