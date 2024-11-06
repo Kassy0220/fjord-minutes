@@ -9,7 +9,18 @@ export default function AllAttendanceTable({ attendances }) {
       {attendancesPerYear.map((annualAttendances) => (
         <div key={annualAttendances.year} className="my-8">
           <p className="mb-2 text-xl">{annualAttendances.year}年</p>
-          <AttendanceTable attendances={annualAttendances.attendances} />
+          {annualAttendances.attendances.length >= 13 ? (
+            <>
+              <AttendanceTable
+                attendances={annualAttendances.attendances.slice(0, 12)}
+              />
+              <AttendanceTable
+                attendances={annualAttendances.attendances.slice(12)}
+              />
+            </>
+          ) : (
+            <AttendanceTable attendances={annualAttendances.attendances} />
+          )}
         </div>
       ))}
     </div>
@@ -18,7 +29,7 @@ export default function AllAttendanceTable({ attendances }) {
 
 function AttendanceTable({ attendances }) {
   return (
-    <div className="overflow-x-auto">
+    <div className="overflow-x-auto mb-2">
       <Table theme={customTableTheme}>
         <Table.Head>
           {attendances.map((attendance) => (
