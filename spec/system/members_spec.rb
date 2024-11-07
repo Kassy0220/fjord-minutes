@@ -60,14 +60,14 @@ RSpec.describe 'Members', type: :system do
         rails_course.minutes.each { |minute| FactoryBot.create(:attendance, member:, minute:) }
 
         visit member_path(member)
-        expect(page).to have_selector 'div[data-attendances-year="2024"]'
-        expect(page).to have_selector 'div[data-attendances-year="2025"]'
+        expect(page).to have_selector 'div[data-meeting-year="2024"]'
+        expect(page).to have_selector 'div[data-meeting-year="2025"]'
 
-        within('div[data-attendances-year="2024"]') do
+        within('div[data-meeting-year="2024"]') do
           expect(page).to have_selector 'span[data-table-head="2024-12-18"]', text: '12/18'
           expect(page).to have_selector 'span[data-table-data="2024-12-18"]', text: '昼'
         end
-        within('div[data-attendances-year="2025"]') do
+        within('div[data-meeting-year="2025"]') do
           expect(page).to have_selector 'span[data-table-head="2025-01-01"]', text: '01/01'
           expect(page).to have_selector 'span[data-table-data="2025-01-01"]', text: '昼'
         end
