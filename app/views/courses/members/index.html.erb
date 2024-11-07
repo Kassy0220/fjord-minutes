@@ -9,11 +9,11 @@
     <h2 class="mb-8 text-2xl font-bold text-center"><%= "#{@course.name}のメンバー" %></h2>
 
     <div>
-      <ul class="list-disc list-inside text-sky-600">
+      <ul class="list-disc list-inside">
         <% @members.each do |member| %>
           <li class="mb-4">
             <%= image_tag member.avatar_url, class: 'w-12 h-12 inline-block' %>
-            <%= link_to "#{member.name}", member, class: "py-3 inline-block hover:underline" %>
+            <%= link_to "#{member.name}", member, class: "text-sky-600 py-3 inline-block hover:underline" %>
             <%= content_tag :div, class: 'recent_attendances mt-4', data: {attendances: member.all_attendances.pop(12)}.to_json do %><% end %>
           </li>
         <% end %>
