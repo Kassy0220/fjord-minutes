@@ -78,6 +78,31 @@ RSpec.describe 'Members', type: :system do
           expect(page).to have_selector 'span[data-table-data="2025-01-15"]', text: '昼'
         end
       end
+
+      scenario 'attendance is divided in half year', :js do
+        FactoryBot.create(:minute, meeting_date: Time.zone.local(2025, 1, 1), course: rails_course)
+        FactoryBot.build_list(:minute, 12) do |minute|
+          minute.meeting_date = MeetingDateCalculator.next_meeting_date(rails_course.minutes.last.meeting_date, rails_course.meeting_week)
+          minute.course = rails_course
+          minute.save!
+        end
+        rails_course.minutes.each { |minute| FactoryBot.create(:attendance, member:, minute:) }
+
+        visit member_path(member)
+        expect(page).to have_selector 'div[data-half-attendances="first"]'
+        expect(page).to have_selector 'div[data-half-attendances="second"]'
+
+        within('div[data-half-attendances="first"]') do
+          expect(page).to have_selector 'th', count: 12
+          expect(page).to have_selector 'td', count: 12
+          expect(page).to have_selector 'span[data-table-head="2025-06-18"]', text: '06/18'
+          expect(page).to have_selector 'span[data-table-data="2025-06-18"]', text: '昼'
+        end
+        within('div[data-half-attendances="second"]') do
+          expect(page).to have_selector 'span[data-table-head="2025-07-02"]', text: '07/02'
+          expect(page).to have_selector 'span[data-table-data="2025-07-02"]', text: '昼'
+        end
+      end
     end
   end
 end

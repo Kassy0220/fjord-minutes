@@ -15,12 +15,16 @@ export default function AllAttendanceTable({ attendances }) {
           <p className="mb-2 text-xl">{annualAttendances.year}年</p>
           {annualAttendances.attendances.length >= 13 ? (
             <>
-              <AttendanceTable
-                attendances={annualAttendances.attendances.slice(0, 12)}
-              />
-              <AttendanceTable
-                attendances={annualAttendances.attendances.slice(12)}
-              />
+              <div data-half-attendances="first">
+                <AttendanceTable
+                  attendances={annualAttendances.attendances.slice(0, 12)}
+                />
+              </div>
+              <div data-half-attendances="second">
+                <AttendanceTable
+                  attendances={annualAttendances.attendances.slice(12)}
+                />
+              </div>
             </>
           ) : (
             <AttendanceTable attendances={annualAttendances.attendances} />
