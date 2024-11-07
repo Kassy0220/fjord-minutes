@@ -22,7 +22,7 @@ RSpec.describe 'Members', type: :system do
 
     context 'when display member attendances' do
       let(:rails_course) { FactoryBot.create(:rails_course) }
-      let(:member) { FactoryBot.create(:member, course: rails_course) }
+      let(:member) { FactoryBot.create(:member, course: rails_course, created_at: Time.zone.local(2024, 12, 1)) }
 
       before do
         login_as member
