@@ -86,10 +86,12 @@ function AttendanceTableData({ date, status, time, absence_reason }) {
 function separateAttendancesByYear(attendances) {
   return attendances.reduce((attendancesPerYear, attendance) => {
     const year = attendance.date.slice(0, 4)
-    const record = attendancesPerYear.find((record) => record.year === year)
+    const sortedAttendances = attendancesPerYear.find(
+      (attendance) => attendance.year === year
+    )
 
-    record
-      ? record.attendances.push(attendance)
+    sortedAttendances
+      ? sortedAttendances.attendances.push(attendance)
       : attendancesPerYear.push({ year, attendances: [attendance] })
 
     return attendancesPerYear
