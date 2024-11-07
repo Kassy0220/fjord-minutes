@@ -7,7 +7,11 @@ export default function AllAttendanceTable({ attendances }) {
   return (
     <div>
       {attendancesPerYear.map((annualAttendances) => (
-        <div key={annualAttendances.year} className="my-8">
+        <div
+          key={annualAttendances.year}
+          className="my-8"
+          data-attendances-year={annualAttendances.year}
+        >
           <p className="mb-2 text-xl">{annualAttendances.year}年</p>
           {annualAttendances.attendances.length >= 13 ? (
             <>
