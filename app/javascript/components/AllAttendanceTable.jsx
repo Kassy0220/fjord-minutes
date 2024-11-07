@@ -69,7 +69,9 @@ function AttendanceTable({ attendances }) {
 
 function AttendanceTableData({ date, status, time, absence_reason }) {
   if (status === 'present') {
-    return <span data-table-data={date}>{attendance_time(time)}</span>
+    return (
+      <span data-table-data={date}>{{ day: '昼', night: '夜' }[time]}</span>
+    )
   } else if (status === 'absent') {
     return (
       <Tooltip content={absence_reason} theme={customTooltipTheme}>
@@ -101,10 +103,6 @@ function separateAttendancesByYear(attendances) {
 function formatDate(date) {
   const matched_date = date.match(/\d{4}-(\d{2})-(\d{2})/)
   return `${matched_date[1]}/${matched_date[2]}`
-}
-
-function attendance_time(time) {
-  return { day: '昼', night: '夜' }[time]
 }
 
 const customTableTheme = {
