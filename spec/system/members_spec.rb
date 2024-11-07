@@ -103,6 +103,31 @@ RSpec.describe 'Members', type: :system do
           expect(page).to have_selector 'span[data-table-data="2025-07-02"]', text: '昼'
         end
       end
+
+      scenario 'display attendances until the hibernation started if the member is hibernated', :js do
+        FactoryBot.create(:minute, meeting_date: Time.zone.local(2025, 1, 1), course: rails_course)
+        FactoryBot.create(:minute, meeting_date: Time.zone.local(2025, 1, 15), course: rails_course)
+        FactoryBot.create(:minute, meeting_date: Time.zone.local(2025, 2, 5), course: rails_course)
+        FactoryBot.create(:hibernation, member:, created_at: Time.zone.local(2025, 2, 1))
+
+        visit member_path(member)
+        expect(page).to have_selector 'span[data-table-head="2025-01-01"]', text: '01/01'
+        expect(page).to have_selector 'span[data-table-head="2025-01-15"]', text: '01/15'
+        expect(page).not_to have_selector 'span[data-table-head="2025-02-05"]', text: '02/15'
+      end
+
+      scenario 'display attendances as hibernation during the period member was hibernated', :js do
+        FactoryBot.create(:minute, meeting_date: Time.zone.local(2025, 1, 1), course: rails_course)
+        FactoryBot.create(:minute, meeting_date: Time.zone.local(2025, 1, 15), course: rails_course)
+        FactoryBot.create(:minute, meeting_date: Time.zone.local(2025, 2, 5), course: rails_course)
+        FactoryBot.create(:hibernation, finished_at: Time.zone.local(2025, 1, 31), member:, created_at: Time.zone.local(2025, 1, 1))
+
+        visit member_path(member)
+        expect(page).to have_selector 'span[data-table-head="2025-01-01"]', text: '01/01'
+        expect(page).to have_selector 'span[data-table-data="2025-01-01"]', text: '休止'
+        expect(page).to have_selector 'span[data-table-head="2025-01-15"]', text: '01/15'
+        expect(page).to have_selector 'span[data-table-data="2025-01-15"]', text: '休止'
+      end
     end
   end
 end
