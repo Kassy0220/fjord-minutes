@@ -3,6 +3,7 @@ import { Turbo } from '@hotwired/turbo-rails'
 Turbo.session.drive = false
 
 import mountComponent from './mountComponent.jsx'
+import mountMultipleComponents from './mountMultipleComponents.jsx'
 import AttendeesList from './components/AttendeesList.jsx'
 import ReleaseInformationForm from './components/ReleaseInformationForm.jsx'
 import TopicList from './components/TopicList.jsx'
@@ -12,6 +13,7 @@ import AbsenteesList from './components/AbsenteesList.jsx'
 import UnexcusedAbsenteesList from './components/UnexcusedAbsenteesList.jsx'
 import MinutePreview from './components/MinutePreview.jsx'
 import AllAttendanceTable from './components/AllAttendanceTable.jsx'
+import AttendanceTable from './components/AttendanceTable.jsx'
 import './toggleAttendanceForm'
 
 import 'flowbite'
@@ -26,3 +28,5 @@ mountComponent('absentees_list', AbsenteesList)
 mountComponent('unexcused_absentees_list', UnexcusedAbsenteesList)
 mountComponent('minute_preview', MinutePreview)
 mountComponent('all_attendance_table', AllAttendanceTable)
+
+mountMultipleComponents('recent_attendances', AttendanceTable)
