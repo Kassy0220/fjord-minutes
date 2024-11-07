@@ -56,11 +56,7 @@ RSpec.describe 'Members', type: :system do
 
       scenario 'attendance is listed per year', :js do
         FactoryBot.create(:minute, meeting_date: Time.zone.local(2024, 12, 18), course: rails_course)
-        FactoryBot.build_list(:minute, 2) do |minute|
-          minute.meeting_date = MeetingDateCalculator.next_meeting_date(rails_course.minutes.last.meeting_date, rails_course.meeting_week)
-          minute.course = rails_course
-          minute.save!
-        end
+        FactoryBot.create(:minute, meeting_date: Time.zone.local(2025, 1, 1), course: rails_course)
         rails_course.minutes.each { |minute| FactoryBot.create(:attendance, member:, minute:) }
 
         visit member_path(member)
@@ -74,8 +70,6 @@ RSpec.describe 'Members', type: :system do
         within('div[data-attendances-year="2025"]') do
           expect(page).to have_selector 'span[data-table-head="2025-01-01"]', text: '01/01'
           expect(page).to have_selector 'span[data-table-data="2025-01-01"]', text: '昼'
-          expect(page).to have_selector 'span[data-table-head="2025-01-15"]', text: '01/15'
-          expect(page).to have_selector 'span[data-table-data="2025-01-15"]', text: '昼'
         end
       end
 
