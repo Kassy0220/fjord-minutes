@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   end
   resources :attendances, only: [ :edit, :update ]
   resources :courses, only: [] do
+    resources :members, only: [:index], module: :courses
     resources :minutes, only: [:index], module: :courses
   end
   resources :members, only: [:show]
