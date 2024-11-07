@@ -34,7 +34,9 @@ function AttendanceTable({ attendances }) {
         <Table.Head>
           {attendances.map((attendance) => (
             <Table.HeadCell key={attendance.minute_id}>
-              {formatDate(attendance.date)}
+              <span data-table-head={attendance.date}>
+                {formatDate(attendance.date)}
+              </span>
             </Table.HeadCell>
           ))}
         </Table.Head>
@@ -43,6 +45,7 @@ function AttendanceTable({ attendances }) {
             {attendances.map((attendance) => (
               <Table.Cell key={attendance.minute_id}>
                 <AttendanceTableData
+                  date={attendance.date}
                   status={attendance.status}
                   time={attendance.time}
                   absence_reason={attendance.absence_reason}
@@ -56,19 +59,19 @@ function AttendanceTable({ attendances }) {
   )
 }
 
-function AttendanceTableData({ status, time, absence_reason }) {
+function AttendanceTableData({ date, status, time, absence_reason }) {
   if (status === 'present') {
-    return <span>{attendance_time(time)}</span>
+    return <span data-table-data={date}>{attendance_time(time)}</span>
   } else if (status === 'absent') {
     return (
       <Tooltip content={absence_reason} theme={customTooltipTheme}>
-        <span>欠席</span>
+        <span data-table-data={date}>欠席</span>
       </Tooltip>
     )
   } else if (status === 'hibernation') {
-    return <span>休止</span>
+    return <span data-table-data={date}>休止</span>
   } else {
-    return <span>---</span>
+    return <span data-table-data={date}>---</span>
   }
 }
 
@@ -128,6 +131,7 @@ AttendanceTable.propTypes = {
 }
 
 AttendanceTableData.propTypes = {
+  date: PropTypes.string,
   status: PropTypes.string,
   time: PropTypes.string,
   absence_reason: PropTypes.string,
