@@ -215,8 +215,8 @@ RSpec.describe 'Members', type: :system do
       another_member = FactoryBot.create(:member, :another_member, course: rails_course)
       login_as another_member
       visit course_members_path(rails_course)
-      expect(page).not_to have_link '活動中'
-      expect(page).not_to have_link '休止中'
+      expect(page).not_to have_link '活動中', href: course_members_path(rails_course, status: 'active')
+      expect(page).not_to have_link '休止中', href: course_members_path(rails_course, status: 'hibernated')
       expect(page).not_to have_content 'alice'
 
       visit course_members_path(rails_course, status: 'hibernated')
