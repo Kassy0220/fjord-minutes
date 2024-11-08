@@ -19,7 +19,7 @@
           <li class="mb-4" data-member="<%= member.id %>">
             <%= image_tag member.avatar_url, class: 'w-12 h-12 inline-block' %>
             <%= link_to "#{member.name}", member, class: "text-sky-600 py-3 inline-block hover:underline" %>
-            <% unless member.hibernated? %>
+            <% if admin_signed_in? && !member.hibernated? %>
               <%= link_to '休止中にする',  member_hibernations_path(member), class: "text-sky-600 pl-4 hover:underline",
                           data: { turbo: true, turbo_method: :post, turbo_confirm: "#{member.name}さんを休止中にします。よろしいですか？" } %>
             <% end %>
