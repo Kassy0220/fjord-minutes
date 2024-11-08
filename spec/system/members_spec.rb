@@ -127,9 +127,9 @@ RSpec.describe 'Members', type: :system do
   end
 
   context 'when list members' do
-    let(:rails_course) { FactoryBot.create(:rails_course) }
+    let!(:rails_course) { FactoryBot.create(:rails_course) }
     let(:front_end_course) { FactoryBot.create(:front_end_course) }
-    let(:member) { FactoryBot.create(:member, course: rails_course) }
+    let!(:member) { FactoryBot.create(:member, course: rails_course) }
 
     scenario 'list members by course' do
       FactoryBot.create_list(:member, 10, :sample_member, course: rails_course)
@@ -143,6 +143,7 @@ RSpec.describe 'Members', type: :system do
         within("li[data-member='#{member.id}']") do
           expect(page).to have_link member.name, href: member_path(member)
           expect(page).to have_selector "img[src='#{member.avatar_url}']"
+          expect(page).not_to have_link '休止中にする', href: member_hibernations_path(member)
         end
       end
       expect(page).not_to have_link 'bob', href: member_path(front_end_member)
@@ -222,6 +223,24 @@ RSpec.describe 'Members', type: :system do
 
       visit course_members_path(rails_course, status: 'hibernated')
       expect(page).not_to have_content 'alice'
+    end
+
+    scenario 'admin can make member hibernated' do
+      admin = FactoryBot.create(:admin)
+      login_as_admin admin
+      visit course_members_path(rails_course)
+      within("li[data-member='#{member.id}']") do
+        expect(page).to have_content 'alice'
+        expect(page).to have_link '休止中にする', href: member_hibernations_path(member)
+        page.accept_confirm do
+          click_link '休止中にする'
+        end
+      end
+      # expect(current_page)だとクエリ部分が無視されてしまうため、expect(page).to have_current_pathでテストする
+      expect(page).to have_current_path(course_members_path(rails_course, status: 'hibernated'))
+      expect(page).to have_content 'aliceを休止中にしました'
+      expect(page).to have_content 'alice'
+      expect(page).to have_content "#{Time.zone.today.strftime('%Y/%m/%d')}から休止中"
     end
   end
 end
