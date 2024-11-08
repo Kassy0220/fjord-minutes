@@ -27,5 +27,11 @@ FactoryBot.define do
       uid { 444_444 }
       name { 'unexcused_absentee' }
     end
+
+    trait :sample_member do
+      sequence(:email) { |n| "member-#{n}@example.com" }
+      sequence(:uid) { |n| n }
+      sequence(:name) { |n| "member-#{n}" }
+    end
   end
 end

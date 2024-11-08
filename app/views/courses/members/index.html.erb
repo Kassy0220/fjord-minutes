@@ -11,7 +11,7 @@
     <div>
       <ul class="list-disc list-inside">
         <% @members.each do |member| %>
-          <li class="mb-4">
+          <li class="mb-4" data-member="<%= member.id %>">
             <%= image_tag member.avatar_url, class: 'w-12 h-12 inline-block' %>
             <%= link_to "#{member.name}", member, class: "text-sky-600 py-3 inline-block hover:underline" %>
             <%= content_tag :div, class: 'recent_attendances mt-4', data: {attendances: member.all_attendances.pop(12)}.to_json do %><% end %>
