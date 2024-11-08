@@ -10,7 +10,7 @@
 
     <% if admin_signed_in? %>
       <% active_tab = params[:status] ? params[:status] : 'active' %>
-      <%= render partial: 'status_tab', locals: { course: @course, active_tab: active_tab } %>
+      <%= render 'status_tab', course: @course, active_tab: active_tab %>
     <% end %>
 
     <div>
