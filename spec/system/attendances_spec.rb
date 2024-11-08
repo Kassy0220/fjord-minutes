@@ -79,28 +79,29 @@ RSpec.describe 'Attendances', type: :system do
     end
 
     scenario 'hibernated member is not displayed as present, absent or unexcused absent', :js do
-      member.hibernations.create!
-      expect(member.hibernated?).to be true
+      hibernated_member = FactoryBot.create(:member, :another_member, course: rails_course)
+      hibernated_member.hibernations.create!
+      expect(hibernated_member.hibernated?).to be true
 
       visit edit_minute_path(minute)
       within('#day_attendees') do
-        expect(page).not_to have_selector 'li', text: member.name
+        expect(page).not_to have_selector 'li', text: hibernated_member.name
       end
       within('#night_attendees') do
-        expect(page).not_to have_selector 'li', text: member.name
+        expect(page).not_to have_selector 'li', text: hibernated_member.name
       end
       within('#absentees', visible: false) do
-        expect(page).not_to have_selector 'li', text: member.name
+        expect(page).not_to have_selector 'li', text: hibernated_member.name
       end
       within('#unexcused_absentees', visible: false) do
-        expect(page).not_to have_selector 'li', text: member.name
+        expect(page).not_to have_selector 'li', text: hibernated_member.name
       end
 
-      member.hibernations.last.update!(finished_at: Time.zone.today)
-      expect(member.hibernated?).to be false
+      hibernated_member.hibernations.last.update!(finished_at: Time.zone.today)
+      expect(hibernated_member.hibernated?).to be false
       visit edit_minute_path(minute)
       within('#unexcused_absentees') do
-        expect(page).to have_selector 'li', text: member.name
+        expect(page).to have_selector 'li', text: hibernated_member.name
       end
     end
 
