@@ -17,6 +17,9 @@
           <li class="mb-4" data-member="<%= member.id %>">
             <%= image_tag member.avatar_url, class: 'w-12 h-12 inline-block' %>
             <%= link_to "#{member.name}", member, class: "text-sky-600 py-3 inline-block hover:underline" %>
+            <% if member.hibernated? %>
+              <p class="mt-2 text-sm"><%= member.hibernations.last.created_at.strftime('%Y/%m/%d') %>から休止中</p>
+            <% end %>
             <%= content_tag :div, class: 'recent_attendances mt-4', data: {attendances: member.all_attendances.pop(12)}.to_json do %><% end %>
           </li>
         <% end %>
