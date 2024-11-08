@@ -10,7 +10,9 @@ Rails.application.routes.draw do
     resources :members, only: [:index], module: :courses
     resources :minutes, only: [:index], module: :courses
   end
-  resources :members, only: [:show]
+  resources :members, only: [:show] do
+    resources :hibernations, only: [:create], module: :members
+  end
 
   namespace :api do
     resources :minutes, only: [ :update ] do
