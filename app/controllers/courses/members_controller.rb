@@ -2,6 +2,7 @@
 
 class Courses::MembersController < Courses::ApplicationController
   def index
-    @members = Member.active.where(course: @course).order(:created_at)
+    members = params[:status] == 'hibernated' ? Member.hibernated : Member.active
+    @members = members.where(course: @course).order(:created_at)
   end
 end
