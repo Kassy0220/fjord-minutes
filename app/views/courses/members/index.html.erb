@@ -8,6 +8,9 @@
 
     <h2 class="mb-8 text-2xl font-bold text-center"><%= "#{@course.name}のメンバー" %></h2>
 
+    <% active_tab = params[:status] ? params[:status] : 'active' %>
+    <%= render partial: 'status_tab', locals: { course: @course, active_tab: active_tab } %>
+
     <div>
       <ul class="list-disc list-inside">
         <% @members.each do |member| %>
