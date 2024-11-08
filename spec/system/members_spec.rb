@@ -124,4 +124,37 @@ RSpec.describe 'Members', type: :system do
       end
     end
   end
+
+  context 'when list members' do
+    let(:rails_course) { FactoryBot.create(:rails_course) }
+    let(:front_end_course) { FactoryBot.create(:front_end_course) }
+    let(:member) { FactoryBot.create(:member, course: rails_course) }
+
+    before do
+      login_as member
+    end
+
+    scenario 'list members by course' do
+      FactoryBot.create_list(:member, 10, :sample_member, course: rails_course)
+      front_end_member = FactoryBot.create(:member, :another_member, course: front_end_course)
+
+      visit course_members_path(rails_course)
+      expect(page).to have_link 'Railsエンジニアコース'
+      expect(page).to have_link 'フロントエンドエンジニアコース'
+      rails_course.members.each do |member|
+        within("li[data-member='#{member.id}']") do
+          expect(page).to have_link member.name, href: member_path(member)
+          expect(page).to have_selector "img[src='#{member.avatar_url}']"
+        end
+      end
+      expect(page).not_to have_link 'bob', href: member_path(front_end_member)
+
+      click_link 'フロントエンドエンジニアコース'
+      rails_course.members.each do |member|
+        expect(page).not_to have_link member.name, href: member_path(member)
+      end
+      expect(page).to have_link 'bob', href: member_path(front_end_member)
+      expect(page).to have_selector "img[src='#{front_end_member.avatar_url}']"
+    end
+  end
 end
