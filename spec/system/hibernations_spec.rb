@@ -26,4 +26,14 @@ RSpec.describe 'Hibernations', type: :system do
     expect(page).to have_content '休止から復帰しました。'
     expect(member.reload.hibernated?).to be false
   end
+
+  scenario 'hibernated member cannot access application and must login again' do
+    FactoryBot.create(:hibernation, member:)
+
+    visit course_members_path(rails_course)
+    expect(current_path).to eq root_path
+    expect(page).to have_content '休会中のメンバーはトップページから再度ログインをお願いします'
+    expect(page).not_to have_content 'aliceさんの出席一覧(Railsエンジニアコース)'
+    expect(page).to have_button 'Railsエンジニアコースでログイン'
+  end
 end
