@@ -130,14 +130,11 @@ RSpec.describe 'Members', type: :system do
     let(:front_end_course) { FactoryBot.create(:front_end_course) }
     let(:member) { FactoryBot.create(:member, course: rails_course) }
 
-    before do
-      login_as member
-    end
-
     scenario 'list members by course' do
       FactoryBot.create_list(:member, 10, :sample_member, course: rails_course)
       front_end_member = FactoryBot.create(:member, :another_member, course: front_end_course)
 
+      login_as member
       visit course_members_path(rails_course)
       expect(page).to have_link 'Railsエンジニアコース'
       expect(page).to have_link 'フロントエンドエンジニアコース'
@@ -171,6 +168,7 @@ RSpec.describe 'Members', type: :system do
         FactoryBot.create(:attendance, :night, member: another_member, minute:) if another_member.created_at.before?(minute.meeting_date)
       end
 
+      login_as member
       visit course_members_path(rails_course)
       within("li[data-member='#{member.id}']") do
         expect(page).to have_selector 'table'
@@ -192,6 +190,37 @@ RSpec.describe 'Members', type: :system do
         expect(page).to have_selector 'span[data-table-head="2025-07-02"]', text: '07/02'
         expect(page).to have_selector 'span[data-table-data="2025-07-02"]', text: '夜'
       end
+    end
+
+    scenario 'admin can view hibernated member' do
+      FactoryBot.create(:hibernation, member:, created_at: Time.zone.local(2025, 1, 1))
+
+      admin = FactoryBot.create(:admin)
+      login_as_admin admin
+      visit course_members_path(rails_course)
+      expect(page).to have_link '活動中'
+      expect(page).to have_link '休止中'
+
+      click_link '休止中'
+      expect(page).to have_content 'alice'
+      expect(page).to have_content '2025/01/01から休止中'
+
+      click_link '活動中'
+      expect(page).not_to have_content 'alice'
+    end
+
+    scenario 'member cannot view hibernated member' do
+      FactoryBot.create(:hibernation, member:, created_at: Time.zone.local(2025, 1, 1))
+
+      another_member = FactoryBot.create(:member, :another_member, course: rails_course)
+      login_as another_member
+      visit course_members_path(rails_course)
+      expect(page).not_to have_link '活動中'
+      expect(page).not_to have_link '休止中'
+      expect(page).not_to have_content 'alice'
+
+      visit course_members_path(rails_course, status: 'hibernated')
+      expect(page).not_to have_content 'alice'
     end
   end
 end
