@@ -5,6 +5,7 @@ class ApplicationController < ActionController::Base
   allow_browser versions: :modern
   devise_group :development_member, contains: %i[member admin]
   before_action :authenticate_development_member!
+  before_action :prohibit_hibernated_member_access
 
   def after_sign_in_path_for(_resource)
     root_path
@@ -14,5 +15,12 @@ class ApplicationController < ActionController::Base
 
   def admin_login?
     development_member_signed_in? && current_development_member.is_a?(Admin)
+  end
+
+  def prohibit_hibernated_member_access
+    return unless member_signed_in? && current_member.hibernated?
+
+    sign_out
+    redirect_to root_path, alert: t('errors.messages.hibernated_member_access')
   end
 end

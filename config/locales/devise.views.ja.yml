@@ -142,3 +142,4 @@ ja:
       not_saved:
         one: エラーが発生したため %{resource} は保存されませんでした。
         other: "%{count} 件のエラーが発生したため %{resource} は保存されませんでした。"
+      hibernated_member_access: 休会中のメンバーはトップページから再度ログインをお願いします
