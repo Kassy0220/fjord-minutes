@@ -241,5 +241,21 @@ RSpec.describe 'Members', type: :system do
       expect(page).to have_content 'alice'
       expect(page).to have_content "#{Time.zone.today.strftime('%Y/%m/%d')}から休止中"
     end
+
+    scenario 'admin cannot make member hibernated who already hibernated' do
+      admin = FactoryBot.create(:admin)
+      login_as_admin admin
+      visit course_members_path(rails_course)
+
+      FactoryBot.create(:hibernation, member:)
+      expect do
+        within("li[data-member='#{member.id}']") do
+          click_button '休止中にする'
+        end
+        find('#accept_modal').click
+      end.not_to change(member.hibernations, :count)
+      expect(page).to have_current_path(course_members_path(rails_course, status: 'hibernated'))
+      expect(page).to have_content 'aliceさんはすでに休止中です'
+    end
   end
 end
