@@ -143,7 +143,7 @@ RSpec.describe 'Members', type: :system do
         within("li[data-member='#{member.id}']") do
           expect(page).to have_link member.name, href: member_path(member)
           expect(page).to have_selector "img[src='#{member.avatar_url}']"
-          expect(page).not_to have_button '休止中にする'
+          expect(page).not_to have_selector 'button.open_modal', text: '休止中にする'
         end
       end
       expect(page).not_to have_link 'bob', href: member_path(front_end_member)
@@ -232,7 +232,7 @@ RSpec.describe 'Members', type: :system do
       expect do
         within("li[data-member='#{member.id}']") do
           expect(page).to have_content 'alice'
-          expect(page).to have_button '休止中にする'
+          expect(page).to have_selector 'button.open_modal', text: '休止中にする'
           click_button '休止中にする'
         end
         find('#accept_modal').click
