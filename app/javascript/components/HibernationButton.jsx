@@ -8,8 +8,7 @@ export default function HibernationButton({ member_id, member_name }) {
   return (
     <div>
       <button
-        id="open_modal"
-        className="button_danger"
+        className="button_danger open_modal"
         onClick={() => setOpenModal(true)}
       >
         休止中にする
