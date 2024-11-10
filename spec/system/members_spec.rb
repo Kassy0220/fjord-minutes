@@ -229,12 +229,14 @@ RSpec.describe 'Members', type: :system do
       admin = FactoryBot.create(:admin)
       login_as_admin admin
       visit course_members_path(rails_course)
-      within("li[data-member='#{member.id}']") do
-        expect(page).to have_content 'alice'
-        expect(page).to have_button '休止中にする'
-        click_button '休止中にする'
-      end
-      find('#accept_modal').click
+      expect do
+        within("li[data-member='#{member.id}']") do
+          expect(page).to have_content 'alice'
+          expect(page).to have_button '休止中にする'
+          click_button '休止中にする'
+        end
+        find('#accept_modal').click
+      end.to change(member.hibernations, :count).by(1)
       # expect(current_page)だとクエリ部分が無視されてしまうため、expect(page).to have_current_pathでテストする
       expect(page).to have_current_path(course_members_path(rails_course, status: 'hibernated'))
       expect(page).to have_content 'aliceを休止中にしました'
