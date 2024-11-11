@@ -1,7 +1,3 @@
-import { Turbo } from '@hotwired/turbo-rails'
-
-Turbo.session.drive = false
-
 import mountComponent from './mountComponent.jsx'
 import mountMultipleComponents from './mountMultipleComponents.jsx'
 import AttendeesList from './components/AttendeesList.jsx'
