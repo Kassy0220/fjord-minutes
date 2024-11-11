@@ -1,0 +1,25 @@
+<nav id="header" class="bg-white border-gray-200 border-b-2">
+  <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+    <a href="/" class="flex items-center space-x-3">
+      <span class="self-center text-2xl font-semibold whitespace-nowrap">Fjord Minutes</span>
+    </a>
+
+    <% if development_member_signed_in? %>
+      <div class="block w-auto">
+        <ul class="font-medium flex items-center flex-row p-0 rounded-lg space-x-8 !list-none">
+          <li class="block">
+            <%= link_to '議事録', member_signed_in? ? course_minutes_path(current_member.course) : course_minutes_path(Course.first) %>
+          </li>
+          <li class="block">
+            <%= link_to 'メンバー', member_signed_in? ? course_members_path(current_member.course) : course_members_path(Course.first) %>
+          </li>
+          <li class="block">
+            <a href="/" class="navbar_item">
+              <%= image_tag(current_development_member.avatar_url, class: "w-8 h-8 rounded-full") %>
+            </a>
+          </li>
+        </ul>
+      </div>
+    <% end %>
+  </div>
+</nav>
