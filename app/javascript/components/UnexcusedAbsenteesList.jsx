@@ -21,7 +21,6 @@ export default function UnexcusedAbsenteesList({
         <li key={absentee.member_id} className="mb-4">
           <a
             href={`https://github.com/${absentee.name}`}
-            className="text-sky-600 underline"
           >{`@${absentee.name}`}</a>
           {!isAdmin && currentMemberId === absentee.member_id && (
             <a
