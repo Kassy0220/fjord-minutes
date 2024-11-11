@@ -12,12 +12,11 @@ RSpec.describe 'Hibernations', type: :system do
 
   scenario 'member can hibernate and return from hibernation', :js do
     visit root_path
-    expect(page).to have_link 'チーム開発を抜ける'
+    expect(page).to have_selector 'button.open_modal', text: 'チーム開発を抜ける'
     expect(member.hibernated?).to be false
 
-    page.accept_confirm do
-      click_link 'チーム開発を抜ける'
-    end
+    click_button 'チーム開発を抜ける'
+    find('#accept_modal').click
     expect(current_path).to eq root_path
     expect(page).to have_content 'ログアウトしました'
     expect(member.reload.hibernated?).to be true
