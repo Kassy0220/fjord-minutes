@@ -15,6 +15,7 @@ import MinutePreview from './components/MinutePreview.jsx'
 import AllAttendanceTable from './components/AllAttendanceTable.jsx'
 import AttendanceTable from './components/AttendanceTable.jsx'
 import HibernationButton from './components/HibernationButton.jsx'
+import LogoutButton from './components/LogoutButton.jsx'
 import './toggleAttendanceForm'
 
 import 'flowbite'
@@ -29,6 +30,7 @@ mountComponent('absentees_list', AbsenteesList)
 mountComponent('unexcused_absentees_list', UnexcusedAbsenteesList)
 mountComponent('minute_preview', MinutePreview)
 mountComponent('all_attendance_table', AllAttendanceTable)
+mountComponent('logout_button', LogoutButton)
 
 mountMultipleComponents('recent_attendances', AttendanceTable)
 mountMultipleComponents('hibernation_button', HibernationButton)
