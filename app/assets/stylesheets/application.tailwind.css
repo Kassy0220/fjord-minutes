@@ -3,6 +3,9 @@
 @tailwind utilities;
 
 @layer base {
+    a {
+        @apply text-markdownAnchorBlue hover:underline;
+    }
     ul {
         @apply list-disc pl-8 [&_ul]:list-[revert];
     }
