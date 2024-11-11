@@ -28,12 +28,7 @@ export default function AbsenteesList({ minuteId, currentMemberId, isAdmin }) {
 function Absentee({ absentee, currentMemberId, isAdmin }) {
   return (
     <li className="mb-4">
-      <a
-        href={`https://github.com/${absentee.name}`}
-        className="text-sky-600 underline"
-      >
-        {`@${absentee.name}`}
-      </a>
+      <a href={`https://github.com/${absentee.name}`}>{`@${absentee.name}`}</a>
       {!isAdmin && currentMemberId === absentee.member_id && (
         <a
           href={`/attendances/${absentee.attendance_id}/edit`}

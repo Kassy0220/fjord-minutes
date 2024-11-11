@@ -48,12 +48,7 @@ export default function AttendeesList({ minuteId, currentMemberId, isAdmin }) {
         プロダクトオーナー
         <ul>
           <li>
-            <a
-              href="https://github.com/machida"
-              className="text-sky-600 underline"
-            >
-              @machida
-            </a>
+            <a href="https://github.com/machida">@machida</a>
           </li>
         </ul>
       </li>
@@ -61,12 +56,7 @@ export default function AttendeesList({ minuteId, currentMemberId, isAdmin }) {
         スクラムマスター
         <ul>
           <li>
-            <a
-              href="https://github.com/komagata"
-              className="text-sky-600 underline"
-            >
-              @komagata
-            </a>
+            <a href="https://github.com/komagata">@komagata</a>
           </li>
         </ul>
       </li>
@@ -77,10 +67,7 @@ export default function AttendeesList({ minuteId, currentMemberId, isAdmin }) {
 function Attendee({ attendee, currentMemberId, isAdmin }) {
   return (
     <li key={attendee.attendance_id}>
-      <a
-        href={`https://github.com/${attendee.name}`}
-        className="text-sky-600 underline"
-      >{`@${attendee.name}`}</a>
+      <a href={`https://github.com/${attendee.name}`}>{`@${attendee.name}`}</a>
       {!isAdmin && currentMemberId === attendee.member_id && (
         <a
           href={`/attendances/${attendee.attendance_id}/edit`}
