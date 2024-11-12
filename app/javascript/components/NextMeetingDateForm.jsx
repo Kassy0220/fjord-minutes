@@ -117,7 +117,7 @@ function NextMeetingDate({ date, setIsEditing, isAdmin }) {
         </button>
       )}
       {isHoliday && (
-        <p className="flex !m-0 pl-2">
+        <p className="flex !m-0 pl-2 py-2 bg-yellow-50 rounded">
           <svg
             className="w-6 h-6 text-yellow-300 dark:text-white inline-block mr-1"
             aria-hidden="true"
@@ -133,7 +133,7 @@ function NextMeetingDate({ date, setIsEditing, isAdmin }) {
               clipRule="evenodd"
             />
           </svg>
-          <span className="underline">
+          <span className="text-yellow-500 font-bold">
             次回開催日は{holidayJP.holidays[date].name}
             です。もしミーティングをお休みにする場合は、開催日を変更しましょう。
           </span>
