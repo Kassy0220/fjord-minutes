@@ -39,12 +39,6 @@
   </p>
 
   <% if Rails.env.development? %>
-    <div class="flex justify-center mt-12">
-      <% Course.all.each do |course| %>
-        <%= form_tag("/auth/developer?course_id=#{course.id}", method: 'post', data: {turbo: false}) do %>
-          <button type='submit' class="text-blue-600  border border-blue-600 hover:bg-blue-100 font-medium rounded-lg text-sm px-6 py-4 mx-10"><%= course.name %>でログイン(開発環境用)</button>
-        <% end %>
-      <% end %>
-    </div>
+    <%= render 'developer_login_button' %>
   <% end %>
 </div>
