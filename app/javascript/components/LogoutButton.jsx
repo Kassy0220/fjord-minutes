@@ -31,7 +31,7 @@ export default function LogoutButton() {
             <div className="text-center">
               <SubmitForm />
               <button
-                className="inline-block text-blue-600 hover:bg-blue-100 font-medium rounded-lg text-sm px-4 py-2 me-2 mb-2 ml-8 focus:outline-none border border-blue-600"
+                className="button_cancel"
                 onClick={() => setOpenModal(false)}
               >
                 キャンセル

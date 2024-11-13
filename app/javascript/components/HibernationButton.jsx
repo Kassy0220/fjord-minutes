@@ -27,7 +27,7 @@ export default function HibernationButton({ member_id, member_name }) {
             <div>
               <SubmitForm memberId={member_id} />
               <button
-                className="inline-block text-red-600 hover:bg-red-100 font-medium rounded-lg text-sm px-4 py-2 me-2 mb-2 ml-8 focus:outline-none border border-red-600"
+                className="button_danger_cancel"
                 onClick={() => setOpenModal(false)}
               >
                 キャンセル
