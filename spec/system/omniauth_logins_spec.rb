@@ -51,8 +51,7 @@ RSpec.describe 'OmniauthLogins', type: :system do
       click_button 'Railsエンジニアコースで登録'
 
       expect(page).to have_content 'GitHub アカウントによる認証に成功しました。'
-      expect(page).to have_content '管理者用のダッシュボード'
-      expect(page).to have_content '名前 : kassy0220'
+      expect(page).to have_selector 'h1', text: '管理ページ'
     end
   end
 
