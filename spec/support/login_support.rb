@@ -7,7 +7,7 @@ module LoginSupport
                                                 email: member.email,
                                                 image: member.avatar_url } })
     visit root_path
-    click_button "#{member.course.name}でログイン"
+    click_button "#{member.course.name}で登録"
   end
 
   def login_as_admin(admin)
@@ -18,7 +18,7 @@ module LoginSupport
                                                 email: admin.email,
                                                 image: admin.avatar_url } })
     visit root_path
-    click_button 'Railsエンジニアコースでログイン'
+    click_button 'Railsエンジニアコースで登録'
   end
 end
 

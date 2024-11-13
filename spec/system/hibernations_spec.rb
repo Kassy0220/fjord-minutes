@@ -21,7 +21,7 @@ RSpec.describe 'Hibernations', type: :system do
     expect(page).to have_content 'ログアウトしました'
     expect(member.reload.hibernated?).to be true
 
-    click_button 'Railsエンジニアコースでログイン'
+    click_button 'Railsエンジニアコースで登録'
     expect(page).to have_content '休止から復帰しました。'
     expect(member.reload.hibernated?).to be false
   end
@@ -33,6 +33,6 @@ RSpec.describe 'Hibernations', type: :system do
     expect(current_path).to eq root_path
     expect(page).to have_content '休会中のメンバーはトップページから再度ログインをお願いします'
     expect(page).not_to have_content 'aliceさんの出席一覧(Railsエンジニアコース)'
-    expect(page).to have_button 'Railsエンジニアコースでログイン'
+    expect(page).to have_button 'Railsエンジニアコースで登録'
   end
 end
