@@ -1,12 +1,27 @@
 <div class="w-full">
-  <h1 class="font-bold text-4xl">
-    <%= "管理者用のダッシュボード" %>
-  </h1>
+  <h1 class="font-bold text-4xl text-center mb-8">管理ページ</h1>
 
-  <div>
-    <p><%= Admin.human_attribute_name(:name) %> : <%= current_admin.name %></p>
-    <% if current_admin.avatar_url %>
-      <%= image_tag(current_admin.avatar_url, size: '100x100', alt: '管理者のGitHubアカウントの画像') %>
-    <% end %>
-  </div>
+  <% Course.all.each do |course| %>
+    <div class="mb-10">
+      <h2 class="text-2xl font-bold mb-4"><%= course.name %></h2>
+      <p class="mb-2">議事録</p>
+      <p class="mb-2 pl-4"><%= link_to "議事録一覧", course_minutes_path(course) %></p>
+
+      <p class="mb-2">メンバー</p>
+      <p class="mb-2 pl-4"><%= link_to "所属メンバー一覧", course_members_path(course) %></p>
+
+      <p class="mb-2">ミーティング</p>
+      <p class="mb-2 pl-4">
+        ミーティング開催週 :
+        <span class="font-bold"><%= Course.human_attribute_name("meeting_week.#{course.meeting_week}") %></span>
+      </p>
+      <p class="mb-2 pl-4">次回ミーティングの議事録 :
+        <% if course.minutes.none? %>
+          まだ議事録は作成されていません
+        <% else %>
+          <%= link_to "#{course.minutes.order(:meeting_date).last.title}", edit_minute_path(course.minutes.order(:meeting_date).last) %>
+        <% end %>
+      </p>
+    </div>
+  <% end %>
 </div>

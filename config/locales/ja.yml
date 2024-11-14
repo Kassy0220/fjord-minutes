@@ -33,6 +33,9 @@ ja:
       course:
         name: コース名
         meeting_week: ミーティング開催週
+      course/meeting_week:
+        odd: 奇数週 (第一・第三週)
+        even: 偶数週 (第二・第四週)
       member:
         email: メールアドレス
         password: パスワード
