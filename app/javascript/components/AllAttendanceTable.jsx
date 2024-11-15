@@ -9,7 +9,7 @@ export default function AllAttendanceTable({ attendances }) {
       {attendancesPerYear.map((annualAttendances) => (
         <div
           key={annualAttendances.year}
-          className="my-8"
+          className="mb-8"
           data-meeting-year={annualAttendances.year}
         >
           <p className="mb-2 text-xl">{annualAttendances.year}年</p>
