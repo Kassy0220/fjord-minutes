@@ -205,7 +205,7 @@ RSpec.describe 'Members', type: :system do
 
       click_link '休会'
       expect(page).to have_content 'alice'
-      expect(page).to have_content '2025/01/01から休止中'
+      expect(page).to have_content '2025/01/01から休会'
 
       click_link '現役'
       expect(page).not_to have_content 'alice'
@@ -241,7 +241,7 @@ RSpec.describe 'Members', type: :system do
       expect(page).to have_current_path(course_members_path(rails_course, status: 'hibernated'))
       expect(page).to have_content 'aliceをチームメンバーから外しました'
       expect(page).to have_content 'alice'
-      expect(page).to have_content "#{Time.zone.today.strftime('%Y/%m/%d')}から休止中"
+      expect(page).to have_content "#{Time.zone.today.strftime('%Y/%m/%d')}から休会"
     end
 
     scenario 'admin cannot make member hibernated who already hibernated' do

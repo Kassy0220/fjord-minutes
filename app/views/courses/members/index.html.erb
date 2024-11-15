@@ -19,7 +19,7 @@
               <%= content_tag :div, class: 'hibernation_button inline-block', data: {member_id: member.id, member_name: member.name}.to_json do %><% end %>
             <% end %>
             <% if member.hibernated? %>
-              <p class="mt-2 text-sm"><%= member.hibernations.last.created_at.strftime('%Y/%m/%d') %>から休止中</p>
+              <p class="mt-2 text-sm"><%= member.hibernations.last.created_at.strftime('%Y/%m/%d') %>から休会</p>
             <% end %>
             <%= content_tag :div, class: 'recent_attendances mt-4', data: {attendances: member.all_attendances.pop(12)}.to_json do %><% end %>
           </li>
