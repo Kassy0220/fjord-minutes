@@ -75,7 +75,7 @@ ja:
     omniauth_callbacks:
       failure: "%{kind} アカウントによる認証に失敗しました。理由：（%{reason}）"
       success: "%{kind} アカウントによる認証に成功しました。"
-      success_with_hibernation: "休止から復帰しました。"
+      success_with_hibernation: "チーム開発に復帰しました。"
     passwords:
       edit:
         change_my_password: パスワードを変更する
