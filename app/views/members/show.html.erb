@@ -1,9 +1,14 @@
 <div class="w-full">
-  <h1 class="font-bold text-4xl">
+  <h1 class="font-bold text-4xl mb-8">
     <%= "#{@member.name}さんの出席一覧(#{@member.course.name})" %>
   </h1>
 
-  <%= content_tag :div, id: 'all_attendance_table', class: "my-8", data: {attendances: @member.all_attendances}.to_json do %><% end %>
+  <div class="mb-8">
+    <% if @member.hibernated? %>
+      <p class="mb-2"><%= @member.hibernations.last.created_at.strftime('%Y/%m/%d') %>から休会</p>
+    <% end %>
+    <%= content_tag :div, id: 'all_attendance_table', data: {attendances: @member.all_attendances}.to_json do %><% end %>
+  </div>
 
   <% if @member == current_development_member %>
     <div class="mt-4 text-center">
