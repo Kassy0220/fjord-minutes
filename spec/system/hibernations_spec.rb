@@ -31,7 +31,7 @@ RSpec.describe 'Hibernations', type: :system do
 
     visit course_members_path(rails_course)
     expect(current_path).to eq root_path
-    expect(page).to have_content '休会中のメンバーはトップページから再度ログインをお願いします'
+    expect(page).to have_content 'チームメンバーから外れているため、再度ログインをお願いします。'
     expect(page).not_to have_content 'aliceさんの出席一覧(Railsエンジニアコース)'
     expect(page).to have_button 'Railsエンジニアコースで登録'
   end
