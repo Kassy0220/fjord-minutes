@@ -22,7 +22,7 @@ RSpec.describe 'Hibernations', type: :system do
     expect(member.reload.hibernated?).to be true
 
     click_button 'Railsエンジニアコースで登録'
-    expect(page).to have_content '休止から復帰しました。'
+    expect(page).to have_content 'チーム開発に復帰しました。'
     expect(member.reload.hibernated?).to be false
   end
 
