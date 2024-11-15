@@ -200,14 +200,14 @@ RSpec.describe 'Members', type: :system do
       admin = FactoryBot.create(:admin)
       login_as_admin admin
       visit course_members_path(rails_course)
-      expect(page).to have_link '活動中'
-      expect(page).to have_link '休止中'
+      expect(page).to have_link '現役', href: course_members_path(rails_course, status: 'active')
+      expect(page).to have_link '休会', href: course_members_path(rails_course, status: 'hibernated')
 
-      click_link '休止中'
+      click_link '休会'
       expect(page).to have_content 'alice'
       expect(page).to have_content '2025/01/01から休止中'
 
-      click_link '活動中'
+      click_link '現役'
       expect(page).not_to have_content 'alice'
     end
 
@@ -217,8 +217,8 @@ RSpec.describe 'Members', type: :system do
       another_member = FactoryBot.create(:member, :another_member, course: rails_course)
       login_as another_member
       visit course_members_path(rails_course)
-      expect(page).not_to have_link '活動中', href: course_members_path(rails_course, status: 'active')
-      expect(page).not_to have_link '休止中', href: course_members_path(rails_course, status: 'hibernated')
+      expect(page).not_to have_link '現役', href: course_members_path(rails_course, status: 'active')
+      expect(page).not_to have_link '休会', href: course_members_path(rails_course, status: 'hibernated')
       expect(page).not_to have_content 'alice'
 
       visit course_members_path(rails_course, status: 'hibernated')
