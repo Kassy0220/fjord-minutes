@@ -232,14 +232,14 @@ RSpec.describe 'Members', type: :system do
       expect do
         within("li[data-member='#{member.id}']") do
           expect(page).to have_content 'alice'
-          expect(page).to have_selector 'button.open_modal', text: '休止中にする'
-          click_button '休止中にする'
+          expect(page).to have_selector 'button.open_modal', text: 'チームメンバーから外す'
+          click_button 'チームメンバーから外す'
         end
         find('#accept_modal').click
       end.to change(member.hibernations, :count).by(1)
       # expect(current_page)だとクエリ部分が無視されてしまうため、expect(page).to have_current_pathでテストする
       expect(page).to have_current_path(course_members_path(rails_course, status: 'hibernated'))
-      expect(page).to have_content 'aliceを休止中にしました'
+      expect(page).to have_content 'aliceをチームメンバーから外しました'
       expect(page).to have_content 'alice'
       expect(page).to have_content "#{Time.zone.today.strftime('%Y/%m/%d')}から休止中"
     end
@@ -252,12 +252,12 @@ RSpec.describe 'Members', type: :system do
       FactoryBot.create(:hibernation, member:)
       expect do
         within("li[data-member='#{member.id}']") do
-          click_button '休止中にする'
+          click_button 'チームメンバーから外す'
         end
         find('#accept_modal').click
       end.not_to change(member.hibernations, :count)
       expect(page).to have_current_path(course_members_path(rails_course, status: 'hibernated'))
-      expect(page).to have_content 'aliceさんはすでに休止中です'
+      expect(page).to have_content 'aliceさんはすでにチームメンバーから外れています'
     end
   end
 end

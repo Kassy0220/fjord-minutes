@@ -11,7 +11,7 @@ export default function HibernationButton({ member_id, member_name }) {
         className="button_danger open_modal"
         onClick={() => setOpenModal(true)}
       >
-        休止中にする
+        チームメンバーから外す
       </button>
       <Modal
         show={openModal}
@@ -22,7 +22,9 @@ export default function HibernationButton({ member_id, member_name }) {
         <ModalBody>
           <div className="text-center">
             <p className="my-8 text-xl">
-              {member_name}さんを休止中にします。よろしいですか？
+              {member_name}さんをチームメンバーから外します。
+              <br />
+              よろしいですか？
             </p>
             <div>
               <SubmitForm memberId={member_id} />
@@ -66,7 +68,7 @@ function SubmitForm({ memberId }) {
       />
       <input
         type="submit"
-        value="休止中にする"
+        value="チームメンバーから外す"
         id="accept_modal"
         className="button_danger"
       />
