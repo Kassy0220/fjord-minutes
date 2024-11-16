@@ -16,6 +16,7 @@ RSpec.describe 'Hibernations', type: :system do
     expect(member.hibernated?).to be false
 
     click_button 'チーム開発を抜ける'
+    choose 'フィヨルドブートキャンプを休会することに伴い、チーム開発をお休みするため'
     find('#accept_modal').click
     expect(current_path).to eq root_path
     expect(page).to have_content 'ログアウトしました'
