@@ -36,4 +36,14 @@ RSpec.describe 'Hibernations', type: :system do
     expect(page).not_to have_content 'aliceさんの出席一覧(Railsエンジニアコース)'
     expect(page).to have_button 'Railsエンジニアコースで登録'
   end
+
+  scenario 'member can logout as having completed the team development' do
+    expect(member.completed_at).to be_nil
+
+    visit root_path
+    click_button 'チーム開発を抜ける'
+    choose 'チーム開発を修了したため'
+    find('#accept_modal').click
+    expect(member.reload.completed_at).to eq Time.zone.today
+  end
 end
