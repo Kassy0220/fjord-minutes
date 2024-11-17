@@ -59,4 +59,16 @@ RSpec.describe Member, type: :model do
       expect(member.all_attendances).to include(attendance_during_hibernation)
     end
   end
+
+  describe '#completed?' do
+    it 'returns true if completed date is saved' do
+      completed_member = FactoryBot.create(:member, completed_at: Time.zone.today)
+      expect(completed_member.completed?).to be true
+    end
+
+    it 'returns false if completed date is not saved' do
+      not_completed_member = FactoryBot.create(:member)
+      expect(not_completed_member.completed?).to be false
+    end
+  end
 end

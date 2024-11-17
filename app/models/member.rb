@@ -38,6 +38,10 @@ class Member < ApplicationRecord
     hibernations.where(finished_at: nil).any?
   end
 
+  def completed?
+    !completed_at.nil?
+  end
+
   def all_attendances
     join_query = "LEFT JOIN (SELECT * FROM attendances WHERE member_id = #{id}) AS attendances ON minutes.id = attendances.minute_id"
     target_period = hibernated? ? (created_at..hibernations.last.created_at) : (created_at..)

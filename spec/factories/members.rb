@@ -8,6 +8,7 @@ FactoryBot.define do
     uid { 111_111 }
     name { 'alice' }
     avatar_url { 'https://gyazo.com/40600d4c2f36e6ec49ec17af0ef610d3' }
+    completed_at { nil }
     association :course, factory: :rails_course
 
     trait :another_member do

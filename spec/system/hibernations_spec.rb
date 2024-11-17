@@ -38,12 +38,12 @@ RSpec.describe 'Hibernations', type: :system do
   end
 
   scenario 'member can logout as having completed the team development' do
-    expect(member.completed_at).to be_nil
+    expect(member.completed?).to be false
 
     visit root_path
     click_button 'チーム開発を抜ける'
     choose 'チーム開発を修了したため'
     find('#accept_modal').click
-    expect(member.reload.completed_at).to eq Time.zone.today
+    expect(member.reload.completed?).to be true
   end
 end
