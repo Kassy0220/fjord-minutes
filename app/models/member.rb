@@ -13,6 +13,7 @@ class Member < ApplicationRecord
 
   scope :active, -> { where.not(id: hibernated.pluck(:id)) }
   scope :hibernated, -> { joins(:hibernations).where(hibernations: { finished_at: nil }) }
+  scope :completed, -> { joins(:hibernations).where.not(completed_at: nil).where(hibernations: { finished_at: nil }) }
 
   def self.from_omniauth(auth, params)
     find_or_create_by(provider: auth.provider, uid: auth.uid) do |member|
