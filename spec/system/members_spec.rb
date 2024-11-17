@@ -234,6 +234,27 @@ RSpec.describe 'Members', type: :system do
       expect(page).not_to have_content 'alice'
     end
 
+    scenario 'admin can view completed member' do
+      member.update(completed_at: Time.zone.local(2025, 1, 1))
+      FactoryBot.create(:hibernation, created_at: Time.zone.local(2025, 1, 1), member:)
+      admin = FactoryBot.create(:admin)
+      login_as_admin admin
+      visit course_members_path(rails_course)
+      expect(page).to have_link '修了', href: course_members_path(rails_course, status: 'completed')
+
+      click_link '修了'
+      expect(page).to have_content 'alice'
+      expect(page).to have_content '2025/01/01に修了'
+
+      # チーム開発を修了したメンバーが再びチーム開発に参加した場合
+      member.hibernations.last.update!(finished_at: Time.zone.local(2025, 3, 1))
+      visit course_members_path(rails_course)
+      click_link '修了'
+      expect(page).not_to have_content 'alice'
+      click_link '現役'
+      expect(page).to have_content 'alice'
+    end
+
     scenario 'member cannot view hibernated member' do
       FactoryBot.create(:hibernation, member:, created_at: Time.zone.local(2025, 1, 1))
 
@@ -242,6 +263,7 @@ RSpec.describe 'Members', type: :system do
       visit course_members_path(rails_course)
       expect(page).not_to have_link '現役', href: course_members_path(rails_course, status: 'active')
       expect(page).not_to have_link '休会', href: course_members_path(rails_course, status: 'hibernated')
+      expect(page).not_to have_link '修了', href: course_members_path(rails_course, status: 'completed')
       expect(page).not_to have_content 'alice'
 
       visit course_members_path(rails_course, status: 'hibernated')
