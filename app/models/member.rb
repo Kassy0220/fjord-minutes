@@ -11,8 +11,13 @@ class Member < ApplicationRecord
   has_many :topics, as: :topicable, dependent: :destroy
   has_many :hibernations, dependent: :destroy
 
-  scope :active, -> { where.not(id: hibernated.pluck(:id)) }
-  scope :hibernated, -> { joins(:hibernations).where(hibernations: { finished_at: nil }) }
+  scope :active, lambda {
+    # having内の条件は、最初の条件が休会を一度も行っていないことを、2つ目の条件が休会から復帰している(復帰日がnilである休会モデルを持っていない)ことを確認している
+    # 2つ目の条件に関して、count("condition")と書くとconditionがNULLではないレコードをカウントしてしまうため、conditionがfalseの場合にはカウントされないように OR NULL をつける必要がある
+    # true OR NULL は true を、false OR NULL はNULLを返す
+    left_joins(:hibernations).group('members.id').having('COUNT(hibernations.id) = 0 OR COUNT(hibernations.finished_at IS NULL OR NULL) = 0')
+  }
+  scope :hibernated, -> { joins(:hibernations).where(completed_at: nil).where(hibernations: { finished_at: nil }) }
   scope :completed, -> { joins(:hibernations).where.not(completed_at: nil).where(hibernations: { finished_at: nil }) }
 
   def self.from_omniauth(auth, params)
