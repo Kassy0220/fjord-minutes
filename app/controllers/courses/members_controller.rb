@@ -11,6 +11,6 @@ class Courses::MembersController < Courses::ApplicationController
 
   def target_members
     scope = params[:status].nil? ? 'active' : params[:status]
-    { 'active' => Member.active, 'hibernated' => Member.hibernated, 'completed' => Member.completed }[scope]
+    { 'active' => Member.active, 'hibernated' => Member.hibernated, 'completed' => Member.completed.where(hibernations: { finished_at: nil }) }[scope]
   end
 end

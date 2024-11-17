@@ -18,7 +18,7 @@ class Member < ApplicationRecord
     left_joins(:hibernations).group('members.id').having('COUNT(hibernations.id) = 0 OR COUNT(hibernations.finished_at IS NULL OR NULL) = 0')
   }
   scope :hibernated, -> { joins(:hibernations).where(completed_at: nil).where(hibernations: { finished_at: nil }) }
-  scope :completed, -> { joins(:hibernations).where.not(completed_at: nil).where(hibernations: { finished_at: nil }) }
+  scope :completed, -> { joins(:hibernations).where.not(completed_at: nil) }
 
   def self.from_omniauth(auth, params)
     find_or_create_by(provider: auth.provider, uid: auth.uid) do |member|
