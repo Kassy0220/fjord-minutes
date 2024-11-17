@@ -7,6 +7,9 @@
       <li class="me-2">
         <%= link_to '休会', course_members_path(course, status: 'hibernated'), class: active_tab == 'hibernated' ? 'active_small_tab_item' : 'small_tab_item' %>
       </li>
+      <li class="me-2">
+        <%= link_to '修了', course_members_path(course, status: 'completed'), class: active_tab == 'completed' ? 'active_small_tab_item' : 'small_tab_item' %>
+      </li>
     </ul>
   <% end %>
 </div>

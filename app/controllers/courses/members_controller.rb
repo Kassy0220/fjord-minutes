@@ -2,8 +2,15 @@
 
 class Courses::MembersController < Courses::ApplicationController
   def index
-    members = params[:status] == 'hibernated' ? Member.hibernated : Member.active
+    members = target_members
     members = Member.active unless admin_signed_in?
     @members = members.where(course: @course).order(:created_at)
+  end
+
+  private
+
+  def target_members
+    scope = params[:status].nil? ? 'active' : params[:status]
+    { 'active' => Member.active, 'hibernated' => Member.hibernated, 'completed' => Member.completed }[scope]
   end
 end
