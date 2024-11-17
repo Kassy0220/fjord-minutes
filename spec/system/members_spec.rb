@@ -20,6 +20,29 @@ RSpec.describe 'Members', type: :system do
       expect(page).not_to have_selector 'button.open_modal', text: 'チーム開発を抜ける'
     end
 
+    scenario 'display the start date of hibernation if the member is hibernated' do
+      rails_course = FactoryBot.create(:rails_course)
+      member = FactoryBot.create(:member, course: rails_course)
+      hibernated_member = FactoryBot.create(:member, :another_member, course: rails_course)
+      date_of_hibernation = Time.zone.today + 30.days
+      FactoryBot.create(:hibernation, member: hibernated_member, created_at: date_of_hibernation)
+
+      login_as member
+      visit member_path(hibernated_member)
+      expect(page).to have_content "#{date_of_hibernation.strftime('%Y/%m/%d')}から休会"
+    end
+
+    scenario 'display the completed date if the member is completed' do
+      rails_course = FactoryBot.create(:rails_course)
+      member = FactoryBot.create(:member, course: rails_course)
+      completed_date = Time.zone.today + 30.days
+      completed_member = FactoryBot.create(:member, :another_member, completed_at: completed_date, course: rails_course)
+
+      login_as member
+      visit member_path(completed_member)
+      expect(page).to have_content "#{completed_date.strftime('%Y/%m/%d')}に修了"
+    end
+
     context 'when display member attendances' do
       let(:rails_course) { FactoryBot.create(:rails_course) }
       let(:member) { FactoryBot.create(:member, course: rails_course, created_at: Time.zone.local(2024, 12, 1)) }
