@@ -11,7 +11,7 @@ class Member < ApplicationRecord
   has_many :topics, as: :topicable, dependent: :destroy
   has_many :hibernations, dependent: :destroy
 
-  scope :active, -> { where.not(id: hibernated.pluck(:id)) }
+  scope :active, -> { where.not('EXISTS(SELECT 1 FROM hibernations WHERE member_id = members.id AND finished_at IS NULL)') }
   scope :hibernated, -> { joins(:hibernations).where(hibernations: { finished_at: nil }) }
 
   def self.from_omniauth(auth, params)
