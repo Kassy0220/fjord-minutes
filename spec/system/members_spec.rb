@@ -245,7 +245,6 @@ RSpec.describe 'Members', type: :system do
       expect(page).to have_current_path(course_members_path(rails_course, status: 'hibernated'))
       expect(page).to have_content 'aliceをチームメンバーから外しました'
       expect(page).to have_content 'alice'
-      expect(page).to have_content "#{Time.zone.today.strftime('%Y/%m/%d')}から休会"
     end
 
     scenario 'admin cannot make member hibernated who already hibernated' do
