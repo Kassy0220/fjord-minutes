@@ -12,7 +12,6 @@ class Member < ApplicationRecord
   has_many :hibernations, dependent: :destroy
 
   scope :active, -> { where.not('EXISTS(SELECT 1 FROM hibernations WHERE member_id = members.id AND finished_at IS NULL)') }
-  scope :hibernated, -> { joins(:hibernations).where(hibernations: { finished_at: nil }) }
 
   def self.from_omniauth(auth, params)
     find_or_create_by(provider: auth.provider, uid: auth.uid) do |member|
