@@ -51,12 +51,13 @@ RSpec.describe Member, type: :model do
       expect(member.all_attendances).to match_array(october_attendances)
     end
 
-    it 'attendances during hibernation period is treated as hibernation' do
+    it 'does not include attendances during hibernated period' do
       FactoryBot.create(:hibernation, finished_at: Time.zone.local(2024, 11, 30), member:, created_at: Time.zone.local(2024, 11, 1))
 
-      attendance_during_hibernation = { minute_id: unexcused_absent_minute.id, date: Date.new(2024, 11, 6), status: 'hibernation', time: nil,
-                                        absence_reason: nil }
-      expect(member.all_attendances).to include(attendance_during_hibernation)
+      attendances_dates = member.all_attendances.pluck(:date)
+      expect(attendances_dates).to include(Date.new(2024, 10, 2))
+      expect(attendances_dates).to include(Date.new(2024, 10, 16))
+      expect(attendances_dates).not_to include(Date.new(2024, 11, 1))
     end
   end
 end
