@@ -5,7 +5,7 @@
         <%= link_to '現役', course_members_path(course, status: 'active'), class: active_tab == 'active' ? 'active_small_tab_item' : 'small_tab_item' %>
       </li>
       <li class="me-2">
-        <%= link_to '休会', course_members_path(course, status: 'hibernated'), class: active_tab == 'hibernated' ? 'active_small_tab_item' : 'small_tab_item' %>
+        <%= link_to '全て', course_members_path(course, status: 'all'), class: active_tab == 'all' ? 'active_small_tab_item' : 'small_tab_item' %>
       </li>
     </ul>
   <% end %>
