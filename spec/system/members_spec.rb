@@ -194,35 +194,39 @@ RSpec.describe 'Members', type: :system do
       end
     end
 
-    scenario 'admin can view hibernated member' do
-      FactoryBot.create(:hibernation, member:, created_at: Time.zone.local(2025, 1, 1))
+    scenario 'admin can view active member and all member' do
+      hibernated_member = FactoryBot.create(:member, :another_member, course: rails_course)
+      FactoryBot.create(:hibernation, member: hibernated_member, created_at: Time.zone.local(2025, 1, 1))
 
       admin = FactoryBot.create(:admin)
       login_as_admin admin
       visit course_members_path(rails_course)
       expect(page).to have_link '現役', href: course_members_path(rails_course, status: 'active')
-      expect(page).to have_link '休会', href: course_members_path(rails_course, status: 'hibernated')
-
-      click_link '休会'
-      expect(page).to have_content 'alice'
-      expect(page).to have_content '2025/01/01から休会'
+      expect(page).to have_link '全て', href: course_members_path(rails_course, status: 'all')
 
       click_link '現役'
-      expect(page).not_to have_content 'alice'
+      expect(page).to have_content 'alice'
+      expect(page).not_to have_content hibernated_member.name
+
+      click_link '全て'
+      expect(page).to have_content 'alice'
+      expect(page).to have_content hibernated_member.name
     end
 
-    scenario 'member cannot view hibernated member' do
-      FactoryBot.create(:hibernation, member:, created_at: Time.zone.local(2025, 1, 1))
+    scenario 'member can view only active member' do
+      hibernated_member = FactoryBot.create(:member, :another_member, course: rails_course)
+      FactoryBot.create(:hibernation, member: hibernated_member, created_at: Time.zone.local(2025, 1, 1))
 
-      another_member = FactoryBot.create(:member, :another_member, course: rails_course)
-      login_as another_member
+      login_as member
       visit course_members_path(rails_course)
       expect(page).not_to have_link '現役', href: course_members_path(rails_course, status: 'active')
-      expect(page).not_to have_link '休会', href: course_members_path(rails_course, status: 'hibernated')
-      expect(page).not_to have_content 'alice'
+      expect(page).not_to have_link '全て', href: course_members_path(rails_course, status: 'all')
+      expect(page).to have_content 'alice'
+      expect(page).not_to have_content hibernated_member.name
 
       visit course_members_path(rails_course, status: 'hibernated')
-      expect(page).not_to have_content 'alice'
+      expect(page).to have_content 'alice'
+      expect(page).not_to have_content hibernated_member.name
     end
 
     scenario 'admin can make member hibernated' do
