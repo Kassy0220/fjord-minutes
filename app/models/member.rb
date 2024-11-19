@@ -40,7 +40,7 @@ class Member < ApplicationRecord
                         .order(:meeting_date)
                         .pluck(:id, :meeting_date, attendances: %i[status time absence_reason])
                         .map { |data| { minute_id: data[0], date: data[1], status: data[2], time: data[3], absence_reason: data[4] } }
-    was_hibernated? ? apply_hibernation_period(attendances) : attendances
+    was_hibernated? ? remove_hibernated_period(attendances) : attendances
   end
 
   private
@@ -49,11 +49,10 @@ class Member < ApplicationRecord
     hibernations.where.not(finished_at: nil).any?
   end
 
-  def apply_hibernation_period(attendances)
-    hibernation_period = hibernations.where.not(finished_at: nil).map { |hibernation| hibernation.created_at.to_date..hibernation.finished_at }
-    attendances.map do |attendance|
-      hibernation_period.each { |period| attendance[:status] = 'hibernation' if period.cover?(attendance[:date]) }
-      attendance
+  def remove_hibernated_period(attendances)
+    hibernated_periods = hibernations.where.not(finished_at: nil).map { |hibernation| hibernation.created_at.to_date..hibernation.finished_at }
+    attendances.reject do |attendance|
+      hibernated_periods.any? { |period| period.cover?(attendance[:date]) }
     end
   end
 end
