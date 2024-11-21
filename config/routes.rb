@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   root "home#index"
+  get 'pp', to: 'home#pp'
   resources :minutes, only: [:show, :edit] do
     resources :attendances, only: [ :new, :create ], module: :minutes
     resources :exports, only: [ :create ], module: :minutes

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class HomeController < ApplicationController
-  skip_before_action :authenticate_development_member!, only: [:index]
+  skip_before_action :authenticate_development_member!, only: %i[index pp]
 
   def index
     if current_development_member
@@ -16,4 +16,6 @@ class HomeController < ApplicationController
       render 'index'
     end
   end
+
+  def pp; end
 end
