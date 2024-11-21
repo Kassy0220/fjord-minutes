@@ -79,4 +79,9 @@ RSpec.describe 'Homes', type: :system do
     visit pp_path
     expect(page).to have_selector 'h1', text: 'プライバシーポリシー'
   end
+
+  scenario 'user can access terms of service' do
+    visit terms_of_service_path
+    expect(page).to have_selector 'h1', text: '利用規約'
+  end
 end
