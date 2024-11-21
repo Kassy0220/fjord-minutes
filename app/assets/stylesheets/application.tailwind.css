@@ -10,7 +10,7 @@
         @apply list-disc pl-8 [&_ul]:list-[revert];
     }
     ol {
-        @apply list-decimal list-inside pl-8;
+        @apply list-decimal pl-8;
     }
 }
 
