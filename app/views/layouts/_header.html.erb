@@ -1,7 +1,7 @@
 <nav id="header" class="border-b-2 border-gray-200">
-  <div class="max-w-screen-lg flex flex-wrap items-center justify-between mx-auto p-4">
-    <a href="/" class="flex items-center space-x-3 !text-blue-700">
-      <span class="self-center text-2xl font-semibold whitespace-nowrap">Fjord Minutes</span>
+  <div class="max-w-screen-lg flex flex-wrap items-center justify-between mx-auto px-4 py-2">
+    <a href="/" class="flex items-center">
+      <%= image_tag('logo.png', alt: 'Fjord Minutesのロゴ画像', class: "h-12") %>
     </a>
 
     <% if development_member_signed_in? %>
