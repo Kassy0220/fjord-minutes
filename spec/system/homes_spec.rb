@@ -19,7 +19,7 @@ RSpec.describe 'Homes', type: :system do
 
       visit root_path
       within('nav#header') do
-        expect(page).to have_link 'Fjord Minutes', href: root_path
+        expect(page).to have_selector('img[alt="Fjord Minutesのロゴ画像"]')
         expect(page).not_to have_link '議事録', href: course_minutes_path(member.course)
         expect(page).not_to have_link 'メンバー', href: course_members_path(member.course)
         expect(page).not_to have_selector("img[src$='#{member.avatar_url}']")
@@ -28,7 +28,7 @@ RSpec.describe 'Homes', type: :system do
       login_as member
       visit root_path
       within('nav#header') do
-        expect(page).to have_link 'Fjord Minutes', href: root_path
+        expect(page).to have_selector('img[alt="Fjord Minutesのロゴ画像"]')
         expect(page).to have_link '議事録', href: course_minutes_path(member.course)
         expect(page).to have_link 'メンバー', href: course_members_path(member.course)
         expect(page).to have_selector("img[src$='#{member.avatar_url}']")
