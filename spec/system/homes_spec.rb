@@ -74,4 +74,9 @@ RSpec.describe 'Homes', type: :system do
       expect(page).to have_link 'ふりかえり・計画ミーティング2024年10月23日', href: edit_minute_path(front_end_course_latest_minute)
     end
   end
+
+  scenario 'user can access privacy policy' do
+    visit pp_path
+    expect(page).to have_selector 'h1', text: 'プライバシーポリシー'
+  end
 end
