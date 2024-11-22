@@ -23,10 +23,6 @@ class Member < ApplicationRecord
     end
   end
 
-  def admin?
-    false
-  end
-
   def hibernated?
     hibernations.where(finished_at: nil).any?
   end
