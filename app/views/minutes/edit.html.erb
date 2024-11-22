@@ -5,7 +5,7 @@
     <h1>ふりかえり</h1>
 
     <h2>メンバー</h2>
-    <%= content_tag :div, id: 'attendees_list', data: {minuteId: @minute.id, currentMemberId: current_development_member.id, isAdmin: current_development_member.admin?}.to_json do %><% end %>
+    <%= content_tag :div, id: 'attendees_list', data: {minuteId: @minute.id, currentMemberId: current_development_member.id, isAdmin: admin_signed_in?}.to_json do %><% end %>
 
     <h2>デモ</h2>
     <p>
@@ -14,8 +14,8 @@
 
     <h2>今週のリリースの確認</h2>
     <p>木曜日の15時頃リリースします。</p>
-    <%= content_tag :div, id: 'release_branch_form', data: {minuteId: @minute.id, description: 'branch', content: @minute.release_branch, isAdmin: current_development_member.admin?}.to_json do %><% end %>
-    <%= content_tag :div, id: 'release_note_form', data: {minuteId: @minute.id, description: 'note', content: @minute.release_note, isAdmin: current_development_member.admin?}.to_json do %><% end %>
+    <%= content_tag :div, id: 'release_branch_form', data: {minuteId: @minute.id, description: 'branch', content: @minute.release_branch, isAdmin: admin_signed_in?}.to_json do %><% end %>
+    <%= content_tag :div, id: 'release_note_form', data: {minuteId: @minute.id, description: 'note', content: @minute.release_note, isAdmin: admin_signed_in?}.to_json do %><% end %>
 
     <h2>話題にしたいこと・心配事</h2>
     <p>明確に共有すべき事・困っている事以外にも、気分的に心配な事などを話すためにあります。</p>
@@ -27,10 +27,10 @@
                                                 currentDevelopmentMemberType: current_development_member.class.name}.to_json do %><% end %>
 
     <h2>その他</h2>
-    <%= content_tag :div, id: 'other_form', data: {minuteId: @minute.id, content: @minute.other, isAdmin: current_development_member.admin?}.to_json do %><% end %>
+    <%= content_tag :div, id: 'other_form', data: {minuteId: @minute.id, content: @minute.other, isAdmin: admin_signed_in?}.to_json do %><% end %>
 
     <h1>次回のMTG</h1>
-    <%= content_tag :div, id: 'next_meeting_date_form', data: {minuteId: @minute.id, nextMeetingDate: @minute.next_meeting_date, isAdmin: current_development_member.admin?}.to_json do %><% end %>
+    <%= content_tag :div, id: 'next_meeting_date_form', data: {minuteId: @minute.id, nextMeetingDate: @minute.next_meeting_date, isAdmin: admin_signed_in?}.to_json do %><% end %>
 
     <h1>計画ミーティング</h1>
     <ul>
@@ -38,10 +38,10 @@
     </ul>
 
     <h1>欠席者</h1>
-    <%= content_tag :div, id: 'absentees_list', data: {minuteId: @minute.id, currentMemberId: current_development_member.id, isAdmin: current_development_member.admin?}.to_json do %><% end %>
+    <%= content_tag :div, id: 'absentees_list', data: {minuteId: @minute.id, currentMemberId: current_development_member.id, isAdmin: admin_signed_in?}.to_json do %><% end %>
 
     <h2>連絡なし</h2>
-    <%= content_tag :div, id: 'unexcused_absentees_list', data: {minuteId: @minute.id, currentMemberId: current_development_member.id, isAdmin: current_development_member.admin?}.to_json do %><% end %>
+    <%= content_tag :div, id: 'unexcused_absentees_list', data: {minuteId: @minute.id, currentMemberId: current_development_member.id, isAdmin: admin_signed_in?}.to_json do %><% end %>
   </div>
 
   <div class="my-8 text-center">

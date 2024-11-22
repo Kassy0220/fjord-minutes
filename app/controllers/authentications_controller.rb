@@ -14,7 +14,7 @@ class AuthenticationsController < Devise::OmniauthCallbacksController
     if @member_or_admin.persisted?
       sign_in_and_redirect @member_or_admin
       remember_me @member_or_admin
-      if @member_or_admin.admin? || !@member_or_admin.hibernated?
+      if admin_signed_in? || !@member_or_admin.hibernated?
         set_flash_message(:notice, :success, kind: 'GitHub')
         return
       end
