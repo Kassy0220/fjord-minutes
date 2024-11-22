@@ -4,7 +4,7 @@
 
     <%= content_tag :div, id: 'minute_preview', data: {markdown: MarkdownBuilder.build(@minute)}.to_json, class: 'mb-4' do %><% end %>
 
-    <% if current_development_member.admin? %>
+    <% if admin_signed_in? %>
       <%= button_to 'GitHub Wiki にエクスポート', minute_exports_path(@minute), form: { class: 'text-center' },  class: 'button m-auto' %>
     <% end %>
 
