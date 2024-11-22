@@ -6,7 +6,7 @@ class MinutesController < ApplicationController
   def show; end
 
   def edit
-    @topics = @minute.topics.order(:created_at)
+    @topics = Topic.includes(:topicable).where(minute: @minute).order(:created_at)
   end
 
   private
