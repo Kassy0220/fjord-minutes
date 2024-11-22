@@ -84,4 +84,15 @@ RSpec.describe 'Homes', type: :system do
     visit terms_of_service_path
     expect(page).to have_selector 'h1', text: '利用規約'
   end
+
+  scenario 'footer contains privacy policy, terms of service, repository link, and copyright' do
+    visit root_path
+    expect(page).to have_selector 'footer'
+    within('footer') do
+      expect(page).to have_link '利用規約', href: terms_of_service_path
+      expect(page).to have_link 'プライバシーポリシー', href: pp_path
+      expect(page).to have_link href: 'https://github.com/Kassy0220/fjord-minutes'
+      expect(page).to have_selector 'span', text: '© 2024 Kassy0220'
+    end
+  end
 end
