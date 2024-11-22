@@ -17,11 +17,12 @@
     <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
   </head>
 
-  <body>
+  <body class="flex flex-col h-screen">
     <%= render 'layouts/header' %>
-    <main class="container mx-auto mt-5 px-5 max-w-5xl">
+    <main class="glow container mx-auto mt-5 px-5 max-w-5xl">
       <%= render 'layouts/flash' %>
       <%= yield %>
     </main>
+    <%= render 'layouts/footer' %>
   </body>
 </html>
