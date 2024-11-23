@@ -6,7 +6,7 @@ class Members::HibernationsController < Members::ApplicationController
 
   def create
     @member.hibernations.create!
-    redirect_to course_members_path(@member.course, status: 'hibernated'), notice: "#{@member.name}をチームメンバーから外しました"
+    redirect_to course_members_path(@member.course, status: 'all'), notice: "#{@member.name}をチームメンバーから外しました"
   end
 
   private
@@ -14,6 +14,6 @@ class Members::HibernationsController < Members::ApplicationController
   def prohibit_duplicate_hibernations
     return unless @member.hibernated?
 
-    redirect_to course_members_path(@member.course, status: 'hibernated'), alert: "#{@member.name}さんはすでにチームメンバーから外れています"
+    redirect_to course_members_path(@member.course, status: 'all'), alert: "#{@member.name}さんはすでにチームメンバーから外れています"
   end
 end
