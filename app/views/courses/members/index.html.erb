@@ -13,7 +13,7 @@
       <ul class="list-disc list-inside">
         <% @members.each do |member| %>
           <li class="mb-4" data-member="<%= member.id %>">
-            <%= image_tag member.avatar_url, class: member.hibernated? ? 'inactive_member_icon' : 'member_icon' %>
+            <%= image_tag member.avatar_url, class: 'w-12 h-12 inline-block rounded-full border border-gray-300' %>
             <%= link_to "#{member.name}", member, class: "py-3 inline-block" %>
             <% if admin_signed_in? && !member.hibernated? %>
               <%= content_tag :div, class: 'hibernation_button inline-block', data: {member_id: member.id, member_name: member.name}.to_json do %><% end %>
