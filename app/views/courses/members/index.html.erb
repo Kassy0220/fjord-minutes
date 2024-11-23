@@ -15,6 +15,9 @@
           <li class="mb-4" data-member="<%= member.id %>">
             <%= image_tag member.avatar_url, class: 'w-12 h-12 inline-block rounded-full border border-gray-300' %>
             <%= link_to "#{member.name}", member, class: "py-3 inline-block" %>
+            <% if member.hibernated? %>
+              <span class="text-sm text-gray-500">離脱中</span>
+            <% end %>
             <% if admin_signed_in? && !member.hibernated? %>
               <%= content_tag :div, class: 'hibernation_button inline-block', data: {member_id: member.id, member_name: member.name}.to_json do %><% end %>
             <% end %>
