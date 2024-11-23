@@ -37,8 +37,8 @@ class API::Minutes::TopicsController < API::Minutes::ApplicationController
   end
 
   def broadcast_to_channel
+    topics = Topic.includes(:topicable).where(minute: @minute).order(:created_at)
     MinuteChannel.broadcast_to(@minute,
-                               body: { topics: @minute.topics.order(:created_at).as_json(only: %i[id content topicable_id topicable_type],
-                                                                                         include: { topicable: { only: [:name] } }) })
+                               body: { topics: topics.as_json(only: %i[id content topicable_id topicable_type], include: { topicable: { only: [:name] } }) })
   end
 end
