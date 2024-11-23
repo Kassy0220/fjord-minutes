@@ -13,10 +13,6 @@ class ApplicationController < ActionController::Base
 
   private
 
-  def admin_login?
-    development_member_signed_in? && current_development_member.is_a?(Admin)
-  end
-
   def prohibit_hibernated_member_access
     return unless member_signed_in? && current_member.hibernated?
 
