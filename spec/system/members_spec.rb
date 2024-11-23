@@ -209,7 +209,10 @@ RSpec.describe 'Members', type: :system do
 
       click_link '全て'
       expect(page).to have_content 'alice'
-      expect(page).to have_content hibernated_member.name
+      within("li[data-member='#{hibernated_member.id}']") do
+        expect(page).to have_content hibernated_member.name
+        expect(page).to have_content '離脱中'
+      end
     end
 
     scenario 'member can view only active member' do
