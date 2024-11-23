@@ -244,7 +244,7 @@ RSpec.describe 'Members', type: :system do
         find('#accept_modal').click
       end.to change(member.hibernations, :count).by(1)
       # expect(current_page)だとクエリ部分が無視されてしまうため、expect(page).to have_current_pathでテストする
-      expect(page).to have_current_path(course_members_path(rails_course, status: 'hibernated'))
+      expect(page).to have_current_path(course_members_path(rails_course, status: 'all'))
       expect(page).to have_content 'aliceをチームメンバーから外しました'
       expect(page).to have_content 'alice'
     end
@@ -261,7 +261,7 @@ RSpec.describe 'Members', type: :system do
         end
         find('#accept_modal').click
       end.not_to change(member.hibernations, :count)
-      expect(page).to have_current_path(course_members_path(rails_course, status: 'hibernated'))
+      expect(page).to have_current_path(course_members_path(rails_course, status: 'all'))
       expect(page).to have_content 'aliceさんはすでにチームメンバーから外れています'
     end
   end
