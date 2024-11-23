@@ -5,7 +5,7 @@ class HomeController < ApplicationController
 
   def index
     if current_development_member
-      if admin_login?
+      if admin_signed_in?
         @courses = Course.includes(:minutes).order(:id)
         render 'admin_dashboard'
       else
