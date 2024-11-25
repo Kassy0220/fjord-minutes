@@ -28,27 +28,34 @@ class Member < ApplicationRecord
   end
 
   def all_attendances
-    join_query = "LEFT JOIN (SELECT * FROM attendances WHERE member_id = #{id}) AS attendances ON minutes.id = attendances.minute_id"
-    target_period = hibernated? ? (created_at..hibernations.last.created_at) : (created_at..)
-    attendances = Minute.joins(join_query)
-                        .where(course_id:)
-                        .where(meeting_date: target_period)
-                        .order(:meeting_date)
-                        .pluck(:id, :meeting_date, attendances: %i[status time absence_reason])
-                        .map { |data| { minute_id: data[0], date: data[1], status: data[2], time: data[3], absence_reason: data[4] } }
-    was_hibernated? ? remove_hibernated_period(attendances) : attendances
+    attendances = hibernated? ? attendance_list(to: hibernations.last.created_at) : attendance_list
+    attendances = mark_hibernation_period(attendances) if was_hibernated?
+    attendances_by_year = attendances.group_by { |attendance| attendance[:date].year }
+    attendances_by_year.transform_values do |annual_attendances|
+      annual_attendances.chunk { |attendance| attendance[:status] == 'hibernation' ? nil : false }.flat_map { |v| v[1].each_slice(12).to_a }
+    end
   end
 
   private
+
+  def attendance_list(from: created_at, to: nil)
+    Minute.joins("LEFT JOIN (SELECT * FROM attendances WHERE member_id = #{id}) AS attendances ON minutes.id = attendances.minute_id")
+          .where(course_id:)
+          .where(meeting_date: from..to)
+          .order(:meeting_date)
+          .pluck(:id, :meeting_date, attendances: %i[status time absence_reason])
+          .map { |data| { minute_id: data[0], date: data[1], status: data[2], time: data[3], absence_reason: data[4] } }
+  end
 
   def was_hibernated?
     hibernations.where.not(finished_at: nil).any?
   end
 
-  def remove_hibernated_period(attendances)
-    hibernated_periods = hibernations.where.not(finished_at: nil).map { |hibernation| hibernation.created_at.to_date..hibernation.finished_at }
-    attendances.reject do |attendance|
-      hibernated_periods.any? { |period| period.cover?(attendance[:date]) }
+  def mark_hibernation_period(attendances)
+    hibernation_period = hibernations.where.not(finished_at: nil).map { |hibernation| hibernation.created_at.to_date..hibernation.finished_at }
+    attendances.map do |attendance|
+      hibernation_period.each { |period| attendance[:status] = 'hibernation' if period.cover?(attendance[:date]) }
+      attendance
     end
   end
 end
