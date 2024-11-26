@@ -169,7 +169,7 @@ RSpec.describe 'Members', type: :system do
       expect(page).to have_selector "img[src='#{front_end_member.avatar_url}']"
     end
 
-    scenario 'member\'s last half year attendance is also displayed' do
+    scenario 'member\'s last half year attendance is displayed' do
       FactoryBot.create(:minute, meeting_date: Time.zone.local(2025, 1, 1), course: rails_course)
       FactoryBot.build_list(:minute, 12) do |minute|
         minute.meeting_date = MeetingDateCalculator.next_meeting_date(rails_course.minutes.last.meeting_date, rails_course.meeting_week)
@@ -186,24 +186,22 @@ RSpec.describe 'Members', type: :system do
       login_as member
       visit course_members_path(rails_course)
       within("li[data-member='#{member.id}']") do
-        expect(page).to have_selector 'table'
-        expect(page).to have_selector 'th', count: 12
-        expect(page).to have_selector 'td', count: 12
-        expect(page).not_to have_selector 'span[data-table-head="2025-01-01"]', text: '01/01'
-        expect(page).to have_selector 'span[data-table-head="2025-01-15"]', text: '01/15'
-        expect(page).to have_selector 'span[data-table-data="2025-01-15"]', text: '昼'
-        expect(page).to have_selector 'span[data-table-head="2025-07-02"]', text: '07/02'
-        expect(page).to have_selector 'span[data-table-data="2025-07-02"]', text: '昼'
+        expect(page).to have_selector 'div[data-table-head]', count: 12
+        expect(page).to have_selector 'div[data-table-body]', count: 12
+        expect(page).not_to have_selector 'div[data-table-head="2025-01-01"]', text: '01/01'
+        expect(page).to have_selector 'div[data-table-head="2025-01-15"]', text: '01/15'
+        expect(page).to have_selector 'div[data-table-body="2025-01-15"]', text: '昼'
+        expect(page).to have_selector 'div[data-table-head="2025-07-02"]', text: '07/02'
+        expect(page).to have_selector 'div[data-table-body="2025-07-02"]', text: '昼'
       end
       within("li[data-member='#{another_member.id}']") do
-        expect(page).to have_selector 'table'
-        expect(page).to have_selector 'th', count: 7
-        expect(page).to have_selector 'td', count: 7
-        expect(page).not_to have_selector 'span[data-table-head="2025-03-19"]', text: '03/19'
-        expect(page).to have_selector 'span[data-table-head="2025-04-02"]', text: '04/02'
-        expect(page).to have_selector 'span[data-table-data="2025-04-02"]', text: '夜'
-        expect(page).to have_selector 'span[data-table-head="2025-07-02"]', text: '07/02'
-        expect(page).to have_selector 'span[data-table-data="2025-07-02"]', text: '夜'
+        expect(page).to have_selector 'div[data-table-head]', count: 7
+        expect(page).to have_selector 'div[data-table-body]', count: 7
+        expect(page).not_to have_selector 'div[data-table-head="2025-03-19"]', text: '03/19'
+        expect(page).to have_selector 'div[data-table-head="2025-04-02"]', text: '04/02'
+        expect(page).to have_selector 'div[data-table-body="2025-04-02"]', text: '夜'
+        expect(page).to have_selector 'div[data-table-head="2025-07-02"]', text: '07/02'
+        expect(page).to have_selector 'div[data-table-body="2025-07-02"]', text: '夜'
       end
     end
 
