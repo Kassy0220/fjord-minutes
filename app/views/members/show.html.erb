@@ -4,10 +4,29 @@
   </h1>
 
   <div class="mb-8">
-    <% if @member.hibernated? %>
-      <p class="mb-2"><%= @member.hibernations.last.created_at.strftime('%Y/%m/%d') %>から休会</p>
+    <% @member.all_attendances.each do |year, attendances_by_year| %>
+      <div class="mb-8">
+        <p class="mb-2 text-xl"><%= year %>年</p>
+        <% attendances_by_year.each do |attendances| %>
+          <div class="mb-2">
+            <div class="flex">
+              <% attendances.each do |attendance| %>
+                <div class="w-16 text-center first:border [&:nth-child(n+2)]:border-t [&:nth-child(n+2)]:border-r [&:nth-child(n+2)]:border-b border-gray-400 p-2 bg-gray-200">
+                  <%= attendance[:date].strftime('%m/%d') %>
+                </div>
+              <% end %>
+            </div>
+            <div class="flex">
+              <% attendances.each do |attendance| %>
+                <div class="w-16 text-center first:border-l border-r border-b border-gray-400 p-2">
+                  <%= attendance_status(attendance[:status], attendance[:time]) %>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      </div>
     <% end %>
-    <%= content_tag :div, id: 'all_attendance_table', data: {attendances: @member.all_attendances}.to_json do %><% end %>
   </div>
 
   <% if @member == current_development_member %>
