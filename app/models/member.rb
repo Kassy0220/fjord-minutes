@@ -29,10 +29,9 @@ class Member < ApplicationRecord
 
   def all_attendances
     attendances = hibernated? ? attendance_list(to: hibernations.last.created_at) : attendance_list
-    attendances = mark_hibernation_period(attendances) if was_hibernated?
     attendances_by_year = attendances.group_by { |attendance| attendance[:date].year }
     attendances_by_year.transform_values do |annual_attendances|
-      annual_attendances.chunk { |attendance| attendance[:status] == 'hibernation' ? nil : false }.flat_map { |v| v[1].each_slice(12).to_a }
+      split_for_display(annual_attendances)
     end
   end
 
@@ -47,15 +46,14 @@ class Member < ApplicationRecord
           .map { |data| { minute_id: data[0], date: data[1], status: data[2], time: data[3], absence_reason: data[4] } }
   end
 
-  def was_hibernated?
-    hibernations.where.not(finished_at: nil).any?
-  end
-
-  def mark_hibernation_period(attendances)
-    hibernation_period = hibernations.where.not(finished_at: nil).map { |hibernation| hibernation.created_at.to_date..hibernation.finished_at }
-    attendances.map do |attendance|
-      hibernation_period.each { |period| attendance[:status] = 'hibernation' if period.cover?(attendance[:date]) }
-      attendance
+  def split_for_display(attendances)
+    # 以下の条件で出席を分割する
+    # 1. 離脱期間が含まれる場合は、離脱期間に含まれる出席と含まれない出席を分割し、離脱期間に含まれる出席は削除する
+    # 2. 出席を半年分(12回)ごとに分割する
+    hibernation_periods = hibernations.where.not(finished_at: nil).map { |hibernation| hibernation.created_at.to_date..hibernation.finished_at }
+    attendances_without_hibernation_period = attendances.chunk do |attendance|
+      hibernation_periods.any? { |period| period.cover?(attendance[:date]) } ? nil : false
     end
+    attendances_without_hibernation_period.flat_map { |v| v[1].each_slice(12).to_a }
   end
 end
