@@ -8,7 +8,6 @@ import NextMeetingDateForm from './components/NextMeetingDateForm.jsx'
 import AbsenteesList from './components/AbsenteesList.jsx'
 import UnexcusedAbsenteesList from './components/UnexcusedAbsenteesList.jsx'
 import MinutePreview from './components/MinutePreview.jsx'
-import AttendanceTable from './components/AttendanceTable.jsx'
 import HibernationButton from './components/HibernationButton.jsx'
 import LogoutButton from './components/LogoutButton.jsx'
 import './toggleAttendanceForm'
@@ -26,5 +25,4 @@ mountComponent('unexcused_absentees_list', UnexcusedAbsenteesList)
 mountComponent('minute_preview', MinutePreview)
 mountComponent('logout_button', LogoutButton)
 
-mountMultipleComponents('recent_attendances', AttendanceTable)
 mountMultipleComponents('hibernation_button', HibernationButton)
