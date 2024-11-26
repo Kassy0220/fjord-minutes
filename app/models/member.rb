@@ -35,6 +35,12 @@ class Member < ApplicationRecord
     end
   end
 
+  def recent_attendances
+    from = was_hibernated? ? hibernations.where.not(finished_at: nil).last.finished_at : created_at
+    to = hibernated? ? hibernations.last.created_at : nil
+    attendance_list(from:, to:).pop(12)
+  end
+
   private
 
   def attendance_list(from: created_at, to: nil)
@@ -55,5 +61,9 @@ class Member < ApplicationRecord
       hibernation_periods.any? { |period| period.cover?(attendance[:date]) } ? nil : false
     end
     attendances_without_hibernation_period.flat_map { |v| v[1].each_slice(12).to_a }
+  end
+
+  def was_hibernated?
+    hibernations.where.not(finished_at: nil).any?
   end
 end

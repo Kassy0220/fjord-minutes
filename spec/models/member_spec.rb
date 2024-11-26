@@ -84,4 +84,44 @@ RSpec.describe Member, type: :model do
       expect(attendances_in_the_latest_year.second.last[:date]).to eq Date.new(2025, 7, 2)
     end
   end
+
+  describe '#recent_attendances' do
+    let(:rails_course) { FactoryBot.create(:rails_course) }
+    let(:member) { FactoryBot.create(:member, course: rails_course) }
+
+    before do
+      member.update!(created_at: Time.zone.local(2024, 12, 1))
+      FactoryBot.create(:minute, meeting_date: Time.zone.local(2024, 12, 18), course: rails_course)
+      FactoryBot.build_list(:minute, 12) do |minute|
+        minute.meeting_date = MeetingDateCalculator.next_meeting_date(rails_course.minutes.last.meeting_date, rails_course.meeting_week)
+        minute.course = rails_course
+        minute.save!
+      end
+    end
+
+    it 'returns recent attendances up to twelve' do
+      first_attendance = { minute_id: rails_course.minutes.first.id, date: Date.new(2025, 12, 18), status: nil, time: nil, absence_reason: nil }
+      second_attendance = { minute_id: rails_course.minutes.second.id, date: Date.new(2025, 1, 1), status: nil, time: nil, absence_reason: nil }
+      last_attendance = { minute_id: rails_course.minutes.last.id, date: Date.new(2025, 6, 18), status: nil, time: nil, absence_reason: nil }
+
+      expect(member.recent_attendances.length).to eq 12
+      expect(member.recent_attendances).not_to include(first_attendance)
+      expect(member.recent_attendances).to include(second_attendance)
+      expect(member.recent_attendances).to include(last_attendance)
+    end
+
+    it 'returns attendances until the hibernation started if the member is hibernated' do
+      FactoryBot.create(:hibernation, member:, created_at: Time.zone.local(2024, 12, 31))
+      expect(member.recent_attendances.length).to eq 1
+      expect(member.recent_attendances.first[:date]).to eq Date.new(2024, 12, 18)
+    end
+
+    it 'returns attendances from the latest returned date if the member was hibernated' do
+      FactoryBot.create(:hibernation, member:, created_at: Time.zone.local(2025, 1, 1), finished_at: Time.zone.local(2025, 1, 31))
+      FactoryBot.create(:hibernation, member:, created_at: Time.zone.local(2025, 4, 1), finished_at: Time.zone.local(2025, 4, 30))
+      expect(member.recent_attendances.length).to eq 4
+      attendance_dates = member.recent_attendances.pluck(:date)
+      expect(attendance_dates).to contain_exactly(Date.new(2025, 5, 7), Date.new(2025, 5, 21), Date.new(2025, 6, 4), Date.new(2025, 6, 18))
+    end
+  end
 end
