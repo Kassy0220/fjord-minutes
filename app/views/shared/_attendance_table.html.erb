@@ -10,9 +10,7 @@
   <% attendances.each do |attendance| %>
     <div class="w-16 text-center first:border-l border-r border-b border-gray-400 p-2" data-table-body="<%= attendance[:date].strftime('%Y-%m-%d') %>">
       <% if attendance[:status] == 'absent' %>
-        <span data-tooltip-target="tooltip_absence_reason">
-          <%= attendance_status(attendance[:status], attendance[:time]) %>
-        </span>
+        <span data-tooltip-target="tooltip_absence_reason">欠席</span>
         <div id="tooltip_absence_reason" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-700 rounded-lg shadow-sm opacity-0 tooltip">
           <%= attendance[:absence_reason] %>
           <div class="tooltip-arrow" data-popper-arrow></div>
