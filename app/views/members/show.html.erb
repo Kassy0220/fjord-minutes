@@ -9,32 +9,7 @@
         <p class="mb-2 text-xl"><%= year %>年</p>
         <% attendances_by_year.each.with_index do |attendances, i| %>
           <div class="mb-2" data-attendance-table="<%= i + 1 %>">
-            <div class="flex">
-              <% attendances.each do |attendance| %>
-                <div class="w-16 text-center first:border [&:nth-child(n+2)]:border-t [&:nth-child(n+2)]:border-r [&:nth-child(n+2)]:border-b border-gray-400 p-2 bg-gray-200"
-                     data-table-head="<%= attendance[:date].strftime('%Y-%m-%d') %>">
-                  <%= attendance[:date].strftime('%m/%d') %>
-                </div>
-              <% end %>
-            </div>
-            <div class="flex">
-              <% attendances.each do |attendance| %>
-                <div class="w-16 text-center first:border-l border-r border-b border-gray-400 p-2" data-table-body="<%= attendance[:date].strftime('%Y-%m-%d') %>">
-                  <% if attendance[:status] == 'absent' %>
-                    <span data-tooltip-target="tooltip_absence_reason">
-                      <%= attendance_status(attendance[:status], attendance[:time]) %>
-                    </span>
-
-                    <div id="tooltip_absence_reason" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-700 rounded-lg shadow-sm opacity-0 tooltip">
-                      <%= attendance[:absence_reason] %>
-                      <div class="tooltip-arrow" data-popper-arrow></div>
-                    </div>
-                  <% else %>
-                    <%= attendance_status(attendance[:status], attendance[:time]) %>
-                  <% end %>
-                </div>
-              <% end %>
-            </div>
+            <%= render 'shared/attendance_table', attendances: attendances %>
           </div>
         <% end %>
       </div>
