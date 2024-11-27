@@ -28,7 +28,7 @@ RSpec.describe 'Members', type: :system do
         login_as member
       end
 
-      scenario 'attendance is listed', :js do
+      scenario 'all attendances are listed', :js do
         FactoryBot.create(:minute, meeting_date: Time.zone.local(2025, 1, 1), course: rails_course)
         FactoryBot.build_list(:minute, 3) do |minute|
           minute.meeting_date = MeetingDateCalculator.next_meeting_date(rails_course.minutes.last.meeting_date, rails_course.meeting_week)
@@ -40,18 +40,20 @@ RSpec.describe 'Members', type: :system do
         FactoryBot.create(:attendance, :absence, member:, minute: rails_course.minutes.third)
 
         visit member_path(member)
-        expect(page).to have_selector 'span[data-table-head="2025-01-01"]', text: '01/01'
-        expect(page).to have_selector 'span[data-table-data="2025-01-01"]', text: '昼'
-        expect(page).to have_selector 'span[data-table-head="2025-01-15"]', text: '01/15'
-        expect(page).to have_selector 'span[data-table-data="2025-01-15"]', text: '夜'
-        expect(page).to have_selector 'span[data-table-head="2025-02-05"]', text: '02/05'
-        expect(page).to have_selector 'span[data-table-data="2025-02-05"]', text: '欠席'
-        expect(page).to have_selector 'span[data-table-head="2025-02-19"]', text: '02/19'
-        expect(page).to have_selector 'span[data-table-data="2025-02-19"]', text: '---'
+        expect(page).to have_selector 'div[data-table-head="2025-01-01"]', text: '01/01'
+        expect(page).to have_selector 'div[data-table-body="2025-01-01"]', text: '昼'
+        expect(page).to have_selector 'div[data-table-head="2025-01-15"]', text: '01/15'
+        expect(page).to have_selector 'div[data-table-body="2025-01-15"]', text: '夜'
+        expect(page).to have_selector 'div[data-table-head="2025-02-05"]', text: '02/05'
+        expect(page).to have_selector 'div[data-table-body="2025-02-05"]', text: '欠席'
+        expect(page).to have_selector 'div[data-table-head="2025-02-19"]', text: '02/19'
+        expect(page).to have_selector 'div[data-table-body="2025-02-19"]', text: '---'
 
-        expect(page).not_to have_selector 'div[data-testid="flowbite-tooltip"]', text: '体調不良のため。'
-        find('span[data-table-data="2025-02-05"]').hover
-        expect(page).to have_selector 'div[data-testid="flowbite-tooltip"]', text: '体調不良のため。'
+        expect(page).not_to have_selector 'div#tooltip_absence_reason', text: '体調不良のため。'
+        within('div[data-table-body="2025-02-05"]') do
+          find('span[data-tooltip-target="tooltip_absence_reason"]').hover
+          expect(page).to have_selector 'div#tooltip_absence_reason', text: '体調不良のため。'
+        end
       end
 
       scenario 'attendance is listed per year', :js do
@@ -64,12 +66,12 @@ RSpec.describe 'Members', type: :system do
         expect(page).to have_selector 'div[data-meeting-year="2025"]'
 
         within('div[data-meeting-year="2024"]') do
-          expect(page).to have_selector 'span[data-table-head="2024-12-18"]', text: '12/18'
-          expect(page).to have_selector 'span[data-table-data="2024-12-18"]', text: '昼'
+          expect(page).to have_selector 'div[data-table-head="2024-12-18"]', text: '12/18'
+          expect(page).to have_selector 'div[data-table-body="2024-12-18"]', text: '昼'
         end
         within('div[data-meeting-year="2025"]') do
-          expect(page).to have_selector 'span[data-table-head="2025-01-01"]', text: '01/01'
-          expect(page).to have_selector 'span[data-table-data="2025-01-01"]', text: '昼'
+          expect(page).to have_selector 'div[data-table-head="2025-01-01"]', text: '01/01'
+          expect(page).to have_selector 'div[data-table-body="2025-01-01"]', text: '昼'
         end
       end
 
@@ -83,18 +85,22 @@ RSpec.describe 'Members', type: :system do
         rails_course.minutes.each { |minute| FactoryBot.create(:attendance, member:, minute:) }
 
         visit member_path(member)
-        expect(page).to have_selector 'div[data-half-attendances="first"]'
-        expect(page).to have_selector 'div[data-half-attendances="second"]'
+        expect(page).to have_selector 'div[data-attendance-table="1"]'
+        expect(page).to have_selector 'div[data-attendance-table="2"]'
 
-        within('div[data-half-attendances="first"]') do
-          expect(page).to have_selector 'th', count: 12
-          expect(page).to have_selector 'td', count: 12
-          expect(page).to have_selector 'span[data-table-head="2025-06-18"]', text: '06/18'
-          expect(page).to have_selector 'span[data-table-data="2025-06-18"]', text: '昼'
+        within('div[data-attendance-table="1"]') do
+          expect(page).to have_selector 'div[data-table-head]', count: 12
+          expect(page).to have_selector 'div[data-table-body]', count: 12
+          expect(page).to have_selector 'div[data-table-head="2025-01-01"]', text: '01/01'
+          expect(page).to have_selector 'div[data-table-body="2025-01-01"]', text: '昼'
+          expect(page).to have_selector 'div[data-table-head="2025-06-18"]', text: '06/18'
+          expect(page).to have_selector 'div[data-table-body="2025-06-18"]', text: '昼'
         end
-        within('div[data-half-attendances="second"]') do
-          expect(page).to have_selector 'span[data-table-head="2025-07-02"]', text: '07/02'
-          expect(page).to have_selector 'span[data-table-data="2025-07-02"]', text: '昼'
+        within('div[data-attendance-table="2"]') do
+          expect(page).to have_selector 'div[data-table-head]', count: 1
+          expect(page).to have_selector 'div[data-table-body]', count: 1
+          expect(page).to have_selector 'div[data-table-head="2025-07-02"]', text: '07/02'
+          expect(page).to have_selector 'div[data-table-body="2025-07-02"]', text: '昼'
         end
       end
 
@@ -106,21 +112,29 @@ RSpec.describe 'Members', type: :system do
         FactoryBot.create(:hibernation, member: hibernated_member, created_at: Time.zone.local(2025, 2, 1))
 
         visit member_path(hibernated_member)
-        expect(page).to have_selector 'span[data-table-head="2025-01-01"]', text: '01/01'
-        expect(page).to have_selector 'span[data-table-head="2025-01-15"]', text: '01/15'
-        expect(page).not_to have_selector 'span[data-table-head="2025-02-05"]', text: '02/15'
+        expect(page).to have_selector 'div[data-table-head="2025-01-01"]', text: '01/01'
+        expect(page).to have_selector 'div[data-table-head="2025-01-15"]', text: '01/15'
+        expect(page).not_to have_selector 'div[data-table-head="2025-02-05"]', text: '02/15'
       end
 
       scenario 'does not display attendances during the hibernated period', :js do
         FactoryBot.create(:minute, meeting_date: Time.zone.local(2025, 1, 1), course: rails_course)
         FactoryBot.create(:minute, meeting_date: Time.zone.local(2025, 1, 15), course: rails_course)
         FactoryBot.create(:minute, meeting_date: Time.zone.local(2025, 2, 5), course: rails_course)
-        FactoryBot.create(:hibernation, finished_at: Time.zone.local(2025, 1, 31), member:, created_at: Time.zone.local(2025, 1, 1))
+        FactoryBot.create(:hibernation, finished_at: Time.zone.local(2025, 1, 31), member:, created_at: Time.zone.local(2025, 1, 10))
 
         visit member_path(member)
-        expect(page).not_to have_selector 'span[data-table-head="2025-01-01"]', text: '01/01'
-        expect(page).not_to have_selector 'span[data-table-head="2025-01-15"]', text: '01/15'
-        expect(page).to have_selector 'span[data-table-head="2025-02-05"]', text: '02/05'
+        expect(page).to have_selector 'div[data-attendance-table="1"]'
+        expect(page).to have_selector 'div[data-attendance-table="2"]'
+
+        within('div[data-attendance-table="1"]') do
+          expect(page).to have_selector 'div[data-table-head="2025-01-01"]', text: '01/01'
+          expect(page).not_to have_selector 'div[data-table-head="2025-01-15"]', text: '01/15'
+        end
+        within('div[data-attendance-table="2"]') do
+          expect(page).to have_selector 'div[data-table-head="2025-02-05"]', text: '02/05'
+          expect(page).not_to have_selector 'div[data-table-head="2025-01-15"]', text: '01/15'
+        end
       end
     end
   end
