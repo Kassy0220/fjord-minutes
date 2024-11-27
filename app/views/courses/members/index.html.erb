@@ -21,9 +21,13 @@
             <% if admin_signed_in? && !member.hibernated? %>
               <%= content_tag :div, class: 'hibernation_button inline-block', data: {member_id: member.id, member_name: member.name}.to_json do %><% end %>
             <% end %>
-            <div class="my-2">
-              <%= render 'shared/attendance_table', attendances: member.recent_attendances %>
-            </div>
+            <% if member.recent_attendances.empty? %>
+              <p class="mt-2"><%= member.name %>さんはまだミーティングに出席していません</p>
+            <% else %>
+              <div class="my-2">
+                <%= render 'shared/attendance_table', attendances: member.recent_attendances %>
+              </div>
+            <% end %>
           </li>
         <% end %>
       </ul>

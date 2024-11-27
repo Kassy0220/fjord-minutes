@@ -4,15 +4,19 @@
   </h1>
 
   <div class="mb-8">
-    <% @member.all_attendances.each do |year, attendances_by_year| %>
-      <div class="mb-8" data-meeting-year="<%= year %>">
-        <p class="mb-2 text-xl"><%= year %>年</p>
-        <% attendances_by_year.each.with_index do |attendances, i| %>
-          <div class="mb-2" data-attendance-table="<%= i + 1 %>">
-            <%= render 'shared/attendance_table', attendances: attendances %>
-          </div>
-        <% end %>
-      </div>
+    <% if @member.all_attendances.empty? %>
+      <p><%= @member.name %>さんはまだミーティングに出席していません</p>
+    <% else %>
+      <% @member.all_attendances.each do |year, attendances_by_year| %>
+        <div class="mb-8" data-meeting-year="<%= year %>">
+          <p class="mb-2 text-xl"><%= year %>年</p>
+          <% attendances_by_year.each.with_index do |attendances, i| %>
+            <div class="mb-2" data-attendance-table="<%= i + 1 %>">
+              <%= render 'shared/attendance_table', attendances: attendances %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
     <% end %>
   </div>
 
