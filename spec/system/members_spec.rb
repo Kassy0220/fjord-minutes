@@ -136,6 +136,11 @@ RSpec.describe 'Members', type: :system do
           expect(page).not_to have_selector 'div[data-table-head="2025-01-15"]', text: '01/15'
         end
       end
+
+      scenario 'show as not attending meeting if the member have not yet attended meeting' do
+        visit member_path(member)
+        expect(page).to have_content 'aliceさんはまだミーティングに出席していません'
+      end
     end
   end
 
@@ -202,6 +207,14 @@ RSpec.describe 'Members', type: :system do
         expect(page).to have_selector 'div[data-table-body="2025-04-02"]', text: '夜'
         expect(page).to have_selector 'div[data-table-head="2025-07-02"]', text: '07/02'
         expect(page).to have_selector 'div[data-table-body="2025-07-02"]', text: '夜'
+      end
+    end
+
+    scenario 'show as not attending meeting if the member have not yet attended meeting' do
+      login_as member
+      visit course_members_path(rails_course)
+      within("li[data-member='#{member.id}']") do
+        expect(page).to have_content 'aliceさんはまだミーティングに出席していません'
       end
     end
 
