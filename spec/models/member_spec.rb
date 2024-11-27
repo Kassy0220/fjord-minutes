@@ -23,13 +23,12 @@ RSpec.describe Member, type: :model do
 
   describe '#all_attendances' do
     let(:rails_course) { FactoryBot.create(:rails_course) }
-    let(:member) { FactoryBot.create(:member, course: rails_course) }
+    let(:member) { FactoryBot.create(:member, course: rails_course, created_at: Time.zone.local(2024, 10, 1)) }
     let(:present_minute) { FactoryBot.create(:minute, meeting_date: Time.zone.local(2024, 10, 2), course: rails_course) }
     let(:absent_minute) { FactoryBot.create(:minute, meeting_date: Time.zone.local(2024, 10, 16), course: rails_course) }
     let!(:unexcused_absent_minute) { FactoryBot.create(:minute, meeting_date: Time.zone.local(2024, 11, 6), course: rails_course) }
 
     before do
-      member.update!(created_at: Time.zone.local(2024, 10, 1))
       FactoryBot.create(:attendance, member:, minute: present_minute)
       FactoryBot.create(:attendance, :absence, member:, minute: absent_minute)
     end
@@ -87,10 +86,9 @@ RSpec.describe Member, type: :model do
 
   describe '#recent_attendances' do
     let(:rails_course) { FactoryBot.create(:rails_course) }
-    let(:member) { FactoryBot.create(:member, course: rails_course) }
+    let(:member) { FactoryBot.create(:member, course: rails_course, created_at: Time.zone.local(2024, 12, 1)) }
 
     before do
-      member.update!(created_at: Time.zone.local(2024, 12, 1))
       FactoryBot.create(:minute, meeting_date: Time.zone.local(2024, 12, 18), course: rails_course)
       FactoryBot.build_list(:minute, 12) do |minute|
         minute.meeting_date = MeetingDateCalculator.next_meeting_date(rails_course.minutes.last.meeting_date, rails_course.meeting_week)
