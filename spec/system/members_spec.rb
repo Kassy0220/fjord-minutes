@@ -260,18 +260,21 @@ RSpec.describe 'Members', type: :system do
       admin = FactoryBot.create(:admin)
       login_as_admin admin
       visit course_members_path(rails_course)
-      expect do
-        within("li[data-member='#{member.id}']") do
-          expect(page).to have_content 'alice'
-          expect(page).to have_selector 'button.open_modal', text: 'チームメンバーから外す'
-          click_button 'チームメンバーから外す'
+      within("li[data-member='#{member.id}']") do
+        expect(page).to have_content 'alice'
+        expect(page).not_to have_content '離脱中'
+        expect(page).to have_link 'チームメンバーから外す'
+        page.accept_confirm do
+          click_link 'チームメンバーから外す'
         end
-        find('#accept_modal').click
-      end.to change(member.hibernations, :count).by(1)
+      end
       # expect(current_page)だとクエリ部分が無視されてしまうため、expect(page).to have_current_pathでテストする
       expect(page).to have_current_path(course_members_path(rails_course, status: 'all'))
       expect(page).to have_content 'aliceをチームメンバーから外しました'
-      expect(page).to have_content 'alice'
+      within("li[data-member='#{member.id}']") do
+        expect(page).to have_content '離脱中'
+        expect(page).not_to have_link 'チームメンバーから外す'
+      end
     end
 
     scenario 'admin cannot make member hibernated who already hibernated' do
@@ -280,12 +283,11 @@ RSpec.describe 'Members', type: :system do
       visit course_members_path(rails_course)
 
       FactoryBot.create(:hibernation, member:)
-      expect do
-        within("li[data-member='#{member.id}']") do
-          click_button 'チームメンバーから外す'
+      within("li[data-member='#{member.id}']") do
+        page.accept_confirm do
+          click_link 'チームメンバーから外す'
         end
-        find('#accept_modal').click
-      end.not_to change(member.hibernations, :count)
+      end
       expect(page).to have_current_path(course_members_path(rails_course, status: 'all'))
       expect(page).to have_content 'aliceさんはすでにチームメンバーから外れています'
     end
