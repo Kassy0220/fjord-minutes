@@ -19,7 +19,10 @@
               <span class="text-sm text-gray-500">離脱中</span>
             <% end %>
             <% if admin_signed_in? && !member.hibernated? %>
-              <%= content_tag :div, class: 'hibernation_button inline-block', data: {member_id: member.id, member_name: member.name}.to_json do %><% end %>
+              <div class="mt-2">
+                <%= link_to 'チームメンバーから外す', member_hibernations_path(member), data: { turbo: true, turbo_method: :post, turbo_confirm: "#{member.name}さんをチームメンバーから外します、よろしいですか？" },
+                                                                                    class: "text-sm text-gray-400" %>
+              </div>
             <% end %>
             <% if member.recent_attendances.empty? %>
               <p class="mt-2"><%= member.name %>さんはまだミーティングに出席していません</p>
