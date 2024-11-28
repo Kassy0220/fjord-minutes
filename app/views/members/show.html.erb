@@ -22,7 +22,8 @@
 
   <% if @member == current_development_member %>
     <div class="mt-4 text-center">
-      <%= content_tag :div, id: 'logout_button' do %><% end %>
+      <%= button_to 'チーム開発を抜ける', logout_path, method: :delete, class: "button",
+                                                    form: { data: { turbo: true, turbo_confirm: 'チーム開発を抜けます、本当によろしいですか？' } } %>
     </div>
   <% end %>
 </div>
