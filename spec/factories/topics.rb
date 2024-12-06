@@ -11,7 +11,7 @@ FactoryBot.define do
     trait :by_member do
       content { 'gitのブランチ履歴がおかしくなってしまったので、どなたかペアプロをお願いしたいです' }
       association :minute, factory: :minute
-      association :topicable, factory: :admin
+      association :topicable, factory: :member
     end
   end
 end
