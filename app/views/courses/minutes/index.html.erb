@@ -1,3 +1,4 @@
+<% content_for(:title) { page_title("#{@course.name}の議事録一覧") } %>
 <div class="mx-auto w-full">
   <div class="mx-auto">
     <%= render 'courses/tabs/course_tab', active_tab: @course, resource: Minute %>
