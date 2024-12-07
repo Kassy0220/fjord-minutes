@@ -1,3 +1,8 @@
+<% if @member == current_development_member %>
+  <% content_for(:title) { page_title("ダッシュボード") } %>
+<% else %>
+  <% content_for(:title) { page_title("#{@member.name}さんの出席一覧") } %>
+<% end %>
 <div class="w-full">
   <h1 class="font-bold text-4xl mb-8">
     <%= "#{@member.name}さんの出席一覧(#{@member.course.name})" %>
