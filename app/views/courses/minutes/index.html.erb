@@ -1,5 +1,4 @@
-<% content_for(:title) { page_title("#{@course.name}の議事録一覧") } %>
-<% set_meta_tags(build_meta_tags("#{@course.name}の議事録一覧ページです。")) %>
+<% set_meta_tags(build_meta_tags(title: "#{@course.name}の議事録一覧", description: "#{@course.name}の議事録一覧ページです。")) %>
 <div class="mx-auto w-full">
   <div class="mx-auto">
     <%= render 'courses/tabs/course_tab', active_tab: @course, resource: Minute %>

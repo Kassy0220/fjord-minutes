@@ -1,5 +1,4 @@
-<% content_for(:title) { page_title("#{@course.name}のメンバー") } %>
-<% set_meta_tags(build_meta_tags("#{@course.name}のチームメンバー一覧ページです。")) %>
+<% set_meta_tags(build_meta_tags(title: "#{@course.name}のメンバー一覧", description: "#{@course.name}のチームメンバー一覧ページです。")) %>
 <div class="mx-auto w-full">
   <div class="mx-auto">
     <%= render 'courses/tabs/course_tab', active_tab: @course, resource: Member %>
