@@ -1,10 +1,6 @@
-<% if @member == current_development_member %>
-  <% content_for(:title) { page_title("ダッシュボード") } %>
-<% else %>
-  <% content_for(:title) { page_title("#{@member.name}さんの出席一覧") } %>
-<% end %>
+<% title = @member == current_development_member ? 'ダッシュボード' : "#{@member.name}さんの出席一覧" %>
 <% description = @member == current_development_member ? 'ダッシュボードページです。' : "#{@member.name}さんの出席一覧ページです。" %>
-<% set_meta_tags(build_meta_tags(description)) %>
+<% set_meta_tags(build_meta_tags(title:, description:)) %>
 <div class="w-full">
   <h1 class="font-bold text-4xl mb-8">
     <%= "#{@member.name}さんの出席一覧(#{@member.course.name})" %>
