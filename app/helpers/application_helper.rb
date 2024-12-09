@@ -13,7 +13,7 @@ module ApplicationHelper
         title: page_title,
         description:,
         site_name: 'Fjord Minutes',
-        image: image_url('ogp_image')
+        image: image_url('ogp_image.png')
       },
       twitter: {
         card: 'summary',
