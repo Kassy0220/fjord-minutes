@@ -14,6 +14,11 @@ module ApplicationHelper
         description:,
         site_name: 'Fjord Minutes',
         image: image_url('ogp_image')
+      },
+      twitter: {
+        card: 'summary',
+        site: '@cassy0220',
+        domain: 'https://fjord-minutes-eded74419c61.herokuapp.com'
       }
     }
   end
