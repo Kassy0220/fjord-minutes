@@ -2,7 +2,8 @@
 
 class ApplicationController < ActionController::Base
   # Only allow modern browsers supporting webp images, web push, badges, import maps, CSS nesting, and CSS :has.
-  allow_browser versions: :modern
+  # devツールのSafariなど、古いバージョンのブラウザからアクセスする必要があるため、一時的にコメントアウトする
+  # allow_browser versions: :modern
   devise_group :development_member, contains: %i[member admin]
   before_action :authenticate_development_member!
   before_action :prohibit_hibernated_member_access
