@@ -10,6 +10,10 @@ RSpec.describe MeetingSecretary, type: :model do
 
     it 'create minute of next meeting' do
       allow(Discord::Notifier).to receive(:message).and_return(nil)
+      # CI上でリポジトリのwikiのURLを参照した際にエラーが発生しないように、適当な値を返すようにする
+      # ENV.fetchが複数の引数で呼ばれるため、and_call_originalも必要
+      allow(ENV).to receive(:fetch).and_call_original
+      allow(ENV).to receive(:fetch).with('BOOTCAMP_WIKI_URL', nil).and_return('https://example.com/fjordllc/bootcamp-wiki.wiki.git')
 
       travel_to latest_minute.meeting_date + 1.day do
         expect { meeting_secretary.create_minute }.to change(rails_course.minutes, :count).by(1)
@@ -22,6 +26,9 @@ RSpec.describe MeetingSecretary, type: :model do
     end
 
     it 'does not create minute if latest meeting is not finished' do
+      # CI上でリポジトリのwikiのURLを参照した際にエラーが発生しないように、適当な値を返すようにする
+      allow(ENV).to receive(:fetch).with('BOOTCAMP_WIKI_URL', nil).and_return('https://example.com/fjordllc/bootcamp-wiki.wiki.git')
+
       travel_to latest_minute.meeting_date do
         expect { meeting_secretary.create_minute }.not_to change(rails_course.minutes, :count)
       end
@@ -51,6 +58,9 @@ RSpec.describe MeetingSecretary, type: :model do
     end
 
     it 'does not create minute if latest meeting is not finished' do
+      # CI上でリポジトリのwikiのURLを参照した際にエラーが発生しないように、適当な値を返すようにする
+      allow(ENV).to receive(:fetch).with('BOOTCAMP_WIKI_URL', nil).and_return('https://example.com/fjordllc/bootcamp-wiki.wiki.git')
+
       travel_to latest_meeting_date do
         expect { meeting_secretary.create_first_minute }.not_to change(rails_course.minutes, :count)
       end
