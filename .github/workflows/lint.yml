@@ -1,0 +1,27 @@
+name: 'Lint'
+on: push
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Install Ruby and gems
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+      - name: Setup node environment
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.node-version'
+      - name: Cache JavaScript dependencies
+        id: cache-npm
+        uses: actions/cache@v4
+        with:
+          key: npm-${{ hashFiles('package-lock.json') }}
+          path: node_modules
+      - if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
+        name: Install JavaScript dependencies
+        run: npm ci
+      - name: Run lint
+        run: bin/run_lint

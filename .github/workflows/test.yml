@@ -1,0 +1,55 @@
+name: "Test"
+on: push
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16.4 # Herokuの本番環境とバージョンを合わせる
+        ports:
+          - "5432:5432"
+        env:
+          POSTGRES_DB: rails_test
+          POSTGRES_USER: rails
+          POSTGRES_PASSWORD: password
+      redis:
+        image: redis
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
+        env:
+          REDIS_HOST: localhost
+          REDIS_PORT: 6379
+    env:
+      RAILS_ENV: test
+      DATABASE_URL: "postgres://rails:password@localhost:5432/rails_test"
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Install Ruby and gems
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+      - name: Setup node environment
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.node-version'
+      - name: Restore JavaScript dependencies
+        id: cache-npm
+        uses: actions/cache@v4
+        with:
+          key: npm-${{ hashFiles('package-lock.json') }}
+          path: node_modules
+      - if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
+        name: Install JavaScript dependencies
+        run: npm ci
+      - name: Set up database schema
+        run: bin/rails db:schema:load
+      - name: Prepare asset
+        run: bundle exec rake assets:precompile
+      - name: Run tests
+        run: bundle exec rspec
