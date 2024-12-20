@@ -280,8 +280,6 @@ RSpec.describe 'Minutes', type: :system do
     end
 
     scenario 'admin can export minute to GitHub Wiki' do
-      # CI上でリポジトリのwikiのURLを参照した際にエラーが発生しないように、適当な値を返すようにする
-      allow(ENV).to receive(:fetch).with('BOOTCAMP_WIKI_URL', nil).and_return('https://example.com/fjordllc/bootcamp-wiki.wiki.git')
       # GitHub Wikiリポジトリにpushされないようにする
       allow(GithubWikiManager).to receive(:export_minute).and_call_original
       allow(GithubWikiManager).to receive(:export_minute).with(minute).and_return(nil)
@@ -291,6 +289,9 @@ RSpec.describe 'Minutes', type: :system do
       visit minute_path(minute)
       expect(page).to have_button 'GitHub Wiki にエクスポート'
       expect(page).not_to have_link 'GitHub Wikiで確認'
+
+      # CI上でリポジトリのwikiのURLを参照した際にエラーが発生しないように、適当な値を返すようにする
+      allow(ENV).to receive(:fetch).with('BOOTCAMP_WIKI_URL', nil).and_return('https://example.com/fjordllc/bootcamp-wiki.wiki.git')
 
       click_button 'GitHub Wiki にエクスポート'
       expect(current_path).to eq course_minutes_path(minute.course)
