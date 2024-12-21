@@ -16,10 +16,4 @@ class Admin < ApplicationRecord
       member.password = Devise.friendly_token[0, 20]
     end
   end
-
-  # Action CableのコネクションのIDを作成する際に呼ばれる
-  # https://github.com/rails/rails/blob/dd8f7185faeca6ee968a6e9367f6d8601a83b8db/actioncable/lib/action_cable/connection/identification.rb#L38
-  def to_gid_param
-    to_global_id.to_param
-  end
 end
