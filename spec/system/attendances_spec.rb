@@ -268,7 +268,7 @@ RSpec.describe 'Attendances', type: :system do
       end
     end
 
-    scenario 'member cannot create attendance to already finished meeting' do
+    scenario 'member cannot edit attendance for the finished meeting' do
       attendance = FactoryBot.create(:attendance, member:, minute:)
       travel_to minute.meeting_date + 1.day do
         visit edit_attendance_path(attendance)
