@@ -105,7 +105,7 @@ RSpec.describe 'Members', type: :system do
       end
 
       scenario 'display attendances until the hibernation started if the member is hibernated', :js do
-        hibernated_member = FactoryBot.create(:member, :another_member, course: rails_course)
+        hibernated_member = FactoryBot.create(:member, :another_member, course: rails_course, created_at: Time.zone.local(2025, 1, 1))
         FactoryBot.create(:minute, meeting_date: Time.zone.local(2025, 1, 1), course: rails_course)
         FactoryBot.create(:minute, meeting_date: Time.zone.local(2025, 1, 15), course: rails_course)
         FactoryBot.create(:minute, meeting_date: Time.zone.local(2025, 2, 5), course: rails_course)
