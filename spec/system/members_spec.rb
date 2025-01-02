@@ -49,10 +49,11 @@ RSpec.describe 'Members', type: :system do
         expect(page).to have_selector 'div[data-table-head="2025-02-19"]', text: '02/19'
         expect(page).to have_selector 'div[data-table-body="2025-02-19"]', text: '---'
 
-        expect(page).not_to have_selector 'div#tooltip_absence_reason', text: '体調不良のため。'
+        attendance = Attendance.find_by(status: :absent)
+        expect(page).not_to have_selector "div#absence_reason_for_attendance_#{attendance.id}", text: '体調不良のため。'
         within('div[data-table-body="2025-02-05"]') do
-          find('span[data-tooltip-target="tooltip_absence_reason"]').hover
-          expect(page).to have_selector 'div#tooltip_absence_reason', text: '体調不良のため。'
+          find("span[data-tooltip-target='absence_reason_for_attendance_#{attendance.id}']").hover
+          expect(page).to have_selector "div#absence_reason_for_attendance_#{attendance.id}", text: '体調不良のため。'
         end
       end
 

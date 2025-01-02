@@ -19,6 +19,9 @@ require:
 AllCops:
   NewCops: enable
 
+Layout/LineLength:
+  Max: 200
+
 RSpec/StringAsInstanceDoubleConstant:
   Enabled: true
 
