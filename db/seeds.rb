@@ -55,6 +55,11 @@ members = members_data.map do |member_data|
   end
 end
 
+# Memberのcreated_atにシード実行の日時が保存されると期待した通りに出席を取得できない可能性があるため、created_atの日付を固定しておく
+members.each do |member|
+  member.update!(created_at: Time.zone.local(2025, 1, 1))
+end
+
 rookie_member = Member.find_by(email: 'rookie_member@example.com')
 rookie_member.update!(created_at: Time.zone.local(2026, 1, 10))
 
