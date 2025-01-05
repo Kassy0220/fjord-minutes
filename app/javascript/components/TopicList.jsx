@@ -83,14 +83,14 @@ function Topic({
               <button
                 type="button"
                 onClick={() => setIsEditing(true)}
-                className="button"
+                className="hover:bg-gray-100 font-medium border border-gray-400 rounded-lg text-sm px-2 py-1 me-2 mb-2 ml-2"
               >
                 編集
               </button>
               <button
                 type="button"
                 onClick={handleDelete}
-                className="button_danger"
+                className="text-gray-400 hover:bg-gray-100 font-medium border border-gray-400 rounded-lg text-sm px-2 py-1 me-2 mb-2 ml-2"
               >
                 削除
               </button>
