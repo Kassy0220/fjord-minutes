@@ -14,7 +14,7 @@
       <ul class="list-disc list-inside">
         <% @members.each do |member| %>
           <li class="mb-6" data-member="<%= member.id %>">
-            <%= image_tag member.avatar_url, class: 'w-12 h-12 inline-block rounded-full border border-gray-300' %>
+            <%= image_tag member.avatar_url, alt: "#{member.name}の画像", class: 'w-12 h-12 inline-block rounded-full border border-gray-300' %>
             <%= link_to "#{member.name}", member, class: "py-3 inline-block" %>
             <% if member.hibernated? %>
               <span class="text-sm text-gray-500">離脱中</span>
