@@ -18,18 +18,18 @@
 
       <div class="my-5 text-center">
         <p><%= Attendance.human_attribute_name('status') %></p>
-        <%= form.radio_button :status, "present" %>
-        <%= form.label :status_present, Attendance.human_attribute_name('status.present'), class: "mr-10" %>
-        <%= form.radio_button :status, "absent" %>
-        <%= form.label :status_absent, Attendance.human_attribute_name('status.absent') %>
+        <%= form.radio_button :status, "present", class: "cursor-pointer" %>
+        <%= form.label :status_present, Attendance.human_attribute_name('status.present'), class: "mr-10 cursor-pointer" %>
+        <%= form.radio_button :status, "absent", class: "cursor-pointer" %>
+        <%= form.label :status_absent, Attendance.human_attribute_name('status.absent'), class: "cursor-pointer" %>
       </div>
 
       <div class="my-5 text-center present_entry_field">
         <p><%= Attendance.human_attribute_name('time') %></p>
-        <%= form.radio_button :time, "day" %>
-        <%= form.label :time_day, Attendance.human_attribute_name('time.day'), class: "mr-10" %>
-        <%= form.radio_button :time, "night" %>
-        <%= form.label :time_night, Attendance.human_attribute_name('time.night') %>
+        <%= form.radio_button :time, "day", class: "cursor-pointer" %>
+        <%= form.label :time_day, Attendance.human_attribute_name('time.day'), class: "mr-10 cursor-pointer" %>
+        <%= form.radio_button :time, "night", class: "cursor-pointer" %>
+        <%= form.label :time_night, Attendance.human_attribute_name('time.night'), class: "cursor-pointer" %>
       </div>
 
       <div class="my-5 text-center absent_entry_field">
@@ -43,7 +43,7 @@
       </div>
 
       <div class="text-center">
-        <%= form.submit "#{Attendance.model_name.human}を登録", class: "button" %>
+        <%= form.submit "#{Attendance.model_name.human}を登録", class: "button cursor-pointer" %>
       </div>
     <% end %>
   </div>
