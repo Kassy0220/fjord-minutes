@@ -3,7 +3,7 @@
   <div class="mx-auto">
     <%= render 'courses/tabs/course_tab', active_tab: @course, resource: Minute %>
 
-    <h2 class="mb-8 text-2xl font-bold text-center"><%= "#{@course.name}の議事録" %></h2>
+    <h1 class="mb-8 text-4xl font-bold text-center"><%= "#{@course.name}の議事録" %></h1>
 
     <% active_tab = params[:year] ? params[:year].to_i : @course.meeting_years.max %>
     <%= render 'years_tab', course: @course, active_tab: active_tab %>
