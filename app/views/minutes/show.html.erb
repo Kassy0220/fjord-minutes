@@ -1,7 +1,7 @@
 <% set_meta_tags(build_meta_tags(title: "#{@minute.title}の議事録", description: "#{@minute.title}の議事録のページです。")) %>
 <div class="mx-auto w-full">
   <div class="mx-auto">
-    <h1 class="mb-8 text-4xl font-bold"><%= @minute.title %></h1>
+    <h1 class="mb-8 text-xl font-bold md:text-4xl"><%= @minute.title %></h1>
 
     <%= content_tag :div, id: 'minute_preview', data: {markdown: MarkdownBuilder.build(@minute)}.to_json, class: 'mb-4' do %><% end %>
 
