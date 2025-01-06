@@ -64,13 +64,13 @@ RSpec.describe 'Homes', type: :system do
     within("div[data-course='#{rails_course.id}']") do
       expect(page).to have_link '議事録一覧', href: course_minutes_path(rails_course)
       expect(page).to have_link 'メンバー一覧', href: course_members_path(rails_course)
-      expect(page).to have_content 'ミーティング開催週 : 奇数週 (第一・第三週)'
+      expect(page).to have_content '奇数週 (第一・第三週)'
       expect(page).to have_link 'ふりかえり・計画ミーティング2024年10月16日', href: edit_minute_path(rails_course_latest_minute)
     end
     within("div[data-course='#{front_end_course.id}']") do
       expect(page).to have_link '議事録一覧', href: course_minutes_path(front_end_course)
       expect(page).to have_link 'メンバー一覧', href: course_members_path(front_end_course)
-      expect(page).to have_content 'ミーティング開催週 : 偶数週 (第二・第四週)'
+      expect(page).to have_content '偶数週 (第二・第四週)'
       expect(page).to have_link 'ふりかえり・計画ミーティング2024年10月23日', href: edit_minute_path(front_end_course_latest_minute)
     end
   end
