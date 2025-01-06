@@ -43,7 +43,10 @@ export default function MinutePreview({ markdown }) {
 
       <div>
         {selectedTab === 'markdown' ? (
-          <pre id="raw_markdown" className="p-4 border border-gray-300">
+          <pre
+            id="raw_markdown"
+            className="p-4 border border-gray-300 whitespace-pre-wrap break-all"
+          >
             {markdown}
           </pre>
         ) : (
