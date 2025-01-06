@@ -9,18 +9,22 @@
     <%= render 'years_tab', course: @course, active_tab: active_tab %>
 
     <div>
-      <ul class="list-disc list-inside">
-        <% @minutes.each do |minute| %>
-          <li class="mb-4">
-            <%= link_to "#{minute.title}", minute, class: "py-3 inline-block" %>
-            <% if minute.exported? %>
-              <span class="ml-2">
-                <%= link_to 'GitHub Wikiで確認', github_wiki_url(minute), target: "_blank", rel: "nofollow" %>
-              </span>
-            <% end %>
-          </li>
-        <% end %>
-      </ul>
+      <% if @minutes.none? %>
+        <p><%= "#{@course.name}の議事録はまだ作成されていません。" %></p>
+      <% else %>
+        <ul class="list-disc list-inside">
+          <% @minutes.each do |minute| %>
+            <li class="mb-4">
+              <%= link_to "#{minute.title}", minute, class: "py-3 inline-block" %>
+              <% if minute.exported? %>
+                <span class="ml-2">
+                  <%= link_to 'GitHub Wikiで確認', github_wiki_url(minute), target: "_blank", rel: "nofollow" %>
+                </span>
+              <% end %>
+            </li>
+          <% end %>
+        </ul>
+      <% end %>
     </div>
   </div>
 </div>
