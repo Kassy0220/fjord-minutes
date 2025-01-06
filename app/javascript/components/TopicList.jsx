@@ -192,6 +192,7 @@ function CreateForm({ minuteId }) {
       <input
         type="text"
         value={inputValue}
+        placeholder="Good First Issueをモブプロでやったらとても勉強になりました！"
         onChange={handleInput}
         id="new_topic_field"
         className="input_type_text"

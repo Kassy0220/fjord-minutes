@@ -53,6 +53,7 @@ function EditForm({ minuteId, content }) {
     <>
       <textarea
         value={inputValue}
+        placeholder="- RubyKaigiに参加するため、次回のミーティングは⚪︎月⚪︎日に行います"
         onChange={handleChange}
         id="other_field"
         className="textarea"

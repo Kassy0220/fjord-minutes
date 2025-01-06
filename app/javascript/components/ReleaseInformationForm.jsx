@@ -8,6 +8,7 @@ export default function ReleaseInformationForm({
   description,
   content,
   isAdmin,
+  course,
 }) {
   const [informationContent, setInformationContent] = useState(content)
   const [isEditing, setIsEditing] = useState(false)
@@ -35,6 +36,7 @@ export default function ReleaseInformationForm({
               minuteId={minuteId}
               description={description}
               content={informationContent}
+              course={course}
               setIsEditing={setIsEditing}
             />
           ) : (
@@ -50,7 +52,7 @@ export default function ReleaseInformationForm({
   )
 }
 
-function EditForm({ minuteId, description, content, setIsEditing }) {
+function EditForm({ minuteId, description, content, course, setIsEditing }) {
   const [inputValue, setInputValue] = useState(content)
   const handleInput = function (e) {
     setInputValue(e.target.value)
@@ -77,11 +79,22 @@ function EditForm({ minuteId, description, content, setIsEditing }) {
     }
   }
 
+  const placeholder = (description, course) => {
+    if (description === 'note') {
+      return 'https://bootcamp.fjord.jp/announcements/1000'
+    } else {
+      return course === 'Railsエンジニアコース'
+        ? 'https://github.com/fjordllc/bootcamp/pull/8000'
+        : 'https://github.com/fjordllc/agent/pull/40'
+    }
+  }
+
   return (
     <li>
       <input
         type="text"
         value={inputValue}
+        placeholder={placeholder(description, course)}
         onChange={handleInput}
         id={`release_${description}_field`}
         className="input_type_text"
@@ -115,12 +128,14 @@ ReleaseInformationForm.propTypes = {
   description: PropTypes.string,
   content: PropTypes.string,
   isAdmin: PropTypes.bool,
+  course: PropTypes.string,
 }
 
 EditForm.propTypes = {
   minuteId: PropTypes.number,
   description: PropTypes.string,
   content: PropTypes.string,
+  course: PropTypes.string,
   setIsEditing: PropTypes.func,
 }
 
