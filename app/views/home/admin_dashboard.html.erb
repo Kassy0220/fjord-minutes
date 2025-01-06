@@ -5,24 +5,22 @@
   <% @courses.each do |course| %>
     <div class="mb-10" data-course="<%= course.id %>">
       <h2 class="text-2xl font-bold mb-4"><%= course.name %></h2>
-      <p class="mb-2">議事録</p>
-      <p class="mb-2 pl-4"><%= link_to "議事録一覧", course_minutes_path(course) %></p>
-
-      <p class="mb-2">メンバー</p>
-      <p class="mb-2 pl-4"><%= link_to "所属メンバー一覧", course_members_path(course) %></p>
-
-      <p class="mb-2">ミーティング</p>
-      <p class="mb-2 pl-4">
-        ミーティング開催週 :
-        <span class="font-bold"><%= Course.human_attribute_name("meeting_week.#{course.meeting_week}") %></span>
-      </p>
-      <p class="mb-2 pl-4">次回ミーティングの議事録 :
-        <% if course.minutes.none? %>
-          まだ議事録は作成されていません
-        <% else %>
-          <%= link_to "#{course.minutes.order(:meeting_date).last.title}", edit_minute_path(course.minutes.order(:meeting_date).last) %>
-        <% end %>
-      </p>
+      <ul>
+        <li class="mb-2"><%= link_to "議事録一覧", course_minutes_path(course) %></li>
+        <li class="mb-2"><%= link_to "所属メンバー一覧", course_members_path(course) %></li>
+        <li class="mb-2">
+          <span class="after:content-['\00a0:']">ミーティング開催週</span>
+          <span class="font-bold"><%= Course.human_attribute_name("meeting_week.#{course.meeting_week}") %></span>
+        </li>
+        <li class="mb-2">
+          <span class="after:content-['\00a0:']">最新の議事録</span>
+          <% if course.minutes.none? %>
+            まだ議事録は作成されていません
+          <% else %>
+            <%= link_to "#{course.minutes.order(:meeting_date).last.title}", edit_minute_path(course.minutes.order(:meeting_date).last) %>
+          <% end %>
+        </li>
+      </ul>
     </div>
   <% end %>
 </div>
