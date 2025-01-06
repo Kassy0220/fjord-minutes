@@ -1,12 +1,12 @@
 <nav id="header" class="border-b-2 border-gray-200">
   <div class="max-w-screen-lg flex flex-wrap items-center justify-between mx-auto px-4 py-2">
     <a href="/" class="flex items-center">
-      <%= image_tag('logo.png', alt: 'Fjord Minutesのロゴ画像', class: "h-12") %>
+      <%= image_tag('logo.png', alt: 'Fjord Minutesのロゴ画像', class: "h-8 md:h-12") %>
     </a>
 
     <% if development_member_signed_in? %>
       <div class="block w-auto">
-        <ul class="font-medium flex items-center flex-row p-0 rounded-lg space-x-8 !list-none">
+        <ul class="font-medium flex items-center flex-row p-0 rounded-lg space-x-2 !list-none md:space-x-8">
           <li class="block">
             <%= link_to '議事録', member_signed_in? ? course_minutes_path(current_member.course) : course_minutes_path(Course.first) %>
           </li>
