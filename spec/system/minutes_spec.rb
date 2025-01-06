@@ -188,10 +188,14 @@ RSpec.describe 'Minutes', type: :system do
     end
 
     scenario 'display minutes by course' do
+      visit course_minutes_path(rails_course)
+      expect(page).to have_content 'Railsエンジニアコースの議事録はまだ作成されていません。'
+
       FactoryBot.create(:minute, meeting_date: Time.zone.local(2024, 10, 2), course: rails_course)
       FactoryBot.create(:minute, meeting_date: Time.zone.local(2024, 10, 9), course: front_end_course)
 
       visit course_minutes_path(rails_course)
+      expect(page).not_to have_content 'Railsエンジニアコースの議事録はまだ作成されていません。'
       expect(page).to have_link 'ふりかえり・計画ミーティング2024年10月02日'
       expect(page).not_to have_link 'ふりかえり・計画ミーティング2024年10月09日'
 
