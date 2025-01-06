@@ -20,17 +20,21 @@ export default function TopicList({
 
   return (
     <>
-      <ul>
-        {allTopics.map((topic) => (
-          <Topic
-            key={topic.id}
-            minuteId={minuteId}
-            topic={topic}
-            currentDevelopmentMemberId={currentDevelopmentMemberId}
-            currentDevelopmentMemberType={currentDevelopmentMemberType}
-          />
-        ))}
-      </ul>
+      {allTopics.length === 0 ? (
+        <p>話題にしたいこと・心配事はありません。</p>
+      ) : (
+        <ul>
+          {allTopics.map((topic) => (
+            <Topic
+              key={topic.id}
+              minuteId={minuteId}
+              topic={topic}
+              currentDevelopmentMemberId={currentDevelopmentMemberId}
+              currentDevelopmentMemberType={currentDevelopmentMemberType}
+            />
+          ))}
+        </ul>
+      )}
       <CreateForm minuteId={minuteId} />
     </>
   )

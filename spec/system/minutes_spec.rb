@@ -59,9 +59,12 @@ RSpec.describe 'Minutes', type: :system do
 
       scenario 'can create, edit and delete topic', :js do
         within('#topics') do
+          expect(page).to have_content '話題にしたいこと・心配事はありません。'
+
           expect(find('button', text: '作成')).to be_disabled
           fill_in 'new_topic_field', with: '今週ミートアップがありますのでぜひご参加を！'
           click_button '作成'
+          expect(page).not_to have_content '話題にしたいこと・心配事はありません。'
           expect(page).to have_selector 'li', text: '今週ミートアップがありますのでぜひご参加を！(admin)'
           expect(page).to have_selector 'button', text: '編集'
           expect(page).to have_selector 'button', text: '削除'
