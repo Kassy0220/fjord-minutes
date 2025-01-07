@@ -153,7 +153,7 @@ function EditForm({ minuteId, topicId, content, setIsEditing }) {
         type="button"
         onClick={handleClick}
         disabled={isEmpty}
-        className="button disabled:bg-slate-50 disabled:text-slate-500 disabled:border disabled:border-gray-300 disabled:hover:cursor-not-allowed"
+        className="button mt-2 disabled:bg-slate-50 disabled:text-slate-500 disabled:border disabled:border-gray-300 disabled:hover:cursor-not-allowed"
       >
         更新
       </button>
@@ -205,7 +205,7 @@ function CreateForm({ minuteId }) {
         type="button"
         onClick={handleClick}
         disabled={isEmpty}
-        className="button disabled:bg-slate-50 disabled:text-slate-500 disabled:border disabled:border-gray-300 disabled:hover:cursor-not-allowed"
+        className="button mt-2 disabled:bg-slate-50 disabled:text-slate-500 disabled:border disabled:border-gray-300 disabled:hover:cursor-not-allowed"
       >
         作成
       </button>
