@@ -58,7 +58,7 @@ function EditForm({ minuteId, content }) {
         id="other_field"
         className="textarea"
       />
-      <button type="button" onClick={handleClick} className="button">
+      <button type="button" onClick={handleClick} className="button mt-2">
         更新
       </button>
     </>

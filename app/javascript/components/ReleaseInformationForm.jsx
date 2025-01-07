@@ -99,7 +99,7 @@ function EditForm({ minuteId, description, content, course, setIsEditing }) {
         id={`release_${description}_field`}
         className="input_type_text"
       />
-      <button type="button" onClick={handleClick} className="button">
+      <button type="button" onClick={handleClick} className="button mt-2">
         更新
       </button>
     </li>
