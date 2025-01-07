@@ -3,7 +3,7 @@
   <div class="mx-auto">
     <%= render 'courses/tabs/course_tab', active_tab: @course, resource: Minute %>
 
-    <h1 class="mb-8 text-4xl font-bold text-center"><%= "#{@course.name}の議事録" %></h1>
+    <h1 class="mb-8 text-xl font-bold text-center md:text-4xl"><%= "#{@course.name}の議事録" %></h1>
 
     <% active_tab = params[:year] ? params[:year].to_i : @course.meeting_years.max %>
     <%= render 'years_tab', course: @course, active_tab: active_tab %>
@@ -15,7 +15,7 @@
         <ul class="list-disc list-inside">
           <% @minutes.each do |minute| %>
             <li class="mb-4">
-              <%= link_to "#{minute.title}", minute, class: "py-3 inline-block" %>
+              <%= link_to "#{minute.title}", minute, class: "py-3 inline-block text-sm md:text-base" %>
               <% if minute.exported? %>
                 <span class="ml-2">
                   <%= link_to 'GitHub Wikiで確認', github_wiki_url(minute), target: "_blank", rel: "nofollow" %>
