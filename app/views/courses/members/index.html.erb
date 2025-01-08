@@ -3,7 +3,7 @@
   <div class="mx-auto">
     <%= render 'courses/tabs/course_tab', active_tab: @course, resource: Member %>
 
-    <h1 class="mb-8 text-4xl font-bold text-center"><%= "#{@course.name}のメンバー" %></h1>
+    <h1 class="mb-8 text-xl font-bold text-center md:text-4xl"><%= "#{@course.name}のメンバー" %></h1>
 
     <% if admin_signed_in? %>
       <% active_tab = params[:status] ? params[:status] : 'active' %>
