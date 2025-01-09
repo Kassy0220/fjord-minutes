@@ -8,7 +8,7 @@ RSpec.describe 'Homes', type: :system do
     FactoryBot.create(:front_end_course)
 
     visit root_path
-    expect(page).to have_selector 'h1', text: "フィヨルドブートキャンプのチーム開発プラクティスで行われるミーティングを\n議事録の自動作成と出席管理でより効率的に"
+    expect(page).to have_selector 'h1', text: "フィヨルドブートキャンプのチーム開発プラクティスで行われるミーティングを\n議事録の自動作成と出席管理で\nより効率的に"
     expect(page).to have_button 'Railsエンジニアコースで登録'
     expect(page).to have_button 'フロントエンドエンジニアコースで登録'
   end
