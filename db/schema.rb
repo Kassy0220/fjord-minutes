@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_11_03_220952) do
+ActiveRecord::Schema[7.2].define(version: 2025_01_11_062114) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -72,8 +72,8 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_03_220952) do
   end
 
   create_table "minutes", force: :cascade do |t|
-    t.string "release_branch"
-    t.string "release_note"
+    t.string "release_branch", default: ""
+    t.string "release_note", default: ""
     t.text "other"
     t.date "meeting_date"
     t.date "next_meeting_date"
