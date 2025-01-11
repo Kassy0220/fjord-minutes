@@ -147,6 +147,30 @@ RSpec.describe 'Minutes', type: :system do
         login_as another_member
       end
 
+      scenario 'can create, edit and delete topic', :js do
+        visit edit_minute_path(minute)
+
+        within('#topics') do
+          expect(page).to have_content '話題にしたいこと・心配事はありません。'
+
+          expect(find('button', text: '作成')).to be_disabled
+          fill_in 'new_topic_field', with: 'CI上でテストが落ちています、皆さんはいかがでしょうか？'
+          click_button '作成'
+          expect(page).not_to have_content '話題にしたいこと・心配事はありません。'
+          expect(page).to have_selector 'li', text: 'CI上でテストが落ちています、皆さんはいかがでしょうか？(bob)'
+          expect(page).to have_selector 'button', text: '編集'
+          expect(page).to have_selector 'button', text: '削除'
+
+          click_button '編集'
+          fill_in 'edit_topic_field', with: 'ローカル環境でもテストが落ちています'
+          click_button '更新'
+          expect(page).to have_selector 'li', text: 'ローカル環境でもテストが落ちています(bob)'
+
+          click_button '削除'
+          expect(page).not_to have_selector 'li', text: 'ローカル環境でもテストが落ちています(bob)'
+        end
+      end
+
       scenario 'cannot edit and destroy topic created by others', :js do
         minute.topics.create(content: 'テストが通らないのでどなたかペアプロをお願いします！', topicable: member)
 
