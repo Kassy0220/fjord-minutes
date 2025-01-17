@@ -18,6 +18,15 @@ $ bin/dev
 
 http://localhost:3000/ にアクセスすると、アプリのトップページが表示されます。
 
+### リアルタイム反映機能
+議事録編集ページでは、議事録を変更するとそれが他のブラウザ上でもリアルタイムで反映されるようになっています。
+
+この機能を利用するためにはRedisが必要となります。
+
+Redisのインストールと起動方法については、以下のページを参考にしてください。
+
+[Install Redis \| Docs](https://redis.io/docs/latest/operate/oss_and_stack/install/install-redis/)
+
 ## Lint
 以下のコマンドでLinterを実行することができます。
 ```
