@@ -1,9 +1,13 @@
 <div class="pt-4 mb-8">
-  <ul class="flex flex-wrap text-center border-b border-gray-300 !list-none pl-4 md:pl-52">
-    <% Course.all.each do |course| %>
-      <li class="me-2">
-        <%= link_to course.name, polymorphic_path([course, resource]), class: active_tab == course ? 'active_large_tab_item' : 'large_tab_item' %>
-      </li>
-    <% end %>
-  </ul>
+  <div class="border-b border-gray-300">
+    <div class="md:max-w-5xl md:mx-auto">
+      <ul class="flex flex-wrap text-center pl-0 !list-none">
+        <% Course.all.each do |course| %>
+          <li class="me-2">
+            <%= link_to course.name, polymorphic_path([course, resource]), class: active_tab == course ? 'active_large_tab_item' : 'large_tab_item' %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
 </div>
