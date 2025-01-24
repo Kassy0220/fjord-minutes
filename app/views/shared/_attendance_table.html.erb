@@ -1,23 +1,22 @@
-<div class="flex">
-  <% attendances.each do |attendance| %>
-    <div class="w-16 text-center first:border [&:nth-child(n+2)]:border-t [&:nth-child(n+2)]:border-r [&:nth-child(n+2)]:border-b border-gray-400 p-2 bg-gray-200"
-         data-table-head="<%= attendance[:date].strftime('%Y-%m-%d') %>">
-      <%= attendance[:date].strftime('%m/%d') %>
-    </div>
-  <% end %>
-</div>
-<div class="flex">
-  <% attendances.each do |attendance| %>
-    <div class="w-16 text-center first:border-l border-r border-b border-gray-400 p-2" data-table-body="<%= attendance[:date].strftime('%Y-%m-%d') %>">
-      <% if attendance[:status] == 'absent' %>
-        <span data-tooltip-target="<%= "absence_reason_for_attendance_#{attendance[:attendance_id]}" %>">欠席</span>
-        <div id="<%= "absence_reason_for_attendance_#{attendance[:attendance_id]}" %>" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-700 rounded-lg shadow-sm opacity-0 tooltip">
-          <%= attendance[:absence_reason] %>
-          <div class="tooltip-arrow" data-popper-arrow></div>
-        </div>
-      <% else %>
-        <%= attendance_status(attendance[:status], attendance[:time]) %>
-      <% end %>
-    </div>
-  <% end %>
+<div class="flex flex-col gap-x-0 gap-y-6">
+  <dl class="flex flex-wrap gap-x-0 gap-y-1">
+    <% attendances.each do |attendance| %>
+      <div class="flex flex-col justify-center items-center text-center -mr-[1px]">
+        <dt class="bg-blue-100 p-1 text-sm border border-gray-400 w-12 -mb-[1px]">
+          <%= attendance[:date].strftime('%m/%d') %>
+        </dt>
+        <dd class="p-1 text-sm border border-gray-400 w-12 text-center">
+          <% if attendance[:status] == 'absent' %>
+            <span data-tooltip-target="<%= "absence_reason_for_attendance_#{attendance[:attendance_id]}" %>">欠席</span>
+            <div id="<%= "absence_reason_for_attendance_#{attendance[:attendance_id]}" %>" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-700 rounded-lg shadow-sm opacity-0 tooltip">
+              <%= attendance[:absence_reason] %>
+              <div class="tooltip-arrow" data-popper-arrow></div>
+            </div>
+          <% else %>
+            <%= attendance_status(attendance[:status], attendance[:time]) %>
+          <% end %>
+        </dd>
+      </div>
+    <% end %>
+  </dl>
 </div>
