@@ -40,18 +40,18 @@ RSpec.describe 'Members', type: :system do
         FactoryBot.create(:attendance, :absence, member:, minute: rails_course.minutes.third)
 
         visit member_path(member)
-        expect(page).to have_selector 'div[data-table-head="2025-01-01"]', text: '01/01'
-        expect(page).to have_selector 'div[data-table-body="2025-01-01"]', text: '昼'
-        expect(page).to have_selector 'div[data-table-head="2025-01-15"]', text: '01/15'
-        expect(page).to have_selector 'div[data-table-body="2025-01-15"]', text: '夜'
-        expect(page).to have_selector 'div[data-table-head="2025-02-05"]', text: '02/05'
-        expect(page).to have_selector 'div[data-table-body="2025-02-05"]', text: '欠席'
-        expect(page).to have_selector 'div[data-table-head="2025-02-19"]', text: '02/19'
-        expect(page).to have_selector 'div[data-table-body="2025-02-19"]', text: '---'
+        expect(page).to have_selector 'dt[data-attendance-on="2025-01-01"]', text: '01/01'
+        expect(page).to have_selector 'dd[data-attendance-on="2025-01-01"]', text: '昼'
+        expect(page).to have_selector 'dt[data-attendance-on="2025-01-15"]', text: '01/15'
+        expect(page).to have_selector 'dd[data-attendance-on="2025-01-15"]', text: '夜'
+        expect(page).to have_selector 'dt[data-attendance-on="2025-02-05"]', text: '02/05'
+        expect(page).to have_selector 'dd[data-attendance-on="2025-02-05"]', text: '欠席'
+        expect(page).to have_selector 'dt[data-attendance-on="2025-02-19"]', text: '02/19'
+        expect(page).to have_selector 'dd[data-attendance-on="2025-02-19"]', text: '---'
 
         attendance = Attendance.find_by(status: :absent)
         expect(page).not_to have_selector "div#absence_reason_for_attendance_#{attendance.id}", text: '体調不良のため。'
-        within('div[data-table-body="2025-02-05"]') do
+        within('dd[data-attendance-on="2025-02-05"]') do
           find("span[data-tooltip-target='absence_reason_for_attendance_#{attendance.id}']").hover
           expect(page).to have_selector "div#absence_reason_for_attendance_#{attendance.id}", text: '体調不良のため。'
         end
@@ -67,12 +67,12 @@ RSpec.describe 'Members', type: :system do
         expect(page).to have_selector 'div[data-meeting-year="2025"]'
 
         within('div[data-meeting-year="2024"]') do
-          expect(page).to have_selector 'div[data-table-head="2024-12-18"]', text: '12/18'
-          expect(page).to have_selector 'div[data-table-body="2024-12-18"]', text: '昼'
+          expect(page).to have_selector 'dt[data-attendance-on="2024-12-18"]', text: '12/18'
+          expect(page).to have_selector 'dd[data-attendance-on="2024-12-18"]', text: '昼'
         end
         within('div[data-meeting-year="2025"]') do
-          expect(page).to have_selector 'div[data-table-head="2025-01-01"]', text: '01/01'
-          expect(page).to have_selector 'div[data-table-body="2025-01-01"]', text: '昼'
+          expect(page).to have_selector 'dt[data-attendance-on="2025-01-01"]', text: '01/01'
+          expect(page).to have_selector 'dd[data-attendance-on="2025-01-01"]', text: '昼'
         end
       end
 
@@ -90,18 +90,18 @@ RSpec.describe 'Members', type: :system do
         expect(page).to have_selector 'div[data-attendance-table="2"]'
 
         within('div[data-attendance-table="1"]') do
-          expect(page).to have_selector 'div[data-table-head]', count: 12
-          expect(page).to have_selector 'div[data-table-body]', count: 12
-          expect(page).to have_selector 'div[data-table-head="2025-01-01"]', text: '01/01'
-          expect(page).to have_selector 'div[data-table-body="2025-01-01"]', text: '昼'
-          expect(page).to have_selector 'div[data-table-head="2025-06-18"]', text: '06/18'
-          expect(page).to have_selector 'div[data-table-body="2025-06-18"]', text: '昼'
+          expect(page).to have_selector 'dt[data-attendance-on]', count: 12
+          expect(page).to have_selector 'dd[data-attendance-on]', count: 12
+          expect(page).to have_selector 'dt[data-attendance-on="2025-01-01"]', text: '01/01'
+          expect(page).to have_selector 'dd[data-attendance-on="2025-01-01"]', text: '昼'
+          expect(page).to have_selector 'dt[data-attendance-on="2025-06-18"]', text: '06/18'
+          expect(page).to have_selector 'dd[data-attendance-on="2025-06-18"]', text: '昼'
         end
         within('div[data-attendance-table="2"]') do
-          expect(page).to have_selector 'div[data-table-head]', count: 1
-          expect(page).to have_selector 'div[data-table-body]', count: 1
-          expect(page).to have_selector 'div[data-table-head="2025-07-02"]', text: '07/02'
-          expect(page).to have_selector 'div[data-table-body="2025-07-02"]', text: '昼'
+          expect(page).to have_selector 'dt[data-attendance-on]', count: 1
+          expect(page).to have_selector 'dd[data-attendance-on]', count: 1
+          expect(page).to have_selector 'dt[data-attendance-on="2025-07-02"]', text: '07/02'
+          expect(page).to have_selector 'dd[data-attendance-on="2025-07-02"]', text: '昼'
         end
       end
 
@@ -113,9 +113,9 @@ RSpec.describe 'Members', type: :system do
         FactoryBot.create(:hibernation, member: hibernated_member, created_at: Time.zone.local(2025, 2, 1))
 
         visit member_path(hibernated_member)
-        expect(page).to have_selector 'div[data-table-head="2025-01-01"]', text: '01/01'
-        expect(page).to have_selector 'div[data-table-head="2025-01-15"]', text: '01/15'
-        expect(page).not_to have_selector 'div[data-table-head="2025-02-05"]', text: '02/15'
+        expect(page).to have_selector 'dt[data-attendance-on="2025-01-01"]', text: '01/01'
+        expect(page).to have_selector 'dt[data-attendance-on="2025-01-15"]', text: '01/15'
+        expect(page).not_to have_selector 'dt[data-attendance-on="2025-02-05"]', text: '02/15'
       end
 
       scenario 'does not display attendances during the hibernated period', :js do
@@ -129,12 +129,12 @@ RSpec.describe 'Members', type: :system do
         expect(page).to have_selector 'div[data-attendance-table="2"]'
 
         within('div[data-attendance-table="1"]') do
-          expect(page).to have_selector 'div[data-table-head="2025-01-01"]', text: '01/01'
-          expect(page).not_to have_selector 'div[data-table-head="2025-01-15"]', text: '01/15'
+          expect(page).to have_selector 'dt[data-attendance-on="2025-01-01"]', text: '01/01'
+          expect(page).not_to have_selector 'dt[data-attendance-on="2025-01-15"]', text: '01/15'
         end
         within('div[data-attendance-table="2"]') do
-          expect(page).to have_selector 'div[data-table-head="2025-02-05"]', text: '02/05'
-          expect(page).not_to have_selector 'div[data-table-head="2025-01-15"]', text: '01/15'
+          expect(page).to have_selector 'dt[data-attendance-on="2025-02-05"]', text: '02/05'
+          expect(page).not_to have_selector 'dt[data-attendance-on="2025-01-15"]', text: '01/15'
         end
       end
 
@@ -192,22 +192,22 @@ RSpec.describe 'Members', type: :system do
       login_as member
       visit course_members_path(rails_course)
       within("li[data-member='#{member.id}']") do
-        expect(page).to have_selector 'div[data-table-head]', count: 12
-        expect(page).to have_selector 'div[data-table-body]', count: 12
-        expect(page).not_to have_selector 'div[data-table-head="2025-01-01"]', text: '01/01'
-        expect(page).to have_selector 'div[data-table-head="2025-01-15"]', text: '01/15'
-        expect(page).to have_selector 'div[data-table-body="2025-01-15"]', text: '昼'
-        expect(page).to have_selector 'div[data-table-head="2025-07-02"]', text: '07/02'
-        expect(page).to have_selector 'div[data-table-body="2025-07-02"]', text: '昼'
+        expect(page).to have_selector 'dt[data-attendance-on]', count: 12
+        expect(page).to have_selector 'dd[data-attendance-on]', count: 12
+        expect(page).not_to have_selector 'dt[data-attendance-on="2025-01-01"]', text: '01/01'
+        expect(page).to have_selector 'dt[data-attendance-on="2025-01-15"]', text: '01/15'
+        expect(page).to have_selector 'dd[data-attendance-on="2025-01-15"]', text: '昼'
+        expect(page).to have_selector 'dt[data-attendance-on="2025-07-02"]', text: '07/02'
+        expect(page).to have_selector 'dd[data-attendance-on="2025-07-02"]', text: '昼'
       end
       within("li[data-member='#{another_member.id}']") do
-        expect(page).to have_selector 'div[data-table-head]', count: 7
-        expect(page).to have_selector 'div[data-table-body]', count: 7
-        expect(page).not_to have_selector 'div[data-table-head="2025-03-19"]', text: '03/19'
-        expect(page).to have_selector 'div[data-table-head="2025-04-02"]', text: '04/02'
-        expect(page).to have_selector 'div[data-table-body="2025-04-02"]', text: '夜'
-        expect(page).to have_selector 'div[data-table-head="2025-07-02"]', text: '07/02'
-        expect(page).to have_selector 'div[data-table-body="2025-07-02"]', text: '夜'
+        expect(page).to have_selector 'dt[data-attendance-on]', count: 7
+        expect(page).to have_selector 'dd[data-attendance-on]', count: 7
+        expect(page).not_to have_selector 'dt[data-attendance-on="2025-03-19"]', text: '03/19'
+        expect(page).to have_selector 'dt[data-attendance-on="2025-04-02"]', text: '04/02'
+        expect(page).to have_selector 'dd[data-attendance-on="2025-04-02"]', text: '夜'
+        expect(page).to have_selector 'dt[data-attendance-on="2025-07-02"]', text: '07/02'
+        expect(page).to have_selector 'dd[data-attendance-on="2025-07-02"]', text: '夜'
       end
     end
 
