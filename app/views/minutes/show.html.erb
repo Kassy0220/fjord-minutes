@@ -1,23 +1,23 @@
 <% set_meta_tags(build_meta_tags(title: "#{@minute.title}の議事録", description: "#{@minute.title}の議事録のページです。")) %>
-<div class="mx-auto w-full">
-  <div class="mx-auto">
-    <h1 class="mb-8 text-xl font-bold md:text-4xl"><%= @minute.title %></h1>
+<h1 class="mb-8 text-xl font-bold text-center md:text-4xl">議事録</h1>
 
-    <%= content_tag :div, id: 'minute_preview', data: {markdown: MarkdownBuilder.build(@minute)}.to_json, class: 'mb-4' do %><% end %>
+<div class="page_body">
+  <h2 class="mb-8 text-xl font-bold md:text-4xl"><%= @minute.title %></h2>
 
-    <% if admin_signed_in? %>
-      <%= button_to 'GitHub Wiki にエクスポート', minute_exports_path(@minute), form: { class: 'text-center' },  class: 'button m-auto' %>
-    <% end %>
+  <%= content_tag :div, id: 'minute_preview', data: {markdown: MarkdownBuilder.build(@minute)}.to_json, class: 'mb-4' do %><% end %>
 
-    <% if @minute.exported? %>
-      <div class="text-center my-2">
-        <%= link_to 'GitHub Wikiで確認', github_wiki_url(@minute), target: "_blank", rel: "nofollow" %>
-      </div>
-    <% end %>
+  <% if admin_signed_in? %>
+    <%= button_to 'GitHub Wiki にエクスポート', minute_exports_path(@minute), form: { class: 'text-center' },  class: 'button m-auto' %>
+  <% end %>
 
-    <div class="my-8 text-center">
-      <%= link_to '議事録を編集する', edit_minute_path(@minute), class: "ml-4" %>
-      <%= link_to "#{@minute.course.name}の議事録一覧", course_minutes_path(@minute.course), class: "ml-4" %>
+  <% if @minute.exported? %>
+    <div class="text-center my-2">
+      <%= link_to 'GitHub Wikiで確認', github_wiki_url(@minute), target: "_blank", rel: "nofollow" %>
     </div>
+  <% end %>
+
+  <div class="my-8 text-center">
+    <%= link_to '議事録を編集する', edit_minute_path(@minute), class: "ml-4" %>
+    <%= link_to "#{@minute.course.name}の議事録一覧", course_minutes_path(@minute.course), class: "ml-4" %>
   </div>
 </div>

@@ -1,7 +1,7 @@
 <% set_meta_tags(build_meta_tags(title: "#{@minute.title}の出席登録", description: "#{@minute.title}の出席を登録するページです。")) %>
-<div class="mx-auto w-full">
-  <h1 class="font-bold text-4xl text-center"><%= "#{Attendance.model_name.human}登録" %></h1>
+<h1 class="font-bold text-4xl text-center"><%= "#{Attendance.model_name.human}登録" %></h1>
 
+<div class="page_body">
   <div>
     <%= form_with(model: [ @minute, @attendance ], id: "attendance_form", class: "contents") do |form| %>
       <% if @attendance.errors.any? %>

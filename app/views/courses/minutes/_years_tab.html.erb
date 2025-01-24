@@ -1,6 +1,6 @@
 <div class="mb-4">
   <% if course.minutes.any? %>
-    <ul class="flex flex-wrap text-sm font-medium text-center text-gray-500 !list-none">
+    <ul class="flex flex-wrap text-sm font-medium text-center text-gray-500 pl-0 !list-none">
       <% course.meeting_years.sort.each do |year| %>
         <li class="me-2">
           <%= link_to "#{year}年", course_minutes_path(course, year: year), class: active_tab == year ? 'active_small_tab_item' : 'small_tab_item' %>
