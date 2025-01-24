@@ -2,18 +2,21 @@
 <% description = @member == current_development_member ? 'ダッシュボードページです。' : "#{@member.name}さんの出席一覧ページです。" %>
 <% set_meta_tags(build_meta_tags(title:, description:)) %>
 
-<h1 class="font-bold text-xl mb-8 md:text-4xl">
-  <%= "#{@member.name}さんの出席一覧(#{@member.course.name})" %>
-</h1>
+<div class="bg-blue-700">
+  <h1 class="page_header">
+    <%= "#{@member.name}さん" %>
+  </h1>
+</div>
 
 <div class="page_body">
+  <h2 class="font-bold text-lg text-blue-700 bg-gray-200 py-2 pl-2 border-l-8 border-blue-700 mb-8">出席状況</h2>
   <div class="mb-8">
     <% if @member.all_attendances.empty? %>
       <p><%= @member.name %>さんはまだミーティングに出席していません</p>
     <% else %>
       <% @member.all_attendances.each do |year, attendances_by_year| %>
         <div class="mb-8" data-meeting-year="<%= year %>">
-          <p class="mb-2 text-xl"><%= year %>年</p>
+          <p class="mb-4 font-bold border-b-[1px] border-gray-200"><%= year %>年</p>
           <% attendances_by_year.each.with_index do |attendances, i| %>
             <div class="mb-2" data-attendance-table="<%= i + 1 %>">
               <%= render 'shared/attendance_table', attendances: attendances %>

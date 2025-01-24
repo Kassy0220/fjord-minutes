@@ -1,8 +1,12 @@
 <% set_meta_tags(build_meta_tags(title: "#{@attendance.minute.title}の出席変更", description: "#{@attendance.minute.title}の出席を変更するページです。")) %>
-<div class="page_body">
-  <h1 class="font-bold text-4xl text-center"><%= "#{Attendance.model_name.human}編集" %></h1>
+<div class="bg-blue-700">
+  <h1 class="page_header"><%= "#{Attendance.model_name.human}編集" %></h1>
+</div>
 
+<div class="page_body">
   <div>
+    <p class="text-lg text-center"><%= @attendance.minute.meeting_date.strftime('%Y年%m月%d日') %>のMTGの出席予定を編集</p>
+
     <%= form_with(model: @attendance, id: "attendance_form", class: "contents") do |form| %>
       <% if @attendance.errors.any? %>
         <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-lg mt-3">
