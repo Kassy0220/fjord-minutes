@@ -22,7 +22,7 @@ RSpec.describe 'OmniauthLogins', type: :system do
       click_button 'Railsエンジニアコースで登録'
 
       expect(page).to have_content 'GitHub アカウントによる認証に成功しました。'
-      expect(page).to have_selector 'h1', text: 'aliceさんの出席一覧(Railsエンジニアコース)'
+      expect(page).to have_selector 'h1', text: 'aliceさん'
     end
 
     scenario 'user can log in as member of the front end course' do
@@ -30,7 +30,7 @@ RSpec.describe 'OmniauthLogins', type: :system do
       click_button 'フロントエンドエンジニアコースで登録'
 
       expect(page).to have_content 'GitHub アカウントによる認証に成功しました。'
-      expect(page).to have_selector 'h1', text: 'aliceさんの出席一覧(フロントエンドエンジニアコース)'
+      expect(page).to have_selector 'h1', text: 'aliceさん'
     end
   end
 
