@@ -1,6 +1,10 @@
 <% set_meta_tags(build_meta_tags(title: "#{@minute.title}の議事録", description: "#{@minute.title}の議事録のページです。")) %>
-<div class="bg-blue-700">
-  <h1 class="page_header">議事録</h1>
+<div class="bg-blue-700 mb-8">
+  <div class="flex justify-between items-center md:max-w-5xl md:mx-auto">
+    <h1 class="text-white font-bold text-xl py-4 md:text-2xl">議事録</h1>
+    <%= link_to '議事録一覧', course_minutes_path(@minute.course),
+                class: "p-2 bg-white text-blue-700 before:content-['<'] before:mr-4 hover:no-underline hover:bg-gray-200" %>
+  </div>
 </div>
 
 <div class="page_body">
@@ -20,6 +24,5 @@
 
   <div class="my-8 text-center">
     <%= link_to '議事録を編集する', edit_minute_path(@minute), class: "ml-4" %>
-    <%= link_to "#{@minute.course.name}の議事録一覧", course_minutes_path(@minute.course), class: "ml-4" %>
   </div>
 </div>
