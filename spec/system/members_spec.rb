@@ -12,11 +12,11 @@ RSpec.describe 'Members', type: :system do
 
       login_as member
       visit member_path(member)
-      expect(page).to have_selector 'h1', text: 'aliceさんの出席一覧(Railsエンジニアコース)'
+      expect(page).to have_selector 'h1', text: 'aliceさん'
       expect(page).to have_button 'チーム開発を抜ける'
 
       visit member_path(another_member)
-      expect(page).to have_selector 'h1', text: 'bobさんの出席一覧(フロントエンドエンジニアコース)'
+      expect(page).to have_selector 'h1', text: 'bobさん'
       expect(page).not_to have_button 'チーム開発を抜ける'
     end
 
