@@ -50,9 +50,9 @@
         @apply inline-block px-4 py-2 text-white bg-blue-700 border border-gray-300 rounded-3xl hover:no-underline;
     }
     .flash_notice {
-        @apply py-2.5 px-4 text-green-500 bg-green-100 mb-5 font-medium rounded-lg inline-block;
+        @apply py-2.5 px-4 my-5 text-green-500 bg-green-100 font-medium rounded-lg inline-block;
     }
     .flash_alert {
-        @apply py-2.5 px-4 text-red-500 bg-red-100 mb-5 font-medium rounded-lg inline-block;
+        @apply py-2.5 px-4 my-5 text-red-500 bg-red-100 font-medium rounded-lg inline-block;
     }
 }
