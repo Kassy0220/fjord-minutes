@@ -12,17 +12,19 @@
 
   <%= content_tag :div, id: 'minute_preview', data: {markdown: MarkdownBuilder.build(@minute)}.to_json, class: 'mb-4' do %><% end %>
 
-  <% if admin_signed_in? %>
-    <%= button_to 'GitHub Wiki にエクスポート', minute_exports_path(@minute), form: { class: 'text-center' },  class: 'button m-auto' %>
-  <% end %>
+  <div class="my-8 flex justify-center items-center gap-x-4">
+    <%= link_to '編集する', edit_minute_path(@minute),
+                class: "block w-52 h-14 border border-blue-700 rounded-lg text-center leading-[54px] hover:no-underline hover:bg-blue-100" %>
+    <% if admin_signed_in? %>
+      <%= button_to minute_exports_path(@minute), form: { class: 'text-center h-14' },  class: 'button m-auto w-52' do %>
+        GitHub Wiki に<br>エクスポート
+      <% end %>
+    <% end %>
+  </div>
 
   <% if @minute.exported? %>
     <div class="text-center my-2">
       <%= link_to 'GitHub Wikiで確認', github_wiki_url(@minute), target: "_blank", rel: "nofollow" %>
     </div>
   <% end %>
-
-  <div class="my-8 text-center">
-    <%= link_to '議事録を編集する', edit_minute_path(@minute), class: "ml-4" %>
-  </div>
 </div>
