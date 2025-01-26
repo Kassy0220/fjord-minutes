@@ -68,7 +68,11 @@ class MarkdownBuilder
            .includes(:member)
            .order(:member_id)
            .pluck(:absence_reason, :progress_report, :name)
-           .map { |absence_reason, progress_report, name| "- #{name}\n  - 欠席理由 : #{absence_reason}\n  - 進捗報告 : #{progress_report}" }
+           .map { |absence_reason, progress_report, name| "- #{name}\n  - 欠席理由\n    - #{absence_reason}\n  - 進捗報告\n#{progress_reports(progress_report)}" }
            .join("\n")
+  end
+
+  def progress_reports(progress_report)
+    progress_report.split("\r\n").map { |report| "    - #{report}" }.join("\n")
   end
 end
