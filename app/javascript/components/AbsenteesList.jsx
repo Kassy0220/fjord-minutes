@@ -38,8 +38,20 @@ function Absentee({ absentee, currentMemberId, isAdmin }) {
         </a>
       )}
       <ul className="!mt-2">
-        <li>欠席理由: {absentee.absence_reason}</li>
-        <li>今週の進捗: {absentee.progress_report}</li>
+        <li>
+          欠席理由
+          <ul>
+            <li>{absentee.absence_reason}</li>
+          </ul>
+        </li>
+        <li>
+          今週の進捗
+          <ul>
+            {absentee.progress_report.split('\r\n').map((report, index) => (
+              <li key={index}>{report}</li>
+            ))}
+          </ul>
+        </li>
       </ul>
     </li>
   )
