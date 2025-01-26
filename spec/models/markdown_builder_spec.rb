@@ -12,7 +12,7 @@ RSpec.describe MarkdownBuilder, type: :model do
   it 'returns markdown of minute' do
     FactoryBot.create(:attendance, member: alice, minute:)
     FactoryBot.create(:attendance, :night, member: bob, minute:)
-    FactoryBot.create(:attendance, :absence, member: absentee, minute:)
+    FactoryBot.create(:attendance, :absence_with_multiple_progress_reports, member: absentee, minute:)
     FactoryBot.create(:topic, :by_member, minute:, topicable: alice)
 
     expected = <<~MARKDOWN
@@ -68,8 +68,12 @@ RSpec.describe MarkdownBuilder, type: :model do
       # 欠席者
 
       - absentee
-        - 欠席理由 : 体調不良のため。
-        - 進捗報告 : PRのチームメンバーのレビューが通り、komagataさんにレビュー依頼をお願いしているところです。
+        - 欠席理由
+          - 職場のイベントに参加するため。
+        - 進捗報告
+          - Issue#8000, チームメンバーにレビュー依頼を行いました。
+          - Issue#8102, 問題が発生している箇所の調査を行いました。
+          - 依頼されたレビュー対応を行いました。
     MARKDOWN
     expect(described_class.build(minute)).to eq expected
   end
