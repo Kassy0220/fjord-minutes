@@ -2,10 +2,12 @@
 <% description = @member == current_development_member ? 'ダッシュボードページです。' : "#{@member.name}さんの出席一覧ページです。" %>
 <% set_meta_tags(build_meta_tags(title:, description:)) %>
 
-<div class="bg-blue-700">
-  <h1 class="page_header">
-    <%= "#{@member.name}さん" %>
-  </h1>
+<div class="bg-blue-700 mb-8">
+  <div class="flex justify-between items-center md:max-w-5xl md:mx-auto">
+    <h1 class="text-white font-bold text-xl py-4 md:text-2xl"><%= "#{@member.name}さん" %></h1>
+    <%= link_to 'メンバー一覧', course_members_path(@member.course),
+                class: "p-2 bg-white text-blue-700 before:content-['<'] before:mr-4 hover:no-underline hover:bg-gray-200" %>
+  </div>
 </div>
 
 <div class="page_body">
