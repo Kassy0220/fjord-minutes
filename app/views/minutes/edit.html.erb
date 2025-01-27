@@ -1,6 +1,9 @@
 <% set_meta_tags(build_meta_tags(title: "#{@minute.title}の議事録編集", description: "#{@minute.title}の議事録の編集ページです。")) %>
-<div class="bg-blue-700">
-  <h1 class="page_header">議事録編集</h1>
+<div class="bg-blue-700 mb-8">
+  <div class="flex justify-between items-center md:max-w-5xl md:mx-auto">
+    <h1 class="text-white font-bold text-xl py-4 md:text-2xl">議事録編集</h1>
+    <%= link_to 'プレビュー', @minute, class: "p-2 bg-white text-blue-700 before:content-['<'] before:mr-4 hover:no-underline hover:bg-gray-200" %>
+  </div>
 </div>
 
 <div class="page_body">
@@ -47,10 +50,5 @@
 
     <h2>連絡なし</h2>
     <%= content_tag :div, id: 'unexcused_absentees_list', data: {minuteId: @minute.id, currentMemberId: current_development_member.id, isAdmin: admin_signed_in?}.to_json do %><% end %>
-  </div>
-
-  <div class="my-8 text-center">
-    <%= link_to '議事録のプレビュー', @minute, class: "ml-4" %>
-    <%= link_to "#{@minute.course.name}の議事録一覧", course_minutes_path(@minute.course), class: "ml-4" %>
   </div>
 </div>
