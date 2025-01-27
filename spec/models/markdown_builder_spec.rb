@@ -71,9 +71,9 @@ RSpec.describe MarkdownBuilder, type: :model do
         - 欠席理由
           - 職場のイベントに参加するため。
         - 進捗報告
-          - Issue#8000, チームメンバーにレビュー依頼を行いました。
-          - Issue#8102, 問題が発生している箇所の調査を行いました。
-          - 依頼されたレビュー対応を行いました。
+          - #8000 チームメンバーにレビュー依頼を行いました。
+          - #8102 問題が発生している箇所の調査を行いました。
+          - #8080 依頼されたレビュー対応を行いました。
     MARKDOWN
     expect(described_class.build(minute)).to eq expected
   end

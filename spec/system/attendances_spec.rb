@@ -57,7 +57,7 @@ RSpec.describe 'Attendances', type: :system do
         visit new_minute_attendance_path(minute)
         choose '欠席'
         fill_in '欠席理由', with: '仕事の都合のため。'
-        fill_in '進捗報告', with: 'Issue#1000, チームメンバーのレビュー待ちの状態です。'
+        fill_in '進捗報告', with: '#1000 チームメンバーのレビュー待ちの状態です。'
         click_button '出席を登録'
 
         expect(current_path).to eq edit_minute_path(minute)
@@ -66,7 +66,7 @@ RSpec.describe 'Attendances', type: :system do
         within('#absentees') do
           expect(page).to have_selector 'li', text: member.name
           expect(page).to have_selector 'li', text: '仕事の都合のため。'
-          expect(page).to have_selector 'li', text: 'Issue#1000, チームメンバーのレビュー待ちの状態です。'
+          expect(page).to have_selector 'li', text: '#1000 チームメンバーのレビュー待ちの状態です。'
         end
       end
     end
@@ -176,7 +176,7 @@ RSpec.describe 'Attendances', type: :system do
         choose '昼の部' # チェックがついている'昼の部'を2度クリックして、チェックを外す
         choose '欠席'
         fill_in '欠席理由', with: '体調不良のため。'
-        fill_in '進捗報告', with: 'Issue#1000, チームメンバーのレビュー待ちの状態です。'
+        fill_in '進捗報告', with: '#1000 チームメンバーのレビュー待ちの状態です。'
         click_button '出席を更新'
 
         expect(current_path).to eq edit_minute_path(minute)
@@ -187,7 +187,7 @@ RSpec.describe 'Attendances', type: :system do
         within('#absentees') do
           expect(page).to have_selector 'li', text: member.name
           expect(page).to have_selector 'li', text: '体調不良のため。'
-          expect(page).to have_selector 'li', text: 'Issue#1000, チームメンバーのレビュー待ちの状態です。'
+          expect(page).to have_selector 'li', text: '#1000 チームメンバーのレビュー待ちの状態です。'
         end
       end
     end
