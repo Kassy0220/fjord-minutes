@@ -43,21 +43,16 @@
 
       <div class="my-5 text-center absent_entry_field">
         <%= form.label :progress_report, Attendance.human_attribute_name('progress_report'), class: "block mb-2" %>
-        <%= form.text_area :progress_report, placeholder: "Issue#8000, チームメンバーのレビュー待ちの状態です。", class: 'w-[400px] md:w-[600px] h-36 border border-gray-300 rounded-lg align-middle' %>
+        <%= form.text_area :progress_report, placeholder: "#8000 チームメンバーのレビュー待ちの状態です。", class: 'w-[400px] md:w-[600px] h-36 border border-gray-300 rounded-lg align-middle' %>
         <div class="mt-2 mx-auto text-sm w-[550px] text-gray-500 text-left">
           <p class="text-center mb-2">進捗報告は以下の形式で入力をお願いします。</p>
           <ul>
-            <li>進捗報告は一つにつき一行で記入する</li>
+            <li>空行は開けず、一つの報告内容につき一行で記入してください。</li>
             <li>
-              自分にアサインされたIssueは、「Issue#番号, 進捗報告」の形式で記入する
+              「#Issue番号 進捗報告」の形式で記入してください。
               <ul>
-                <li>(例) Issue#8000, Twitter Cardの仕様を調査しました。</li>
-              </ul>
-            </li>
-            <li>
-              レビュー対応はその旨を記入する
-              <ul>
-                <li>(例) チームメンバーから依頼されたレビュー対応を行いました。</li>
+                <li>(例) #8000 Twitter Cardの仕様を調査しました。</li>
+                <li>(例) #8022 チームメンバーから依頼されたレビュー対応を行いました。</li>
               </ul>
             </li>
           </ul>

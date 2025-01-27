@@ -24,7 +24,7 @@ FactoryBot.define do
       status { :absent }
       time { nil }
       absence_reason { '職場のイベントに参加するため。' }
-      progress_report { "Issue#8000, チームメンバーにレビュー依頼を行いました。\r\nIssue#8102, 問題が発生している箇所の調査を行いました。\r\n依頼されたレビュー対応を行いました。" }
+      progress_report { "#8000 チームメンバーにレビュー依頼を行いました。\r\n#8102 問題が発生している箇所の調査を行いました。\r\n#8080 依頼されたレビュー対応を行いました。" }
     end
   end
 end
