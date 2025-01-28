@@ -25,15 +25,15 @@ RSpec.describe MarkdownBuilder, type: :model do
 
       ### 昼の部
 
-      - alice
+      - [@alice](https://github.com/alice)
 
       ### 夜の部
 
-      - bob
+      - [@bob](https://github.com/bob)
 
       ## 欠席者
 
-      - absentee
+      - [@absentee](https://github.com/absentee)
         - 欠席理由
           - 職場のイベントに参加するため。
         - 進捗報告
