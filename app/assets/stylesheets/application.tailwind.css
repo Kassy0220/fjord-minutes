@@ -34,9 +34,6 @@
     .input_type_text {
         @apply bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-500 inline-block max-w-full field-sizing-content p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500;
     }
-    .textarea {
-        @apply block p-2.5 min-w-[400px] field-sizing-content text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 inline-block align-middle focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500;
-    }
     .large_tab_item {
         @apply inline-block px-2 py-4 rounded-t-lg text-gray-500 border border-b-0 border-gray-300 hover:bg-blue-50 hover:no-underline text-xs md:px-4 md:text-base;
     }
