@@ -21,7 +21,14 @@ export default function TopicList({
   return (
     <>
       {allTopics.length === 0 ? (
-        <p>話題にしたいこと・心配事はありません。</p>
+        <>
+          <p>話題にしたいこと・心配事はありません。</p>
+          <ul>
+            <li>
+              <CreateForm minuteId={minuteId} />
+            </li>
+          </ul>
+        </>
       ) : (
         <ul>
           {allTopics.map((topic) => (
@@ -33,9 +40,11 @@ export default function TopicList({
               currentDevelopmentMemberType={currentDevelopmentMemberType}
             />
           ))}
+          <li>
+            <CreateForm minuteId={minuteId} />
+          </li>
         </ul>
       )}
-      <CreateForm minuteId={minuteId} />
     </>
   )
 }
@@ -73,7 +82,7 @@ function Topic({
           setIsEditing={setIsEditing}
         />
       ) : (
-        <li>
+        <li className="mb-4">
           <span>
             {topic.content}({topic.topicable.name})
           </span>
@@ -147,7 +156,7 @@ function EditForm({ minuteId, topicId, content, setIsEditing }) {
         value={inputValue}
         onChange={handleInput}
         id="edit_topic_field"
-        className="input_type_text max-w-[800px]"
+        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-500 inline-block p-2.5 w-[800px]"
       />
       <button
         type="button"
@@ -199,7 +208,7 @@ function CreateForm({ minuteId }) {
         placeholder="Good First Issueをモブプロでやったらとても勉強になりました！"
         onChange={handleInput}
         id="new_topic_field"
-        className="input_type_text"
+        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-500 inline-block p-2.5 w-[800px]"
       />
       <button
         type="button"
