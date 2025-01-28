@@ -56,11 +56,13 @@ function EditForm({ minuteId, content }) {
         placeholder="- RubyKaigiに参加するため、次回のミーティングは⚪︎月⚪︎日に行います"
         onChange={handleChange}
         id="other_field"
-        className="textarea"
+        className="block p-2.5 w-[800px] h-36 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 "
       />
-      <button type="button" onClick={handleClick} className="button mt-2">
-        更新
-      </button>
+      <div>
+        <button type="button" onClick={handleClick} className="button mt-2">
+          更新
+        </button>
+      </div>
     </>
   )
 }
