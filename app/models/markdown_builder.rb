@@ -31,7 +31,7 @@ class MarkdownBuilder
            .includes(:member)
            .order(:member_id)
            .pluck(:name)
-           .map { |name| "- #{name}" }
+           .map { |name| "- #{member_link(name)}" }
            .join("\n")
   end
 
@@ -40,7 +40,7 @@ class MarkdownBuilder
            .includes(:member)
            .order(:member_id)
            .pluck(:name)
-           .map { |name| "- #{name}" }
+           .map { |name| "- #{member_link(name)}" }
            .join("\n")
   end
 
@@ -49,12 +49,16 @@ class MarkdownBuilder
            .includes(:member)
            .order(:member_id)
            .pluck(:absence_reason, :progress_report, :name)
-           .map { |absence_reason, progress_report, name| "- #{name}\n  - 欠席理由\n    - #{absence_reason}\n  - 進捗報告\n#{split_line_to_list(progress_report)}" }
+           .map { |absence_reason, progress_report, name| "- #{member_link(name)}\n  - 欠席理由\n    - #{absence_reason}\n  - 進捗報告\n#{split_line_to_list(progress_report)}" }
            .join("\n")
   end
 
   def split_line_to_list(progress_report)
     progress_report.split("\r\n").map { |report| "    - #{report}" }.join("\n")
+  end
+
+  def member_link(name)
+    "[@#{name}](https://github.com/#{name})"
   end
 
   def topics
