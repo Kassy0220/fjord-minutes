@@ -29,7 +29,7 @@ export default function ReleaseInformationForm({
   return (
     <ul>
       <li>
-        <span>{label}</span>
+        <span className="block mb-2">{label}</span>
         <ul>
           {isEditing ? (
             <EditForm
@@ -97,7 +97,7 @@ function EditForm({ minuteId, description, content, course, setIsEditing }) {
         placeholder={placeholder(description, course)}
         onChange={handleInput}
         id={`release_${description}_field`}
-        className="input_type_text"
+        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-500 inline-block w-[500px] p-2.5 "
       />
       <button type="button" onClick={handleClick} className="button mt-2">
         更新
