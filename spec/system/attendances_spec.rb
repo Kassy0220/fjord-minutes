@@ -84,10 +84,10 @@ RSpec.describe 'Attendances', type: :system do
       expect(hibernated_member.hibernated?).to be true
 
       visit edit_minute_path(minute)
-      within('#day_attendees') do
+      within('#day_attendees', visible: false) do
         expect(page).not_to have_selector 'li', text: hibernated_member.name
       end
-      within('#night_attendees') do
+      within('#night_attendees', visible: false) do
         expect(page).not_to have_selector 'li', text: hibernated_member.name
       end
       within('#absentees', visible: false) do
@@ -181,7 +181,7 @@ RSpec.describe 'Attendances', type: :system do
 
         expect(current_path).to eq edit_minute_path(minute)
         expect(page).to have_content '出席を更新しました'
-        within('#day_attendees') do
+        within('#day_attendees', visible: false) do
           expect(page).not_to have_selector 'li', text: member.name
         end
         within('#absentees') do
