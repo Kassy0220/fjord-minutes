@@ -12,8 +12,18 @@
 
     <h1>ふりかえり</h1>
 
-    <h2>メンバー</h2>
+    <h2>出席者</h2>
+    <ul>
+      <li class="mb-2"><%= link_to '@komagata', 'https://github.com/komagata' %>(スクラムマスター)</li>
+      <li class="mb-2"><%= link_to '@machida', 'https://github.com/machida' %>(プロダクトオーナー)</li>
+    </ul>
     <%= content_tag :div, id: 'attendees_list', data: {minuteId: @minute.id, currentMemberId: current_development_member.id, isAdmin: admin_signed_in?}.to_json do %><% end %>
+
+    <h2>欠席者</h2>
+    <%= content_tag :div, id: 'absentees_list', data: {minuteId: @minute.id, currentMemberId: current_development_member.id, isAdmin: admin_signed_in?}.to_json do %><% end %>
+
+    <h3>連絡なし</h3>
+    <%= content_tag :div, id: 'unexcused_absentees_list', data: {minuteId: @minute.id, currentMemberId: current_development_member.id, isAdmin: admin_signed_in?}.to_json do %><% end %>
 
     <h2>デモ</h2>
     <p>
@@ -44,11 +54,5 @@
     <ul>
       <li>プランニングポーカー</li>
     </ul>
-
-    <h1>欠席者</h1>
-    <%= content_tag :div, id: 'absentees_list', data: {minuteId: @minute.id, currentMemberId: current_development_member.id, isAdmin: admin_signed_in?}.to_json do %><% end %>
-
-    <h2>連絡なし</h2>
-    <%= content_tag :div, id: 'unexcused_absentees_list', data: {minuteId: @minute.id, currentMemberId: current_development_member.id, isAdmin: admin_signed_in?}.to_json do %><% end %>
   </div>
 </div>
