@@ -17,13 +17,23 @@
       <li class="mb-2"><%= link_to '@komagata', 'https://github.com/komagata' %>(スクラムマスター)</li>
       <li class="mb-2"><%= link_to '@machida', 'https://github.com/machida' %>(プロダクトオーナー)</li>
     </ul>
-    <%= content_tag :div, id: 'attendees_list', data: {minuteId: @minute.id, currentMemberId: current_development_member.id, isAdmin: admin_signed_in?}.to_json do %><% end %>
+    <%= content_tag :div, id: 'attendees_list', data: {minuteId: @minute.id}.to_json do %><% end %>
 
     <h2>欠席者</h2>
-    <%= content_tag :div, id: 'absentees_list', data: {minuteId: @minute.id, currentMemberId: current_development_member.id, isAdmin: admin_signed_in?}.to_json do %><% end %>
+    <%= content_tag :div, id: 'absentees_list', data: {minuteId: @minute.id}.to_json do %><% end %>
 
     <h3>連絡なし</h3>
-    <%= content_tag :div, id: 'unexcused_absentees_list', data: {minuteId: @minute.id, currentMemberId: current_development_member.id, isAdmin: admin_signed_in?}.to_json do %><% end %>
+    <%= content_tag :div, id: 'unexcused_absentees_list', data: {minuteId: @minute.id}.to_json do %><% end %>
+
+    <% if member_signed_in? && !@minute.already_finished? %>
+      <div class="my-12">
+        <% if attendance = @minute.attendances.find_by(member: current_member) %>
+          <%= link_to '出席予定を変更する', edit_attendance_path(attendance), class: "!text-white !bg-blue-700 py-4 px-8 border border-blue-700 rounded-lg hover:!no-underline hover:!bg-blue-800" %>
+        <% else %>
+          <%= link_to '出席予定を登録する', new_minute_attendance_path(@minute), class: "!text-white !bg-blue-700 py-4 px-8 border border-blue-700 rounded-lg hover:!no-underline hover:!bg-blue-800" %>
+        <% end %>
+      </div>
+    <% end %>
 
     <h2>デモ</h2>
     <p>
