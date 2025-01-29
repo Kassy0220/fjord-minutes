@@ -2,11 +2,7 @@ import useSWR from 'swr'
 import fetcher from '../fetcher.js'
 import PropTypes from 'prop-types'
 
-export default function UnexcusedAbsenteesList({
-  minuteId,
-  currentMemberId,
-  isAdmin,
-}) {
+export default function UnexcusedAbsenteesList({ minuteId }) {
   const { data, error, isLoading } = useSWR(
     `/api/minutes/${minuteId}/attendances`,
     fetcher
@@ -22,14 +18,6 @@ export default function UnexcusedAbsenteesList({
           <a
             href={`https://github.com/${absentee.name}`}
           >{`@${absentee.name}`}</a>
-          {!isAdmin && currentMemberId === absentee.member_id && (
-            <a
-              href={`/minutes/${minuteId}/attendances/new`}
-              className="ps-4 no-underline hover:!no-underline"
-            >
-              <span className="button">出席登録</span>
-            </a>
-          )}
         </li>
       ))}
     </ul>
@@ -38,6 +26,4 @@ export default function UnexcusedAbsenteesList({
 
 UnexcusedAbsenteesList.propTypes = {
   minuteId: PropTypes.number,
-  currentMemberId: PropTypes.number,
-  isAdmin: PropTypes.bool,
 }
