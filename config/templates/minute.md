@@ -1,16 +1,21 @@
 # ふりかえり
 
-## メンバー
+## 出席者
 
-- プログラマー
-  - 昼
+- [@komagata](https://github.com/komagata)(スクラムマスター)
+- [@machida](https://github.com/machida)(プロダクトオーナー)
+
+### 昼の部
+
 <%= "#{day_attendees}" %>
-  - 夜
+
+### 夜の部
+
 <%= "#{night_attendees}" %>
-- プロダクトオーナー
-  - [@machida](https://github.com/machida)
-- スクラムマスター
-  - [@komagata](https://github.com/komagata)
+
+## 欠席者
+
+<%= "#{absentees}" %>
 
 ## デモ
 
@@ -46,7 +51,3 @@
 # 計画ミーティング
 
 - プランニングポーカー
-
-# 欠席者
-
-<%= "#{absentees}" %>

@@ -18,17 +18,28 @@ RSpec.describe MarkdownBuilder, type: :model do
     expected = <<~MARKDOWN
       # ふりかえり
 
-      ## メンバー
+      ## 出席者
 
-      - プログラマー
-        - 昼
-          - alice
-        - 夜
-          - bob
-      - プロダクトオーナー
-        - [@machida](https://github.com/machida)
-      - スクラムマスター
-        - [@komagata](https://github.com/komagata)
+      - [@komagata](https://github.com/komagata)(スクラムマスター)
+      - [@machida](https://github.com/machida)(プロダクトオーナー)
+
+      ### 昼の部
+
+      - alice
+
+      ### 夜の部
+
+      - bob
+
+      ## 欠席者
+
+      - absentee
+        - 欠席理由
+          - 職場のイベントに参加するため。
+        - 進捗報告
+          - #8000 チームメンバーにレビュー依頼を行いました。
+          - #8102 問題が発生している箇所の調査を行いました。
+          - #8080 依頼されたレビュー対応を行いました。
 
       ## デモ
 
@@ -64,16 +75,6 @@ RSpec.describe MarkdownBuilder, type: :model do
       # 計画ミーティング
 
       - プランニングポーカー
-
-      # 欠席者
-
-      - absentee
-        - 欠席理由
-          - 職場のイベントに参加するため。
-        - 進捗報告
-          - #8000 チームメンバーにレビュー依頼を行いました。
-          - #8102 問題が発生している箇所の調査を行いました。
-          - #8080 依頼されたレビュー対応を行いました。
     MARKDOWN
     expect(described_class.build(minute)).to eq expected
   end

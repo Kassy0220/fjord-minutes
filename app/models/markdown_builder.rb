@@ -17,9 +17,9 @@ class MarkdownBuilder
       minute: @minute,
       day_attendees:,
       night_attendees:,
+      absentees:,
       topics:,
-      next_date:,
-      absentees:
+      next_date:
     }
     ERB.new(template).result_with_hash(minute_data)
   end
@@ -31,7 +31,7 @@ class MarkdownBuilder
            .includes(:member)
            .order(:member_id)
            .pluck(:name)
-           .map { |name| "    - #{name}" }
+           .map { |name| "- #{name}" }
            .join("\n")
   end
 
@@ -40,8 +40,21 @@ class MarkdownBuilder
            .includes(:member)
            .order(:member_id)
            .pluck(:name)
-           .map { |name| "    - #{name}" }
+           .map { |name| "- #{name}" }
            .join("\n")
+  end
+
+  def absentees
+    @minute.attendances.where(status: :absent)
+           .includes(:member)
+           .order(:member_id)
+           .pluck(:absence_reason, :progress_report, :name)
+           .map { |absence_reason, progress_report, name| "- #{name}\n  - 欠席理由\n    - #{absence_reason}\n  - 進捗報告\n#{split_line_to_list(progress_report)}" }
+           .join("\n")
+  end
+
+  def split_line_to_list(progress_report)
+    progress_report.split("\r\n").map { |report| "    - #{report}" }.join("\n")
   end
 
   def topics
@@ -61,18 +74,5 @@ class MarkdownBuilder
       - #{meeting_date}
         - 次回開催日は#{holiday_name}です。もしミーティングをお休みにする場合は、開催日を変更しましょう。
     DATE
-  end
-
-  def absentees
-    @minute.attendances.where(status: :absent)
-           .includes(:member)
-           .order(:member_id)
-           .pluck(:absence_reason, :progress_report, :name)
-           .map { |absence_reason, progress_report, name| "- #{name}\n  - 欠席理由\n    - #{absence_reason}\n  - 進捗報告\n#{progress_reports(progress_report)}" }
-           .join("\n")
-  end
-
-  def progress_reports(progress_report)
-    progress_report.split("\r\n").map { |report| "    - #{report}" }.join("\n")
   end
 end
