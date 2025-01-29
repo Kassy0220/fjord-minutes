@@ -66,7 +66,7 @@ RSpec.describe MarkdownBuilder, type: :model do
 
       連絡事項は特にありません
 
-      # 次回のMTG
+      ## 次回のMTG
 
       - 2024年10月16日(水)
         - 昼の部：15:00-16:00

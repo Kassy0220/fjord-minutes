@@ -57,7 +57,7 @@
     <h2>その他</h2>
     <%= content_tag :div, id: 'other_form', data: {minuteId: @minute.id, content: @minute.other, isAdmin: admin_signed_in?}.to_json do %><% end %>
 
-    <h1>次回のMTG</h1>
+    <h2>次回のMTG</h2>
     <%= content_tag :div, id: 'next_meeting_date_form', data: {minuteId: @minute.id, nextMeetingDate: @minute.next_meeting_date, isAdmin: admin_signed_in?}.to_json do %><% end %>
 
     <h1>計画ミーティング</h1>
