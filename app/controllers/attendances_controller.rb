@@ -3,17 +3,17 @@
 class AttendancesController < ApplicationController
   def edit
     @attendance = current_member.attendances.find(params[:id])
-    redirect_to edit_minute_url(@attendance.minute), alert: '終了したミーティングの出席は変更できません' if @attendance.minute.already_finished?
+    redirect_to edit_minute_url(@attendance.minute), alert: '終了したミーティングの出席予定は変更できません' if @attendance.minute.already_finished?
   end
 
   def update
     @attendance = current_member.attendances.find(params[:id])
-    redirect_to edit_minute_url(@attendance.minute), alert: '終了したミーティングの出席は変更できません' if @attendance.minute.already_finished?
+    redirect_to edit_minute_url(@attendance.minute), alert: '終了したミーティングの出席予定は変更できません' if @attendance.minute.already_finished?
 
     remove_unnecessary_values
 
     if @attendance.update(attendance_params)
-      redirect_to edit_minute_path(@attendance.minute_id), notice: "#{Attendance.model_name.human}を更新しました"
+      redirect_to edit_minute_path(@attendance.minute_id), notice: '出席予定を更新しました'
     else
       render :edit, status: :unprocessable_entity
     end

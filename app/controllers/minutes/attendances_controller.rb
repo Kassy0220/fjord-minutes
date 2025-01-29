@@ -14,7 +14,7 @@ class Minutes::AttendancesController < Minutes::ApplicationController
     @attendance.member_id = current_member.id
 
     if @attendance.save
-      redirect_to edit_minute_url(@minute), notice: "#{Attendance.model_name.human}を登録しました"
+      redirect_to edit_minute_url(@minute), notice: '出席予定を登録しました'
     else
       render :new, status: :unprocessable_entity
     end
@@ -35,10 +35,10 @@ class Minutes::AttendancesController < Minutes::ApplicationController
   end
 
   def prohibit_duplicate_access
-    redirect_to edit_minute_url(@minute), alert: 'すでに出席を登録済みです' if @minute.attendances.where(member_id: current_member.id).any?
+    redirect_to edit_minute_url(@minute), alert: 'すでに出席予定を登録済みです' if @minute.attendances.where(member_id: current_member.id).any?
   end
 
   def prohibit_access_to_finished_minute
-    redirect_to edit_minute_url(@minute), alert: '終了したミーティングには出席できません' if @minute.already_finished?
+    redirect_to edit_minute_url(@minute), alert: '終了したミーティングには出席予定を登録できません' if @minute.already_finished?
   end
 end

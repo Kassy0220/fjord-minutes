@@ -40,7 +40,7 @@ RSpec.describe 'Attendances', type: :system do
         click_button '出席を登録'
 
         expect(current_path).to eq edit_minute_path(minute)
-        expect(page).to have_content '出席を登録しました'
+        expect(page).to have_content '出席予定を登録しました'
         expect(page).not_to have_link '出席予定を登録する'
         expect(page).to have_link '出席予定を変更する'
         within('#day_attendees') do
@@ -60,7 +60,7 @@ RSpec.describe 'Attendances', type: :system do
         click_button '出席を登録'
 
         expect(current_path).to eq edit_minute_path(minute)
-        expect(page).to have_content '出席を登録しました'
+        expect(page).to have_content '出席予定を登録しました'
         expect(page).not_to have_link '出席予定を登録する'
         expect(page).to have_link '出席予定を変更する'
         within('#night_attendees') do
@@ -81,7 +81,7 @@ RSpec.describe 'Attendances', type: :system do
         click_button '出席を登録'
 
         expect(current_path).to eq edit_minute_path(minute)
-        expect(page).to have_content '出席を登録しました'
+        expect(page).to have_content '出席予定を登録しました'
         expect(page).not_to have_link '出席予定を登録する'
         expect(page).to have_link '出席予定を変更する'
         within('#absentees') do
@@ -135,7 +135,7 @@ RSpec.describe 'Attendances', type: :system do
 
         visit new_minute_attendance_path(minute)
         expect(current_path).to eq edit_minute_path(minute)
-        expect(page).to have_content 'すでに出席を登録済みです'
+        expect(page).to have_content 'すでに出席予定を登録済みです'
       end
     end
 
@@ -150,7 +150,7 @@ RSpec.describe 'Attendances', type: :system do
       travel_to minute.meeting_date.days_since(1) do
         visit new_minute_attendance_path(minute)
         expect(current_path).to eq edit_minute_path(minute)
-        expect(page).to have_content '終了したミーティングには出席できません'
+        expect(page).to have_content '終了したミーティングには出席予定を登録できません'
       end
     end
 
@@ -207,7 +207,7 @@ RSpec.describe 'Attendances', type: :system do
         click_button '出席を更新'
 
         expect(current_path).to eq edit_minute_path(minute)
-        expect(page).to have_content '出席を更新しました'
+        expect(page).to have_content '出席予定を更新しました'
         within('#day_attendees', visible: false) do
           expect(page).not_to have_selector 'li', text: member.name
         end
@@ -234,7 +234,7 @@ RSpec.describe 'Attendances', type: :system do
         click_button '出席を更新'
 
         expect(current_path).to eq edit_minute_path(minute)
-        expect(page).to have_content '出席を更新しました'
+        expect(page).to have_content '出席予定を更新しました'
         within('#absentees', visible: false) do
           expect(page).not_to have_selector 'li', text: member.name
         end
@@ -259,7 +259,7 @@ RSpec.describe 'Attendances', type: :system do
         click_button '出席を登録'
 
         expect(current_path).to eq edit_minute_path(minute)
-        expect(page).to have_content '出席を登録しました'
+        expect(page).to have_content '出席予定を登録しました'
         within('#unexcused_absentees', visible: false) do
           expect(page).not_to have_selector 'li', text: member.name
         end
@@ -306,7 +306,7 @@ RSpec.describe 'Attendances', type: :system do
       travel_to minute.meeting_date + 1.day do
         visit edit_attendance_path(attendance)
         expect(current_path).to eq edit_minute_path(minute)
-        expect(page).to have_content '終了したミーティングの出席は変更できません'
+        expect(page).to have_content '終了したミーティングの出席予定は変更できません'
       end
     end
   end
