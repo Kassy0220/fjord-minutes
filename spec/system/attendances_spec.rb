@@ -11,6 +11,14 @@ RSpec.describe 'Attendances', type: :system do
     expect(page).to have_content 'ログインもしくはアカウント登録してください。'
   end
 
+  scenario 'attendance registration button is not displayed when logged in as admin' do
+    minute = FactoryBot.create(:minute)
+    login_as_admin FactoryBot.create(:admin)
+
+    visit edit_minute_path(minute)
+    expect(page).not_to have_link '出席予定を登録する'
+  end
+
   context 'when logged in user' do
     let(:rails_course) { FactoryBot.create(:rails_course) }
     let(:minute) { FactoryBot.create(:minute, course: rails_course) }
@@ -128,6 +136,13 @@ RSpec.describe 'Attendances', type: :system do
         visit new_minute_attendance_path(minute)
         expect(current_path).to eq edit_minute_path(minute)
         expect(page).to have_content 'すでに出席を登録済みです'
+      end
+    end
+
+    scenario 'attendance registration button is not displayed if meeting is already finished' do
+      travel_to minute.meeting_date + 1.day do
+        visit edit_minute_path(minute)
+        expect(page).not_to have_link '出席予定を登録する'
       end
     end
 
@@ -276,6 +291,13 @@ RSpec.describe 'Attendances', type: :system do
         expect(page).to have_content '出席時間帯は入力しないでください'
         expect(page).to have_content '欠席理由を入力してください'
         expect(page).to have_content '進捗報告を入力してください'
+      end
+    end
+
+    scenario 'edit attendance button is not displayed if meeting is already finished' do
+      travel_to minute.meeting_date + 1.day do
+        visit edit_minute_path(minute)
+        expect(page).not_to have_link '出席予定を変更する'
       end
     end
 
