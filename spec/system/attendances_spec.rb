@@ -88,6 +88,7 @@ RSpec.describe 'Attendances', type: :system do
           expect(page).to have_selector 'li', text: member.name
           expect(page).to have_selector 'li', text: '仕事の都合のため。'
           expect(page).to have_selector 'li', text: '#1000 チームメンバーのレビュー待ちの状態です。'
+          expect(page).to have_link '#1000', href: 'https://github.com/fjordllc/bootcamp/issues/1000'
         end
       end
     end
