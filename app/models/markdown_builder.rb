@@ -54,7 +54,12 @@ class MarkdownBuilder
   end
 
   def split_line_to_list(progress_report)
-    progress_report.split("\r\n").map { |report| "    - #{report}" }.join("\n")
+    progress_report.split("\r\n").map { |report| "    - #{rewrite_issue_number_as_link(report)}" }.join("\n")
+  end
+
+  def rewrite_issue_number_as_link(progress_report)
+    repository_url = @minute.course.name == 'Railsエンジニアコース' ? 'https://github.com/fjordllc/bootcamp' : 'https://github.com/fjordllc/agent'
+    progress_report.gsub(/#(\d+)/, "[#\\1](#{repository_url}/issues/\\1)")
   end
 
   def member_link(name)
