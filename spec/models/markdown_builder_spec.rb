@@ -37,9 +37,9 @@ RSpec.describe MarkdownBuilder, type: :model do
         - 欠席理由
           - 職場のイベントに参加するため。
         - 進捗報告
-          - #8000 チームメンバーにレビュー依頼を行いました。
-          - #8102 問題が発生している箇所の調査を行いました。
-          - #8080 依頼されたレビュー対応を行いました。
+          - [#8000](https://github.com/fjordllc/bootcamp/issues/8000) チームメンバーにレビュー依頼を行いました。
+          - [#8102](https://github.com/fjordllc/bootcamp/issues/8102) 問題が発生している箇所の調査を行いました(関連Issue[#8100](https://github.com/fjordllc/bootcamp/issues/8100))。
+          - [#8080](https://github.com/fjordllc/bootcamp/issues/8080) 依頼されたレビュー対応を行いました。
 
       ## デモ
 
