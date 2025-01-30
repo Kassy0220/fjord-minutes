@@ -1,6 +1,9 @@
 <% set_meta_tags(build_meta_tags(title: "#{@minute.title}の出席登録", description: "#{@minute.title}の出席を登録するページです。")) %>
-<div class="bg-blue-700">
-  <h1 class="page_header"><%= "#{Attendance.model_name.human}登録" %></h1>
+<div class="bg-blue-700 mb-8">
+  <div class="flex justify-between items-center md:max-w-5xl md:mx-auto">
+    <h1 class="text-white font-bold text-xl py-4 md:text-2xl">出席登録</h1>
+    <%= link_to '戻る', edit_minute_path(@minute), class: "block w-28 text-center p-2 bg-white text-blue-700 before:content-['<'] before:mr-4 hover:no-underline hover:bg-gray-200" %>
+  </div>
 </div>
 
 <div class="page_body">
