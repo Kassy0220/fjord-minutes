@@ -20,7 +20,7 @@
     <%= content_tag :div, id: 'attendees_list', data: {minuteId: @minute.id}.to_json do %><% end %>
 
     <h2>欠席者</h2>
-    <%= content_tag :div, id: 'absentees_list', data: {minuteId: @minute.id}.to_json do %><% end %>
+    <%= content_tag :div, id: 'absentees_list', data: {minuteId: @minute.id, course_name: @minute.course.name}.to_json do %><% end %>
 
     <h3>連絡なし</h3>
     <%= content_tag :div, id: 'unexcused_absentees_list', data: {minuteId: @minute.id}.to_json do %><% end %>
