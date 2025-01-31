@@ -21,14 +21,14 @@ ja:
         name: 名前
       attendance:
         status: 出席状況
-        time: 出席時間帯
+        session: 出席時間帯
         absence_reason: 欠席理由
         progress_report: 進捗報告
       attendance/status:
         present: 出席
         absent: 欠席
-      attendance/time:
-        day: 昼の部
+      attendance/session:
+        afternoon: 昼の部
         night: 夜の部
       course:
         name: コース名

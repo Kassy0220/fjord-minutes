@@ -1,5 +1,5 @@
 json.day_attendees do
-  json.array! @attendances.where(time: :day) do |attendance|
+  json.array! @attendances.where(session: :afternoon) do |attendance|
     json.attendance_id attendance.id
     json.member_id attendance.member_id
     json.name attendance.member.name
@@ -7,7 +7,7 @@ json.day_attendees do
 end
 
 json.night_attendees do
-  json.array! @attendances.where(time: :night) do |attendance|
+  json.array! @attendances.where(session: :night) do |attendance|
     json.attendance_id attendance.id
     json.member_id attendance.member_id
     json.name attendance.member.name

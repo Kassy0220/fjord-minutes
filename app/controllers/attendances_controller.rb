@@ -22,7 +22,7 @@ class AttendancesController < ApplicationController
   private
 
   def attendance_params
-    params.require(:attendance).permit(:status, :time, :absence_reason, :progress_report)
+    params.require(:attendance).permit(:status, :session, :absence_reason, :progress_report)
   end
 
   def remove_unnecessary_values
@@ -30,7 +30,7 @@ class AttendancesController < ApplicationController
       @attendance.absence_reason = nil
       @attendance.progress_report = nil
     elsif attendance_params['status'] == 'absent'
-      @attendance.time = nil
+      @attendance.session = nil
     end
   end
 end
