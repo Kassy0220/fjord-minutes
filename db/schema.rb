@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_01_25_233751) do
+ActiveRecord::Schema[7.2].define(version: 2025_01_31_092516) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -29,7 +29,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_01_25_233751) do
 
   create_table "attendances", force: :cascade do |t|
     t.integer "status", null: false
-    t.integer "time"
+    t.integer "session"
     t.string "absence_reason"
     t.text "progress_report"
     t.bigint "minute_id", null: false

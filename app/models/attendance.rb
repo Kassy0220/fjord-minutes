@@ -2,14 +2,14 @@
 
 class Attendance < ApplicationRecord
   enum :status, { present: 0, absent: 1 }
-  enum :time, { day: 0, night: 1 }, suffix: true
+  enum :session, { day: 0, night: 1 }, suffix: true
 
   belongs_to :minute
   belongs_to :member
 
   validates :status, presence: true
-  validates :time, presence: true, if: proc { |attendance| attendance.present? }
-  validates :time, absence: true, if: proc { |attendance| attendance.absent? }
+  validates :session, presence: true, if: proc { |attendance| attendance.present? }
+  validates :session, absence: true, if: proc { |attendance| attendance.absent? }
   validates :absence_reason, presence: true, if: proc { |attendance| attendance.absent? }
   validates :progress_report, presence: true, if: proc { |attendance| attendance.absent? }
   validates :absence_reason, absence: true, if: proc { |attendance| attendance.present? }
