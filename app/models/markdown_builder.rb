@@ -27,7 +27,7 @@ class MarkdownBuilder
   private
 
   def day_attendees
-    @minute.attendances.where(time: :day)
+    @minute.attendances.where(session: :afternoon)
            .includes(:member)
            .order(:member_id)
            .pluck(:name)
@@ -36,7 +36,7 @@ class MarkdownBuilder
   end
 
   def night_attendees
-    @minute.attendances.where(time: :night)
+    @minute.attendances.where(session: :night)
            .includes(:member)
            .order(:member_id)
            .pluck(:name)

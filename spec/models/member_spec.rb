@@ -35,34 +35,34 @@ RSpec.describe Member, type: :model do
 
     it 'returns all attendances since the member sign up' do
       FactoryBot.create(:minute, meeting_date: Time.zone.local(2024, 9, 18), course: rails_course)
-      expected_attendances = [{ minute_id: present_minute.id, date: Date.new(2024, 10, 2), attendance_id: Attendance.first.id, status: 'present', time: 'day', absence_reason: nil },
-                              { minute_id: absent_minute.id, date: Date.new(2024, 10, 16), attendance_id: Attendance.second.id, status: 'absent', time: nil, absence_reason: '体調不良のため。' },
-                              { minute_id: unexcused_absent_minute.id, date: Date.new(2024, 11, 6), attendance_id: nil, status: nil, time: nil, absence_reason: nil }]
+      expected_attendances = [{ minute_id: present_minute.id, date: Date.new(2024, 10, 2), attendance_id: Attendance.first.id, status: 'present', session: 'afternoon', absence_reason: nil },
+                              { minute_id: absent_minute.id, date: Date.new(2024, 10, 16), attendance_id: Attendance.second.id, status: 'absent', session: nil, absence_reason: '体調不良のため。' },
+                              { minute_id: unexcused_absent_minute.id, date: Date.new(2024, 11, 6), attendance_id: nil, status: nil, session: nil, absence_reason: nil }]
       expect(member.all_attendances).to eq({ 2024 => [expected_attendances] })
     end
 
     it 'returns attendances until the hibernation started if the member is hibernated' do
       FactoryBot.create(:hibernation, member:, created_at: Time.zone.local(2024, 11, 1))
 
-      attendances_until_hibernation = [{ minute_id: present_minute.id, date: Date.new(2024, 10, 2), attendance_id: Attendance.first.id, status: 'present', time: 'day', absence_reason: nil },
-                                       { minute_id: absent_minute.id, date: Date.new(2024, 10, 16), attendance_id: Attendance.second.id, status: 'absent', time: nil, absence_reason: '体調不良のため。' }]
+      attendances_until_hibernation = [{ minute_id: present_minute.id, date: Date.new(2024, 10, 2), attendance_id: Attendance.first.id, status: 'present', session: 'afternoon', absence_reason: nil },
+                                       { minute_id: absent_minute.id, date: Date.new(2024, 10, 16), attendance_id: Attendance.second.id, status: 'absent', session: nil, absence_reason: '体調不良のため。' }]
       expect(member.all_attendances).to eq({ 2024 => [attendances_until_hibernation] })
     end
 
     it 'does not include attendances during hibernated period' do
       FactoryBot.create(:hibernation, finished_at: Time.zone.local(2024, 10, 31), member:, created_at: Time.zone.local(2024, 10, 3))
 
-      attendances_before_hibernation = [{ minute_id: present_minute.id, date: Date.new(2024, 10, 2), attendance_id: Attendance.first.id, status: 'present', time: 'day', absence_reason: nil }]
-      attendances_after_hibernation = [{ minute_id: unexcused_absent_minute.id, date: Date.new(2024, 11, 6), attendance_id: nil, status: nil, time: nil, absence_reason: nil }]
+      attendances_before_hibernation = [{ minute_id: present_minute.id, date: Date.new(2024, 10, 2), attendance_id: Attendance.first.id, status: 'present', session: 'afternoon', absence_reason: nil }]
+      attendances_after_hibernation = [{ minute_id: unexcused_absent_minute.id, date: Date.new(2024, 11, 6), attendance_id: nil, status: nil, session: nil, absence_reason: nil }]
       expect(member.all_attendances).to eq({ 2024 => [attendances_before_hibernation, attendances_after_hibernation] })
     end
 
     it 'divides attendances by year' do
       latest_minute = FactoryBot.create(:minute, meeting_date: Time.zone.local(2025, 1, 1), course: rails_course)
-      first_year_attendances = [{ minute_id: present_minute.id, date: Date.new(2024, 10, 2), attendance_id: Attendance.first.id, status: 'present', time: 'day', absence_reason: nil },
-                                { minute_id: absent_minute.id, date: Date.new(2024, 10, 16), attendance_id: Attendance.second.id, status: 'absent', time: nil, absence_reason: '体調不良のため。' },
-                                { minute_id: unexcused_absent_minute.id, date: Date.new(2024, 11, 6), attendance_id: nil, status: nil, time: nil, absence_reason: nil }]
-      second_year_attendances = [{ minute_id: latest_minute.id, date: Date.new(2025, 1, 1), attendance_id: nil, status: nil, time: nil, absence_reason: nil }]
+      first_year_attendances = [{ minute_id: present_minute.id, date: Date.new(2024, 10, 2), attendance_id: Attendance.first.id, status: 'present', session: 'afternoon', absence_reason: nil },
+                                { minute_id: absent_minute.id, date: Date.new(2024, 10, 16), attendance_id: Attendance.second.id, status: 'absent', session: nil, absence_reason: '体調不良のため。' },
+                                { minute_id: unexcused_absent_minute.id, date: Date.new(2024, 11, 6), attendance_id: nil, status: nil, session: nil, absence_reason: nil }]
+      second_year_attendances = [{ minute_id: latest_minute.id, date: Date.new(2025, 1, 1), attendance_id: nil, status: nil, session: nil, absence_reason: nil }]
       expect(member.all_attendances).to eq({ 2024 => [first_year_attendances], 2025 => [second_year_attendances] })
     end
 
@@ -98,9 +98,9 @@ RSpec.describe Member, type: :model do
     end
 
     it 'returns recent attendances up to twelve' do
-      first_attendance = { minute_id: rails_course.minutes.first.id, date: Date.new(2025, 12, 18), attendance_id: nil, status: nil, time: nil, absence_reason: nil }
-      second_attendance = { minute_id: rails_course.minutes.second.id, date: Date.new(2025, 1, 1), attendance_id: nil, status: nil, time: nil, absence_reason: nil }
-      last_attendance = { minute_id: rails_course.minutes.last.id, date: Date.new(2025, 6, 18), attendance_id: nil, status: nil, time: nil, absence_reason: nil }
+      first_attendance = { minute_id: rails_course.minutes.first.id, date: Date.new(2025, 12, 18), attendance_id: nil, status: nil, session: nil, absence_reason: nil }
+      second_attendance = { minute_id: rails_course.minutes.second.id, date: Date.new(2025, 1, 1), attendance_id: nil, status: nil, session: nil, absence_reason: nil }
+      last_attendance = { minute_id: rails_course.minutes.last.id, date: Date.new(2025, 6, 18), attendance_id: nil, status: nil, session: nil, absence_reason: nil }
 
       expect(member.recent_attendances.length).to eq 12
       expect(member.recent_attendances).not_to include(first_attendance)

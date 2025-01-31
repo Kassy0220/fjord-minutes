@@ -32,11 +32,11 @@
       </div>
 
       <div class="my-5 text-center present_entry_field">
-        <p><%= Attendance.human_attribute_name('time') %></p>
-        <%= form.radio_button :time, "day", class: "cursor-pointer" %>
-        <%= form.label :time_day, Attendance.human_attribute_name('time.day'), class: "mr-10 cursor-pointer" %>
-        <%= form.radio_button :time, "night", class: "cursor-pointer" %>
-        <%= form.label :time_night, Attendance.human_attribute_name('time.night'), class: "cursor-pointer" %>
+        <p><%= Attendance.human_attribute_name('session') %></p>
+        <%= form.radio_button :session, "afternoon", class: "cursor-pointer" %>
+        <%= form.label :session_afternoon, Attendance.human_attribute_name('session.afternoon'), class: "mr-10 cursor-pointer" %>
+        <%= form.radio_button :session, "night", class: "cursor-pointer" %>
+        <%= form.label :session_night, Attendance.human_attribute_name('session.night'), class: "cursor-pointer" %>
       </div>
 
       <div class="my-5 text-center absent_entry_field">
