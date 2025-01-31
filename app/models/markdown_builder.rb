@@ -15,7 +15,7 @@ class MarkdownBuilder
     template = File.read(TEMPLATE_PATH)
     minute_data = {
       minute: @minute,
-      day_attendees:,
+      afternoon_attendees:,
       night_attendees:,
       absentees:,
       topics:,
@@ -26,7 +26,7 @@ class MarkdownBuilder
 
   private
 
-  def day_attendees
+  def afternoon_attendees
     @minute.attendances.where(session: :afternoon)
            .includes(:member)
            .order(:member_id)
