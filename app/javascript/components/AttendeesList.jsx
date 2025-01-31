@@ -14,8 +14,8 @@ export default function AttendeesList({ minuteId }) {
   return (
     <>
       <h3>昼の部</h3>
-      <ul id="day_attendees">
-        {data.day_attendees.map((attendee) => (
+      <ul id="afternoon_attendees">
+        {data.afternoon_attendees.map((attendee) => (
           <Attendee key={attendee.attendance_id} attendee={attendee} />
         ))}
       </ul>

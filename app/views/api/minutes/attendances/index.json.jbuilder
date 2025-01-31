@@ -1,4 +1,4 @@
-json.day_attendees do
+json.afternoon_attendees do
   json.array! @attendances.where(session: :afternoon) do |attendance|
     json.attendance_id attendance.id
     json.member_id attendance.member_id

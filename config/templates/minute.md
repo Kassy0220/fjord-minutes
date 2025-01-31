@@ -7,7 +7,7 @@
 
 ### 昼の部
 
-<%= "#{day_attendees}" %>
+<%= "#{afternoon_attendees}" %>
 
 ### 夜の部
 

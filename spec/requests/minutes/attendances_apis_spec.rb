@@ -19,7 +19,7 @@ RSpec.describe 'Minutes::Attendances API', type: :request do
   it 'return attendees and absentees' do
     unexcused_absentee = FactoryBot.create(:member, :unexcused_absent_member, course: rails_course)
     expected_data = {
-      day_attendees: [{ attendance_id: alice.attendances.first.id, member_id: alice.id, name: 'alice' }],
+      afternoon_attendees: [{ attendance_id: alice.attendances.first.id, member_id: alice.id, name: 'alice' }],
       night_attendees: [{ attendance_id: bob.attendances.first.id, member_id: bob.id, name: 'bob' }],
       absentees: [{ attendance_id: absent_member.attendances.first.id,
                     member_id: absent_member.id,
