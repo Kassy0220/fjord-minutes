@@ -28,7 +28,7 @@ RSpec.describe 'Attendances', type: :system do
       login_as member
     end
 
-    scenario 'member can create day attendance', :js do
+    scenario 'member can create afternoon attendance', :js do
       travel_to minute.meeting_date.days_ago(1) do
         visit edit_minute_path(minute)
         expect(page).to have_link '出席予定を登録する'

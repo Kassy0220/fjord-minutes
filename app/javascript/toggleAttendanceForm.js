@@ -65,12 +65,12 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // 出席時間帯のラジオボタンを2度クリックするとチェックを消せるようにする処理
-  const timeRadioButtons = document.querySelectorAll(
-    '[name="attendance[time]"]'
+  const sessionRadioButtons = document.querySelectorAll(
+    '[name="attendance[session]"]'
   )
   let lastCheckedTimeRadioButton = null
 
-  timeRadioButtons.forEach((button) => {
+  sessionRadioButtons.forEach((button) => {
     button.addEventListener('click', function () {
       if (lastCheckedTimeRadioButton === this) {
         this.checked = false

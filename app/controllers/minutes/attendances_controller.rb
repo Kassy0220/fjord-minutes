@@ -23,7 +23,7 @@ class Minutes::AttendancesController < Minutes::ApplicationController
   private
 
   def attendance_params
-    params.require(:attendance).permit(:status, :time, :absence_reason, :progress_report)
+    params.require(:attendance).permit(:status, :session, :absence_reason, :progress_report)
   end
 
   def already_registered_attendance
