@@ -2,7 +2,7 @@
 
 class Attendance < ApplicationRecord
   enum :status, { present: 0, absent: 1 }
-  enum :session, { day: 0, night: 1 }, suffix: true
+  enum :session, { afternoon: 0, night: 1 }
 
   belongs_to :minute
   belongs_to :member
