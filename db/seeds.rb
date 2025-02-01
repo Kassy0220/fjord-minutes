@@ -142,15 +142,15 @@ absentee = Member.find_by(email: 'absentee@example.com')
 
 minutes.each do |minute|
   Attendance.find_or_create_by!(minute:, member: day_attendee) do |attendance|
-    attendance.status = :present
-    attendance.time = :day
+    attendance.present = true
+    attendance.session = :afternoon
   end
   Attendance.find_or_create_by!(minute:, member: night_attendee) do |attendance|
-    attendance.status = :present
-    attendance.time = :night
+    attendance.present = true
+    attendance.session = :night
   end
   Attendance.find_or_create_by!(minute:, member: absentee) do |attendance|
-    attendance.status = :absent
+    attendance.present = false
     attendance.absence_reason = '仕事の都合のため'
     attendance.progress_report = '今週の進捗はありません、仕事が忙しく時間が取れずにいます。'
   end
@@ -158,14 +158,14 @@ end
 
 Minute.where(meeting_date: ..hibernated_member_hibernation.created_at).find_each do |minute|
   Attendance.find_or_create_by!(minute:, member: hibernated_member) do |attendance|
-    attendance.status = :present
-    attendance.time = :day
+    attendance.present = true
+    attendance.session = :afternoon
   end
 end
 
 Minute.where.not(meeting_date: returned_member_hibernation.created_at..returned_member_hibernation.finished_at).find_each do |minute|
   Attendance.find_or_create_by!(minute:, member: returned_member) do |attendance|
-    attendance.status = :present
-    attendance.time = :night
+    attendance.present = true
+    attendance.session = :night
   end
 end
