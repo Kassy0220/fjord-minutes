@@ -160,7 +160,7 @@ RSpec.describe 'Attendances', type: :system do
         visit new_minute_attendance_path(minute)
 
         click_button '出席を登録'
-        expect(page).to have_content '出席状況を入力してください'
+        expect(page).to have_content '出欠を選択してください'
 
         choose '欠席'
         fill_in '欠席理由', with: '仕事の都合。'

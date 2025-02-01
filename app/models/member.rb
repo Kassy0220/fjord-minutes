@@ -48,8 +48,8 @@ class Member < ApplicationRecord
           .where(course_id:)
           .where(meeting_date: from..to)
           .order(:meeting_date)
-          .pluck(:id, :meeting_date, attendances: %i[id status session absence_reason])
-          .map { |data| { minute_id: data[0], date: data[1], attendance_id: data[2], status: data[3], session: data[4], absence_reason: data[5] } }
+          .pluck(:id, :meeting_date, attendances: %i[id present session absence_reason])
+          .map { |data| { minute_id: data[0], date: data[1], attendance_id: data[2], present: data[3], session: data[4], absence_reason: data[5] } }
   end
 
   def split_for_display(attendances)
