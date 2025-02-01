@@ -2,7 +2,7 @@
 
 module AttendancesHelper
   def attendance_status(present, time)
-    return '---' unless present
+    return '---' if present.nil?
 
     { 'afternoon' => '昼', 'night' => '夜' }[time]
   end
