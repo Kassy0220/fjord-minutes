@@ -45,7 +45,7 @@ class MarkdownBuilder
   end
 
   def absentees
-    @minute.attendances.where(status: :absent)
+    @minute.attendances.where(present: false)
            .includes(:member)
            .order(:member_id)
            .pluck(:absence_reason, :progress_report, :name)
