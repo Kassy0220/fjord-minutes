@@ -15,7 +15,7 @@ json.night_attendees do
 end
 
 json.absentees do
-  json.array! @attendances.where(status: :absent) do |attendance|
+  json.array! @attendances.where(present: false) do |attendance|
     json.attendance_id attendance.id
     json.member_id attendance.member_id
     json.name attendance.member.name
