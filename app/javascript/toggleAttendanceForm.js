@@ -4,14 +4,15 @@ document.addEventListener('DOMContentLoaded', () => {
     return null
   }
 
-  // 出欠のラジオボタンでフォームの表示を切り替える処理
   const statusRadioButtons = document.querySelectorAll(
     '[name="attendance_form[status]"]'
   )
   const absentFields = document.querySelectorAll('.absent_entry_field')
+  const submitButton = document.querySelector('#submit_button')
 
   const handleChange = function () {
     toggleForm()
+    activeSubmitButton()
   }
 
   const toggleForm = function () {
@@ -36,6 +37,12 @@ document.addEventListener('DOMContentLoaded', () => {
     })
   }
 
+  const activeSubmitButton = function () {
+    submitButton.disabled = false
+    submitButton.classList.remove('cursor-not-allowed')
+    submitButton.classList.add('cursor-pointer')
+  }
+
   statusRadioButtons.forEach((button) => {
     button.addEventListener('change', handleChange)
   })
@@ -46,5 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
     toggleForm()
   } else {
     hideAbsentField()
+    submitButton.disabled = true
+    submitButton.classList.add('cursor-not-allowed')
   }
 })
