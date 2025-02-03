@@ -28,15 +28,14 @@ RSpec.describe 'Attendances', type: :system do
       login_as member
     end
 
-    scenario 'member can create afternoon attendance', :js, { skip: '出席登録ページの修正が完了するまで一時的にスキップする' } do
+    scenario 'member can create afternoon attendance', :js do
       travel_to minute.meeting_date.days_ago(1) do
         visit edit_minute_path(minute)
         expect(page).to have_link '出席予定を登録する'
         click_link '出席予定を登録する'
 
         expect(current_path).to eq new_minute_attendance_path(minute)
-        choose '出席'
-        choose '昼の部'
+        choose '昼の部に出席'
         click_button '出席を登録'
 
         expect(current_path).to eq edit_minute_path(minute)
@@ -49,14 +48,13 @@ RSpec.describe 'Attendances', type: :system do
       end
     end
 
-    scenario 'member can create night attendance', :js, { skip: '出席登録ページの修正が完了するまで一時的にスキップする' } do
+    scenario 'member can create night attendance', :js do
       travel_to minute.meeting_date.days_ago(1) do
         visit edit_minute_path(minute)
         expect(page).to have_link '出席予定を登録する'
         click_link '出席予定を登録する'
 
-        choose '出席'
-        choose '夜の部'
+        choose '夜の部に出席'
         click_button '出席を登録'
 
         expect(current_path).to eq edit_minute_path(minute)
@@ -69,7 +67,7 @@ RSpec.describe 'Attendances', type: :system do
       end
     end
 
-    scenario 'member can create absence', :js, { skip: '出席登録ページの修正が完了するまで一時的にスキップする' } do
+    scenario 'member can create absence', :js do
       travel_to minute.meeting_date.days_ago(1) do
         visit edit_minute_path(minute)
         expect(page).to have_link '出席予定を登録する'
@@ -127,11 +125,10 @@ RSpec.describe 'Attendances', type: :system do
       end
     end
 
-    scenario 'member cannot create attendance twice', { skip: '出席登録ページの修正が完了するまで一時的にスキップする' } do
+    scenario 'member cannot create attendance twice' do
       travel_to minute.meeting_date.days_ago(1) do
         visit new_minute_attendance_path(minute)
-        choose '出席'
-        choose '昼の部'
+        choose '昼の部に出席'
         click_button '出席を登録'
 
         visit new_minute_attendance_path(minute)
@@ -155,7 +152,7 @@ RSpec.describe 'Attendances', type: :system do
       end
     end
 
-    scenario 'member cannot create attendance with invalid input', :js, { skip: '出席登録ページの修正が完了するまで一時的にスキップする' } do
+    scenario 'member cannot create attendance with invalid input', :js do
       travel_to minute.meeting_date.days_ago(1) do
         visit new_minute_attendance_path(minute)
 
@@ -163,21 +160,7 @@ RSpec.describe 'Attendances', type: :system do
         expect(page).to have_content '出欠を選択してください'
 
         choose '欠席'
-        fill_in '欠席理由', with: '仕事の都合。'
-        fill_in '進捗報告', with: '今週の進捗は特にありません。'
-        choose '出席'
         click_button '出席を登録'
-        expect(page).to have_content '出席時間帯を入力してください'
-        expect(page).to have_content '欠席理由は入力しないでください'
-        expect(page).to have_content '進捗報告は入力しないでください'
-
-        choose '出席'
-        choose '昼の部'
-        choose '欠席'
-        fill_in '欠席理由', with: ''
-        fill_in '進捗報告', with: ''
-        click_button '出席を登録'
-        expect(page).to have_content '出席時間帯は入力しないでください'
         expect(page).to have_content '欠席理由を入力してください'
         expect(page).to have_content '進捗報告を入力してください'
       end
