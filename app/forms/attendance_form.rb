@@ -32,9 +32,19 @@ class AttendanceForm
     attendance.save(...)
   end
 
+  def form_with_options
+    if attendance.persisted?
+      { url: Rails.application.routes.url_helpers.attendance_path(attendance), method: :patch }
+    else
+      { url: Rails.application.routes.url_helpers.minute_attendances_path(@minute), method: :post }
+    end
+  end
+
   private
 
   def transfer_attributes_from_model
+    return {} if attendance.present.nil? # model: Attendance.new が渡された場合は空のハッシュを返しておく
+
     if attendance.present?
       { status: attendance.session }
     else
