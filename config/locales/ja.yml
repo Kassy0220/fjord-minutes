@@ -10,6 +10,12 @@ ja:
         afternoon: 昼の部
         night: 夜の部
         absent: 欠席
+    error:
+      models:
+        attendance_form:
+          attributes:
+            status:
+              presence: "%{attribute}を選択してください"
   activerecord:
     errors:
       messages:
