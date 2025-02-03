@@ -8,7 +8,7 @@ class AttendanceForm
   attribute :absence_reason, :string
   attribute :progress_report, :string
 
-  validates :status, presence: { message: "#{AttendanceForm.human_attribute_name('status')}を選択してください" }
+  validates :status, presence: true
   validates :absence_reason, presence: true, if: -> { status == 'absent' }
   validates :progress_report, presence: true, if: -> { status == 'absent' }
 
