@@ -6,14 +6,13 @@ class Minutes::AttendancesController < Minutes::ApplicationController
   before_action :prohibit_access_to_finished_minute, only: %i[new create]
 
   def new
-    @attendance = Attendance.new
+    @attendance_form = AttendanceForm.new(model: Attendance.new, minute: @minute, member: current_member)
   end
 
   def create
-    @attendance = @minute.attendances.new(attendance_params)
-    @attendance.member_id = current_member.id
+    @attendance_form = AttendanceForm.new(model: Attendance.new, minute: @minute, member: current_member, **attendance_form_params)
 
-    if @attendance.save
+    if @attendance_form.save
       redirect_to edit_minute_url(@minute), notice: '出席予定を登録しました'
     else
       render :new, status: :unprocessable_entity
@@ -22,8 +21,8 @@ class Minutes::AttendancesController < Minutes::ApplicationController
 
   private
 
-  def attendance_params
-    params.require(:attendance).permit(:status, :session, :absence_reason, :progress_report)
+  def attendance_form_params
+    params.require(:attendance_form).permit(:status, :absence_reason, :progress_report)
   end
 
   def already_registered_attendance
