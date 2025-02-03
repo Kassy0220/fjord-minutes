@@ -176,15 +176,14 @@ RSpec.describe 'Attendances', type: :system do
       login_as member
     end
 
-    scenario 'member can edit attendance to absence', :js, { skip: '出席編集ページの修正が完了するまで一時的にスキップする' } do
+    scenario 'member can change from present to absent', :js do
       attendance = FactoryBot.create(:attendance, member:, minute:)
       travel_to minute.meeting_date.days_ago(1) do
         visit edit_minute_path(minute)
         click_link '出席予定を変更する'
         expect(current_path).to eq edit_attendance_path(attendance)
 
-        choose '昼の部'
-        choose '昼の部' # チェックがついている'昼の部'を2度クリックして、チェックを外す
+        expect(page).to have_checked_field '昼の部に出席'
         choose '欠席'
         fill_in '欠席理由', with: '体調不良のため。'
         fill_in '進捗報告', with: '#1000 チームメンバーのレビュー待ちの状態です。'
@@ -203,18 +202,15 @@ RSpec.describe 'Attendances', type: :system do
       end
     end
 
-    scenario 'member can edit absence to attendance', :js, { skip: '出席編集ページの修正が完了するまで一時的にスキップする' } do
+    scenario 'member can change from absent to present', :js do
       attendance = FactoryBot.create(:attendance, :absence, member:, minute:)
       travel_to minute.meeting_date.days_ago(1) do
         visit edit_minute_path(minute)
         click_link '出席予定を変更する'
         expect(current_path).to eq edit_attendance_path(attendance)
 
-        choose '欠席'
-        fill_in '欠席理由', with: ''
-        fill_in '進捗報告', with: ''
-        choose '出席'
-        choose '夜の部'
+        expect(page).to have_checked_field '欠席'
+        choose '夜の部に出席'
         click_button '出席を更新'
 
         expect(current_path).to eq edit_minute_path(minute)
@@ -228,7 +224,7 @@ RSpec.describe 'Attendances', type: :system do
       end
     end
 
-    scenario 'member treated as unexcused absentee can create attendance', :js, { skip: '出席編集ページの修正が完了するまで一時的にスキップする' } do
+    scenario 'unexcused absentee can create attendance', :js do
       travel_to minute.meeting_date.days_ago(1) do
         visit edit_minute_path(minute)
         within('#unexcused_absentees') do
@@ -238,8 +234,7 @@ RSpec.describe 'Attendances', type: :system do
         click_link '出席予定を登録する'
         expect(current_path).to eq new_minute_attendance_path(minute)
 
-        choose '出席'
-        choose '昼の部'
+        choose '昼の部に出席'
         click_button '出席を登録'
 
         expect(current_path).to eq edit_minute_path(minute)
@@ -253,26 +248,14 @@ RSpec.describe 'Attendances', type: :system do
       end
     end
 
-    scenario 'member cannot update attendance with invalid input', { skip: '出席編集ページの修正が完了するまで一時的にスキップする' } do
+    scenario 'member cannot update attendance with invalid input' do
       FactoryBot.create(:attendance, member:, minute:)
       travel_to minute.meeting_date.days_ago(1) do
         visit edit_minute_path(minute)
         click_link '出席予定を変更する'
 
         choose '欠席'
-        fill_in '欠席理由', with: '体調不良のため。'
-        fill_in '進捗報告', with: '今週の進捗はありません。'
-        choose '出席'
-        choose '夜の部'
         click_button '出席を更新'
-        expect(page).to have_content '欠席理由は入力しないでください'
-        expect(page).to have_content '進捗報告は入力しないでください'
-
-        choose '欠席'
-        fill_in '欠席理由', with: ''
-        fill_in '進捗報告', with: ''
-        click_button '出席を更新'
-        expect(page).to have_content '出席時間帯は入力しないでください'
         expect(page).to have_content '欠席理由を入力してください'
         expect(page).to have_content '進捗報告を入力してください'
       end
