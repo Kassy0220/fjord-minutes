@@ -1,5 +1,11 @@
 ---
 ja:
+  activemodel:
+    attributes:
+      attendance_form:
+        status: 出欠
+        absence_reason: 欠席理由
+        progress_report: 進捗報告
   activerecord:
     errors:
       messages:
