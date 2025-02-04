@@ -19,7 +19,7 @@ RSpec.describe 'OmniauthLogins', type: :system do
 
     scenario 'user can log in as member of the Rails course' do
       visit root_path
-      click_button 'Railsエンジニアコースで登録'
+      find('button', text: "Railsエンジニア\nコースで登録").click
 
       expect(page).to have_content 'GitHub アカウントによる認証に成功しました。'
       expect(page).to have_selector 'h1', text: 'aliceさん'
@@ -27,7 +27,7 @@ RSpec.describe 'OmniauthLogins', type: :system do
 
     scenario 'user can log in as member of the front end course' do
       visit root_path
-      click_button 'フロントエンドエンジニアコースで登録'
+      find('button', text: "フロントエンドエンジニア\nコースで登録").click
 
       expect(page).to have_content 'GitHub アカウントによる認証に成功しました。'
       expect(page).to have_selector 'h1', text: 'aliceさん'
@@ -48,7 +48,7 @@ RSpec.describe 'OmniauthLogins', type: :system do
 
     scenario 'user can log in as admin' do
       visit root_path
-      click_button 'Railsエンジニアコースで登録'
+      find('button', text: "Railsエンジニア\nコースで登録").click
 
       expect(page).to have_content 'GitHub アカウントによる認証に成功しました。'
       expect(page).to have_selector 'h1', text: '管理ページ'
@@ -63,7 +63,7 @@ RSpec.describe 'OmniauthLogins', type: :system do
 
     scenario 'redirect root page when login fails' do
       visit root_path
-      click_button 'Railsエンジニアコースで登録'
+      find('button', text: "Railsエンジニア\nコースで登録").click
 
       expect(current_path).to eq root_path
       expect(page).to have_content 'GitHub アカウントによる認証に失敗しました。'
