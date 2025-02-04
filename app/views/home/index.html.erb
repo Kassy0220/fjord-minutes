@@ -23,7 +23,7 @@
     </div>
   </div>
 
-  <div class="text-center w-fit mx-auto md:flex md:gap-x-8">
+  <div class="text-center w-fit mx-auto mb-4 md:flex md:gap-x-8">
     <% Course.all.order(id: :asc).each do |course| %>
       <%= form_tag("/auth/github?course_id=#{course.id}", method: 'post', data: {turbo: false}) do %>
         <button type='submit' class="text-white bg-blue-600 hover:bg-blue-700 font-bold rounded-lg px-6 py-4 mb-4 w-72">
@@ -33,11 +33,11 @@
       <% end %>
     <% end %>
   </div>
-  <p class="text-red-700 text-sm text-center">
-    <a href="https://github.com/fjordllc/bootcamp" class="text-red-700">bootcampリポジトリ</a>
+  <p class="text-red-500 text-sm text-center">
+    <a href="https://github.com/fjordllc/bootcamp" class="text-red-500 underline">bootcampリポジトリ</a>
     または
-    <a href="https://github.com/fjordllc/agent" class="text-red-700">agentリポジトリ</a>
-    のコラボレーターの方だけメンバー登録をお願いします。
+    <a href="https://github.com/fjordllc/agent" class="text-red-500 underline">agentリポジトリ</a>
+    の<br>コラボレーターの方だけメンバー登録をお願いします。
   </p>
 
   <% if Rails.env.development? %>
