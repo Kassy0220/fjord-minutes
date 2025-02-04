@@ -34,6 +34,12 @@
     .input_type_text {
         @apply bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-500 inline-block max-w-full field-sizing-content p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500;
     }
+    .active_course_tab_item {
+        @apply translate-y-[1px] inline-block px-2 py-4 w-52 md:w-[280px] rounded-t-lg text-blue-700 font-bold bg-white border border-l-gray-300 border-t-gray-300 border-r-gray-300 border-b-white hover:no-underline text-xs md:px-4 md:text-base;
+    }
+    .inactive_course_tab_item {
+        @apply translate-y-[1px] inline-block px-2 py-4 w-52 md:w-[280px] rounded-t-lg text-gray-500 font-bold bg-gray-300 border border-gray-300 hover:bg-blue-50 hover:no-underline text-xs md:px-4 md:text-base;
+    }
     .large_tab_item {
         @apply inline-block px-2 py-4 rounded-t-lg text-gray-500 border border-b-0 border-gray-300 hover:bg-blue-50 hover:no-underline text-xs md:px-4 md:text-base;
     }
