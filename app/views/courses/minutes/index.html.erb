@@ -13,9 +13,9 @@
     <% if @minutes.none? %>
       <p><%= "#{@course.name}の議事録はまだ作成されていません。" %></p>
     <% else %>
-      <ul class="list-disc list-inside pl-0">
+      <ul class="list-none pl-0">
         <% @minutes.each do |minute| %>
-          <li class="mb-4">
+          <li class="border-b-[1px] border-gray-300 first:border-t-[1px] first:border-gray-300">
             <%= link_to "#{minute.title}", minute, class: "py-3 inline-block text-sm md:text-base" %>
             <% if minute.exported? %>
               <span class="ml-2">
