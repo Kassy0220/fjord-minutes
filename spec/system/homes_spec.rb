@@ -9,8 +9,8 @@ RSpec.describe 'Homes', type: :system do
 
     visit root_path
     expect(page).to have_selector 'h1', text: "FBCチーム開発プラクティスの\n議事録の作成と出席管理ツール"
-    expect(page).to have_button 'Railsエンジニアコースで登録'
-    expect(page).to have_button 'フロントエンドエンジニアコースで登録'
+    expect(page).to have_selector 'button', text: "Railsエンジニア\nコースで登録"
+    expect(page).to have_selector 'button', text: "フロントエンドエンジニア\nコースで登録"
   end
 
   context 'with header' do
