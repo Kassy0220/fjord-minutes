@@ -12,7 +12,7 @@
   <% end %>
 
   <div>
-    <ul class="list-disc list-inside pl-0">
+    <ul class="list-none pl-0">
       <% @members.each do |member| %>
         <li class="mb-6" data-member="<%= member.id %>">
           <%= image_tag member.avatar_url, alt: "#{member.name}の画像", class: 'w-12 h-12 inline-block rounded-full border border-gray-300' %>
@@ -20,17 +20,19 @@
           <% if member.hibernated? %>
             <span class="text-sm text-gray-500">離脱中</span>
           <% end %>
-          <% if admin_signed_in? && !member.hibernated? %>
-            <div class="mt-2">
-              <%= link_to 'チームメンバーから外す', member_hibernations_path(member), data: { turbo: true, turbo_method: :post, turbo_confirm: "#{member.name}さんをチームメンバーから外します、よろしいですか？" },
-                                                                                  class: "text-sm text-gray-400" %>
-            </div>
-          <% end %>
+
           <% if member.recent_attendances.empty? %>
             <p class="mt-2"><%= member.name %>さんはまだミーティングに出席していません</p>
           <% else %>
             <div class="my-2">
               <%= render 'shared/attendance_table', attendances: member.recent_attendances %>
+            </div>
+          <% end %>
+
+          <% if admin_signed_in? && !member.hibernated? %>
+            <div class="mt-2">
+              <%= link_to 'チームメンバーから外す', member_hibernations_path(member), data: { turbo: true, turbo_method: :post, turbo_confirm: "#{member.name}さんをチームメンバーから外します、よろしいですか？" },
+                                                                                  class: "text-sm text-gray-400" %>
             </div>
           <% end %>
         </li>
