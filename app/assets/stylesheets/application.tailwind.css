@@ -47,10 +47,10 @@
         @apply inline-block px-2 py-4 rounded-t-lg text-white font-bold bg-blue-700 border border-b-0 border-gray-300 hover:no-underline text-xs md:px-4 md:text-base;
     }
     .small_tab_item {
-        @apply inline-block px-4 py-2 text-gray-600 border border-gray-300 rounded-3xl hover:bg-blue-50 hover:no-underline;
+        @apply inline-block px-4 py-2 w-24 text-gray-600 border border-gray-300 rounded-3xl hover:bg-blue-50 hover:no-underline;
     }
     .active_small_tab_item {
-        @apply inline-block px-4 py-2 text-white bg-blue-700 border border-blue-700 rounded-3xl hover:no-underline;
+        @apply inline-block px-4 py-2 w-24 text-white bg-blue-700 border border-blue-700 rounded-3xl hover:no-underline;
     }
     .flash_notice {
         @apply py-2.5 px-4 my-5 text-green-500 bg-green-100 font-medium rounded-lg inline-block;
