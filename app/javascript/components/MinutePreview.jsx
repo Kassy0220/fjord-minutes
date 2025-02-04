@@ -19,8 +19,8 @@ export default function MinutePreview({ markdown }) {
               onClick={() => setSelectedTab('markdown')}
               className={
                 selectedTab === 'markdown'
-                  ? 'active_large_tab_item'
-                  : 'large_tab_item'
+                  ? 'active_preview_tab_item'
+                  : 'inactive_preview_tab_item'
               }
             >
               Markdown
@@ -31,8 +31,8 @@ export default function MinutePreview({ markdown }) {
               onClick={() => setSelectedTab('preview')}
               className={
                 selectedTab === 'preview'
-                  ? 'active_large_tab_item'
-                  : 'large_tab_item'
+                  ? 'active_preview_tab_item'
+                  : 'inactive_preview_tab_item'
               }
             >
               Preview
