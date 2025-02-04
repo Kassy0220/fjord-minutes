@@ -13,7 +13,7 @@ export default function MinutePreview({ markdown }) {
   return (
     <div>
       <div className="mb-8">
-        <ul className="flex flex-wrap text-sm text-center border-b border-gray-300 !list-none">
+        <ul className="flex flex-wrap text-sm text-center border-b border-gray-300 pl-4 !list-none">
           <li className="me-2">
             <button
               onClick={() => setSelectedTab('markdown')}
