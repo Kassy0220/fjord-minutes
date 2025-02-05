@@ -67,12 +67,7 @@ RSpec.describe Member, type: :model do
     end
 
     it 'divides attendances in half of the year' do
-      FactoryBot.create(:minute, meeting_date: Time.zone.local(2025, 1, 1), course: rails_course)
-      FactoryBot.build_list(:minute, 12) do |minute|
-        minute.meeting_date = MeetingDateCalculator.next_meeting_date(rails_course.minutes.last.meeting_date, rails_course.meeting_week)
-        minute.course = rails_course
-        minute.save!
-      end
+      create_minutes(course: rails_course, first_meeting_date: Time.zone.local(2025, 1, 1), count: 13)
 
       attendances_in_the_latest_year = member.all_attendances[2025]
       expect(attendances_in_the_latest_year.length).to eq 2
@@ -89,12 +84,7 @@ RSpec.describe Member, type: :model do
     let(:member) { FactoryBot.create(:member, course: rails_course, created_at: Time.zone.local(2024, 12, 1)) }
 
     before do
-      FactoryBot.create(:minute, meeting_date: Time.zone.local(2024, 12, 18), course: rails_course)
-      FactoryBot.build_list(:minute, 12) do |minute|
-        minute.meeting_date = MeetingDateCalculator.next_meeting_date(rails_course.minutes.last.meeting_date, rails_course.meeting_week)
-        minute.course = rails_course
-        minute.save!
-      end
+      create_minutes(course: rails_course, first_meeting_date: Time.zone.local(2024, 12, 18), count: 13)
     end
 
     it 'returns recent attendances up to twelve' do

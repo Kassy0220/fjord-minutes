@@ -29,12 +29,7 @@ RSpec.describe 'Members', type: :system do
       end
 
       scenario 'all attendances are listed', :js do
-        FactoryBot.create(:minute, meeting_date: Time.zone.local(2025, 1, 1), course: rails_course)
-        FactoryBot.build_list(:minute, 3) do |minute|
-          minute.meeting_date = MeetingDateCalculator.next_meeting_date(rails_course.minutes.last.meeting_date, rails_course.meeting_week)
-          minute.course = rails_course
-          minute.save!
-        end
+        create_minutes(course: rails_course, first_meeting_date: Time.zone.local(2025, 1, 1), count: 4)
         FactoryBot.create(:attendance, member:, minute: rails_course.minutes.first)
         FactoryBot.create(:attendance, :night, member:, minute: rails_course.minutes.second)
         FactoryBot.create(:attendance, :absence, member:, minute: rails_course.minutes.third)
@@ -77,12 +72,7 @@ RSpec.describe 'Members', type: :system do
       end
 
       scenario 'attendance is divided in half year', :js do
-        FactoryBot.create(:minute, meeting_date: Time.zone.local(2025, 1, 1), course: rails_course)
-        FactoryBot.build_list(:minute, 12) do |minute|
-          minute.meeting_date = MeetingDateCalculator.next_meeting_date(rails_course.minutes.last.meeting_date, rails_course.meeting_week)
-          minute.course = rails_course
-          minute.save!
-        end
+        create_minutes(course: rails_course, first_meeting_date: Time.zone.local(2025, 1, 1), count: 13)
         rails_course.minutes.each { |minute| FactoryBot.create(:attendance, member:, minute:) }
 
         visit member_path(member)
@@ -176,12 +166,7 @@ RSpec.describe 'Members', type: :system do
     end
 
     scenario 'member\'s last half year attendance is displayed' do
-      FactoryBot.create(:minute, meeting_date: Time.zone.local(2025, 1, 1), course: rails_course)
-      FactoryBot.build_list(:minute, 12) do |minute|
-        minute.meeting_date = MeetingDateCalculator.next_meeting_date(rails_course.minutes.last.meeting_date, rails_course.meeting_week)
-        minute.course = rails_course
-        minute.save!
-      end
+      create_minutes(course: rails_course, first_meeting_date: Time.zone.local(2025, 1, 1), count: 13)
       member.update!(created_at: Time.zone.local(2024, 12, 31))
       another_member = FactoryBot.create(:member, :another_member, course: rails_course, created_at: Time.zone.local(2025, 4, 1))
       rails_course.minutes.each do |minute|
