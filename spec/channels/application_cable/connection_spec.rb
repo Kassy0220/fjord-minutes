@@ -8,7 +8,7 @@ RSpec.describe ApplicationCable::Connection, type: :channel do
 
   it 'successfully connect when admin has valid remember cookie' do
     # ユーザーのログインを記憶する処理を簡易的に実行する
-    # https://github.com/heartcombo/devise/blob/fec67f98f26fcd9a79072e4581b1bd40d0c7fa1d/lib/devise/controllers/rememberable.rb#L22
+    # https://github.com/heartcombo/devise/blob/fec67f98f26fcd9a79072e4581b1bd40d0c7fa1d/lib/devise/models/rememberable.rb#L50
     admin.remember_me!
     cookies.signed[:remember_admin_token] = Admin.serialize_into_cookie(admin)
 
