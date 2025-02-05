@@ -13,8 +13,8 @@ RSpec.describe 'Homes', type: :system do
     expect(page).to have_selector 'button', text: "フロントエンドエンジニア\nコースで登録"
   end
 
-  context 'with header' do
-    scenario 'header content changes whether the member logged in' do
+  describe 'header' do
+    scenario 'content changes whether the member logged in' do
       member = FactoryBot.create(:member)
 
       visit root_path
@@ -35,7 +35,7 @@ RSpec.describe 'Homes', type: :system do
       end
     end
 
-    scenario "admin's header displays the links to first course minutes and first course members" do
+    scenario 'contains link to the first course minutes and members when admin logged in' do
       first_course = FactoryBot.create(:rails_course)
       second_course = FactoryBot.create(:front_end_course)
       admin = FactoryBot.create(:admin)
