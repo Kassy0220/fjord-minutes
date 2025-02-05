@@ -20,8 +20,8 @@ class NotificationMessageBuilder
 
   private
 
-  def template_path(type)
-    { minute_creation: TEMPLATE_PATH_FOR_MINUTE_CREATION, today_meeting: TEMPLATE_PATH_FOR_TODAY_MEETING }[type]
+  def template_path(message_type)
+    { minute_creation: TEMPLATE_PATH_FOR_MINUTE_CREATION, today_meeting: TEMPLATE_PATH_FOR_TODAY_MEETING }[message_type]
   end
 
   def role_id
