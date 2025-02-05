@@ -38,8 +38,7 @@ RSpec.describe 'Homes', type: :system do
     scenario 'contains link to the first course minutes and members when admin logged in' do
       first_course = FactoryBot.create(:rails_course)
       second_course = FactoryBot.create(:front_end_course)
-      admin = FactoryBot.create(:admin)
-      login_as_admin admin
+      login_as_admin FactoryBot.create(:admin)
       within('nav#header') do
         expect(page).to have_link '議事録', href: course_minutes_path(first_course)
         expect(page).to have_link 'メンバー', href: course_members_path(first_course)
@@ -57,8 +56,7 @@ RSpec.describe 'Homes', type: :system do
     FactoryBot.create(:minute, meeting_date: Time.zone.local(2024, 10, 9), course: front_end_course)
     front_end_course_latest_minute = FactoryBot.create(:minute, meeting_date: Time.zone.local(2024, 10, 23), course: front_end_course)
 
-    admin = FactoryBot.create(:admin)
-    login_as_admin admin
+    login_as_admin FactoryBot.create(:admin)
     visit root_path
 
     within("div[data-course='#{rails_course.id}']") do
