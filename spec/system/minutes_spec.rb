@@ -248,14 +248,20 @@ RSpec.describe 'Minutes', type: :system do
       FactoryBot.create(:minute, meeting_date: Time.zone.local(2025, 1, 1), course: rails_course)
 
       visit course_minutes_path(rails_course)
-      expect(page).to have_link '2024年'
-      expect(page).to have_link '2025年'
+      within('#years_tab') do
+        expect(page).to have_link '2024年'
+        expect(page).to have_link '2025年'
+      end
 
-      click_link '2024年'
+      within('#years_tab') do
+        click_link '2024年'
+      end
       expect(page).to have_link 'ふりかえり・計画ミーティング2024年01月01日'
       expect(page).not_to have_link 'ふりかえり・計画ミーティング2025年01月01日'
 
-      click_link '2025年'
+      within('#years_tab') do
+        click_link '2025年'
+      end
       expect(page).not_to have_link 'ふりかえり・計画ミーティング2024年01月01日'
       expect(page).to have_link 'ふりかえり・計画ミーティング2025年01月01日'
     end
@@ -290,10 +296,14 @@ RSpec.describe 'Minutes', type: :system do
     scenario 'show markdown and preview of the minute', :js do
       login_as member
       visit minute_path(minute)
-      expect(page).to have_button 'Markdown'
-      expect(page).to have_button 'Preview'
+      within('#preview_tab') do
+        expect(page).to have_button 'Markdown'
+        expect(page).to have_button 'Preview'
+      end
 
-      click_button 'Markdown'
+      within('#preview_tab') do
+        click_button 'Markdown'
+      end
       expect(page).to have_selector 'pre#raw_markdown'
       expect(page).not_to have_selector 'div#markdown_preview'
       within('#raw_markdown') do
@@ -301,7 +311,9 @@ RSpec.describe 'Minutes', type: :system do
         expect(page).not_to have_selector 'h1', text: 'ふりかえり'
       end
 
-      click_button 'Preview'
+      within('#preview_tab') do
+        click_button 'Preview'
+      end
       expect(page).not_to have_selector 'pre#raw_markdown'
       expect(page).to have_selector 'div#markdown_preview'
       within('#markdown_preview') do
