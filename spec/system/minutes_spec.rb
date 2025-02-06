@@ -204,7 +204,7 @@ RSpec.describe 'Minutes', type: :system do
     end
   end
 
-  context 'when list the minutes' do
+  describe 'show minutes' do
     let(:rails_course) { FactoryBot.create(:rails_course) }
     let(:front_end_course) { FactoryBot.create(:front_end_course) }
     let(:member) { FactoryBot.create(:member, course: rails_course) }
@@ -288,7 +288,7 @@ RSpec.describe 'Minutes', type: :system do
     end
   end
 
-  context 'when show the minute' do
+  describe 'show minute' do
     let!(:rails_course) { FactoryBot.create(:rails_course) }
     let(:member) { FactoryBot.create(:member, course: rails_course) }
     let(:minute) { FactoryBot.create(:minute, course: rails_course) }
