@@ -212,8 +212,7 @@ RSpec.describe 'Members', type: :system do
       hibernated_member = FactoryBot.create(:member, :another_member, course: rails_course)
       FactoryBot.create(:hibernation, member: hibernated_member, created_at: Time.zone.local(2025, 1, 1))
 
-      admin = FactoryBot.create(:admin)
-      login_as_admin admin
+      login_as_admin FactoryBot.create(:admin)
       visit course_members_path(rails_course)
       within('#status_tab') do
         expect(page).to have_link '現役', href: course_members_path(rails_course, status: 'active')
@@ -252,8 +251,7 @@ RSpec.describe 'Members', type: :system do
     end
 
     scenario 'admin can make member hibernated' do
-      admin = FactoryBot.create(:admin)
-      login_as_admin admin
+      login_as_admin FactoryBot.create(:admin)
       visit course_members_path(rails_course)
       within("li[data-member='#{member.id}']") do
         expect(page).to have_content 'alice'
@@ -273,8 +271,7 @@ RSpec.describe 'Members', type: :system do
     end
 
     scenario 'admin cannot make member hibernated who already hibernated' do
-      admin = FactoryBot.create(:admin)
-      login_as_admin admin
+      login_as_admin FactoryBot.create(:admin)
       visit course_members_path(rails_course)
 
       FactoryBot.create(:hibernation, member:)
