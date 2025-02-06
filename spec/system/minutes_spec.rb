@@ -16,10 +16,10 @@ RSpec.describe 'Minutes', type: :system do
       end
 
       scenario 'can edit all minute content', :js do
-        within('#release_branch_form') do
+        within('#release_branch') do
           expect(page).to have_selector 'button', text: '編集'
         end
-        within('#release_note_form') do
+        within('#release_note') do
           expect(page).to have_selector 'button', text: '編集'
         end
         within('#topics') do
@@ -35,7 +35,7 @@ RSpec.describe 'Minutes', type: :system do
       end
 
       scenario 'can edit release branch and release note', :js do
-        within('#release_branch_form') do
+        within('#release_branch') do
           expect(page).to have_selector 'li', text: 'https://example.com/fjordllc/bootcamp/pull/1000'
           expect(page).not_to have_selector 'input[type="text"]'
 
@@ -48,7 +48,7 @@ RSpec.describe 'Minutes', type: :system do
           expect(page).not_to have_selector 'input[type="text"]'
         end
 
-        within('#release_note_form') do
+        within('#release_note') do
           expect(page).to have_selector 'li', text: 'https://example.com/announcements/100'
           expect(page).not_to have_selector 'input[type="text"]'
 
@@ -148,10 +148,10 @@ RSpec.describe 'Minutes', type: :system do
 
       scenario 'can edit only topics', :js do
         visit edit_minute_path(minute)
-        within('#release_branch_form') do
+        within('#release_branch') do
           expect(page).not_to have_selector 'button', text: '編集'
         end
-        within('#release_note_form') do
+        within('#release_note') do
           expect(page).not_to have_selector 'button', text: '編集'
         end
         within('#topics') do

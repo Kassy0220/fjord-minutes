@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import sendRequest from '../sendRequest.js'
 import useChannel from '../hooks/useChannel.js'
 
-export default function ReleaseInformationForm({
+export default function Release({
   minuteId,
   description,
   content,
@@ -40,7 +40,7 @@ export default function ReleaseInformationForm({
               setIsEditing={setIsEditing}
             />
           ) : (
-            <ReleaseInformation
+            <ReleaseDetail
               content={informationContent}
               setIsEditing={setIsEditing}
               isAdmin={isAdmin}
@@ -106,7 +106,7 @@ function EditForm({ minuteId, description, content, course, setIsEditing }) {
   )
 }
 
-function ReleaseInformation({ content, setIsEditing, isAdmin }) {
+function ReleaseDetail({ content, setIsEditing, isAdmin }) {
   return (
     <li>
       <span>{content}</span>
@@ -123,7 +123,7 @@ function ReleaseInformation({ content, setIsEditing, isAdmin }) {
   )
 }
 
-ReleaseInformationForm.propTypes = {
+Release.propTypes = {
   minuteId: PropTypes.number,
   description: PropTypes.string,
   content: PropTypes.string,
@@ -139,7 +139,7 @@ EditForm.propTypes = {
   setIsEditing: PropTypes.func,
 }
 
-ReleaseInformation.propTypes = {
+ReleaseDetail.propTypes = {
   content: PropTypes.string,
   setIsEditing: PropTypes.func,
   isAdmin: PropTypes.bool,
