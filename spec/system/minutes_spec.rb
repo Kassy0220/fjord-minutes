@@ -38,21 +38,27 @@ RSpec.describe 'Minutes', type: :system do
       scenario 'can edit release branch and release note', :js do
         within('#release_branch_form') do
           expect(page).to have_content 'https://example.com/fjordllc/bootcamp/pull/1000'
+          expect(page).not_to have_selector 'input[type="text"]'
 
           click_button '編集'
+          expect(page).to have_selector 'input[type="text"]'
           fill_in 'release_branch_field', with: 'https://example.com/fjordllc/bootcamp/pull/9999'
           click_button '更新'
-          expect(page).not_to have_selector 'input'
+
+          expect(page).not_to have_selector 'input[type="text"]'
           expect(page).to have_content 'https://example.com/fjordllc/bootcamp/pull/9999'
         end
 
         within('#release_note_form') do
           expect(page).to have_content 'https://example.com/announcements/100'
+          expect(page).not_to have_selector 'input[type="text"]'
 
           click_button '編集'
+          expect(page).to have_selector 'input[type="text"]'
           fill_in 'release_note_field', with: 'https://example.com/fjordllc/bootcamp/pull/999'
           click_button '更新'
-          expect(page).not_to have_selector 'input'
+
+          expect(page).not_to have_selector 'input[type="text"]'
           expect(page).to have_content 'https://example.com/fjordllc/bootcamp/pull/999'
         end
       end
