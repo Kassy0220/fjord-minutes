@@ -146,8 +146,10 @@ RSpec.describe 'Members', type: :system do
 
       login_as member
       visit course_members_path(rails_course)
-      expect(page).to have_link 'Railsエンジニアコース'
-      expect(page).to have_link 'フロントエンドエンジニアコース'
+      within('#course_tab') do
+        expect(page).to have_link 'Railsエンジニアコース'
+        expect(page).to have_link 'フロントエンドエンジニアコース'
+      end
       rails_course.members.each do |member|
         within("li[data-member='#{member.id}']") do
           expect(page).to have_link member.name, href: member_path(member)
@@ -157,7 +159,9 @@ RSpec.describe 'Members', type: :system do
       end
       expect(page).not_to have_link 'bob', href: member_path(front_end_member)
 
-      click_link 'フロントエンドエンジニアコース'
+      within('#course_tab') do
+        click_link 'フロントエンドエンジニアコース'
+      end
       rails_course.members.each do |member|
         expect(page).not_to have_link member.name, href: member_path(member)
       end
@@ -211,14 +215,20 @@ RSpec.describe 'Members', type: :system do
       admin = FactoryBot.create(:admin)
       login_as_admin admin
       visit course_members_path(rails_course)
-      expect(page).to have_link '現役', href: course_members_path(rails_course, status: 'active')
-      expect(page).to have_link '全て', href: course_members_path(rails_course, status: 'all')
+      within('#status_tab') do
+        expect(page).to have_link '現役', href: course_members_path(rails_course, status: 'active')
+        expect(page).to have_link '全て', href: course_members_path(rails_course, status: 'all')
+      end
 
-      click_link '現役'
+      within('#status_tab') do
+        click_link '現役'
+      end
       expect(page).to have_content 'alice'
       expect(page).not_to have_content hibernated_member.name
 
-      click_link '全て'
+      within('#status_tab') do
+        click_link '全て'
+      end
       expect(page).to have_content 'alice'
       within("li[data-member='#{hibernated_member.id}']") do
         expect(page).to have_content hibernated_member.name
@@ -232,8 +242,7 @@ RSpec.describe 'Members', type: :system do
 
       login_as member
       visit course_members_path(rails_course)
-      expect(page).not_to have_link '現役', href: course_members_path(rails_course, status: 'active')
-      expect(page).not_to have_link '全て', href: course_members_path(rails_course, status: 'all')
+      expect(page).not_to have_selector 'div#status_tab'
       expect(page).to have_content 'alice'
       expect(page).not_to have_content hibernated_member.name
 
