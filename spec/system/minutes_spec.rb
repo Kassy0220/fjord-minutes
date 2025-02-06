@@ -9,10 +9,9 @@ RSpec.describe 'Minutes', type: :system do
     context 'when as admin' do
       let!(:rails_course) { FactoryBot.create(:rails_course) }
       let(:minute) { FactoryBot.create(:minute, course: rails_course) }
-      let(:admin) { FactoryBot.create(:admin) }
 
       before do
-        login_as_admin admin
+        login_as_admin FactoryBot.create(:admin)
         visit edit_minute_path(minute)
       end
 
@@ -324,8 +323,7 @@ RSpec.describe 'Minutes', type: :system do
       allow(GithubWikiManager).to receive(:export_minute).and_call_original
       allow(GithubWikiManager).to receive(:export_minute).with(minute).and_return(nil)
 
-      admin = FactoryBot.create(:admin)
-      login_as_admin admin
+      login_as_admin FactoryBot.create(:admin)
       visit minute_path(minute)
       expect(page).to have_button 'GitHub Wiki にエクスポート'
       expect(page).not_to have_link 'GitHub Wikiで確認'
