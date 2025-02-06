@@ -243,12 +243,12 @@ RSpec.describe 'Members', type: :system do
       login_as member
       visit course_members_path(rails_course)
       expect(page).not_to have_selector 'div#status_tab'
-      expect(page).to have_content 'alice'
-      expect(page).not_to have_content hibernated_member.name
+      expect(page).to have_link member.name, href: member_path(member)
+      expect(page).not_to have_link hibernated_member.name, href: member_path(hibernated_member)
 
       visit course_members_path(rails_course, status: 'hibernated')
-      expect(page).to have_content 'alice'
-      expect(page).not_to have_content hibernated_member.name
+      expect(page).to have_link member.name, href: member_path(member)
+      expect(page).not_to have_link hibernated_member.name, href: member_path(hibernated_member)
     end
 
     scenario 'admin can make member hibernated' do
