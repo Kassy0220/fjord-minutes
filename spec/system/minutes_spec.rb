@@ -67,6 +67,7 @@ RSpec.describe 'Minutes', type: :system do
         within('#topics') do
           expect(page).to have_content '話題にしたいこと・心配事はありません。'
 
+          expect(page).to have_selector 'input[type="text"]'
           expect(find('button', text: '作成')).to be_disabled
           fill_in 'new_topic_field', with: '今週ミートアップがありますのでぜひご参加を！'
           click_button '作成'
@@ -100,6 +101,7 @@ RSpec.describe 'Minutes', type: :system do
           expect(page).to have_content '2024年10月16日'
 
           click_button '編集'
+          expect(page).to have_selector 'input[type="text"]'
           # 日付編集フォームの実装はflowbite-reactのDatepickerを使っているが、このコンポーネントは<input type="text">を返すようになっている
           # 以下の手順で日付編集フォームを操作することができたので、一旦以下の方法でテストを実装する
           # fill_in で日付編集フォームの日付選択欄を開く
@@ -159,6 +161,7 @@ RSpec.describe 'Minutes', type: :system do
         within('#topics') do
           expect(page).to have_content '話題にしたいこと・心配事はありません。'
 
+          expect(page).to have_selector 'input[type="text"]'
           expect(find('button', text: '作成')).to be_disabled
           fill_in 'new_topic_field', with: 'CI上でテストが落ちています、皆さんはいかがでしょうか？'
           click_button '作成'
