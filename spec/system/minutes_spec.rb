@@ -5,8 +5,8 @@ require 'rails_helper'
 RSpec.describe 'Minutes', type: :system do
   include MinutesHelper
 
-  context 'when edit the minutes' do
-    context 'when as admin' do
+  describe 'edit minute' do
+    context 'when logged in as admin' do
       let!(:rails_course) { FactoryBot.create(:rails_course) }
       let(:minute) { FactoryBot.create(:minute, course: rails_course) }
 
@@ -15,7 +15,7 @@ RSpec.describe 'Minutes', type: :system do
         visit edit_minute_path(minute)
       end
 
-      scenario 'can access all edit form', :js do
+      scenario 'can edit all minute content', :js do
         within('#release_branch_form') do
           expect(page).to have_selector 'button', text: '編集'
         end
@@ -85,6 +85,17 @@ RSpec.describe 'Minutes', type: :system do
         end
       end
 
+      scenario 'cannot edit and destroy topics created by others', :js do
+        minute.topics.create(content: 'テストが通らないのでどなたかペアプロをお願いします！', topicable: FactoryBot.create(:member, course: rails_course))
+
+        visit edit_minute_path(minute)
+        within('#topics') do
+          expect(page).to have_selector 'li', text: 'テストが通らないのでどなたかペアプロをお願いします！(alice)'
+          expect(page).not_to have_selector 'button', text: '編集'
+          expect(page).not_to have_selector 'button', text: '削除'
+        end
+      end
+
       scenario 'can edit other', :js do
         within('#other_form') do
           expect(page).to have_selector 'textarea', text: '連絡事項は特にありません'
@@ -112,9 +123,21 @@ RSpec.describe 'Minutes', type: :system do
           expect(page).to have_content '2024年10月23日'
         end
       end
+
+      scenario 'message is displayed if next meeting is holiday' do
+        within('#next_meeting_date_form') do
+          click_button '編集'
+          fill_in 'next_meeting_date_field', with: Date.new(2024, 10, 14)
+          click_button '14日'
+          click_button '更新'
+
+          expect(page).to have_content '2024年10月14日'
+          expect(page).to have_content '次回開催日はスポーツの日です。もしミーティングをお休みにする場合は、開催日を変更しましょう。'
+        end
+      end
     end
 
-    context 'when as member' do
+    context 'when logged in as member' do
       let!(:rails_course) { FactoryBot.create(:rails_course) }
       let(:minute) { FactoryBot.create(:minute, course: rails_course) }
       let(:member) { FactoryBot.create(:member, course: rails_course) }
@@ -123,7 +146,7 @@ RSpec.describe 'Minutes', type: :system do
         login_as member
       end
 
-      scenario 'can access only topic edit form', :js do
+      scenario 'can edit only topics', :js do
         visit edit_minute_path(minute)
         within('#release_branch_form') do
           expect(page).not_to have_selector 'button', text: '編集'
@@ -142,17 +165,6 @@ RSpec.describe 'Minutes', type: :system do
           expect(page).not_to have_selector 'button', text: '編集'
         end
       end
-    end
-
-    context 'when topic form' do
-      let!(:rails_course) { FactoryBot.create(:rails_course) }
-      let(:minute) { FactoryBot.create(:minute, course: rails_course) }
-      let(:member) { FactoryBot.create(:member, course: rails_course) }
-      let(:another_member) { FactoryBot.create(:member, :another_member, course: rails_course) }
-
-      before do
-        login_as another_member
-      end
 
       scenario 'can create, edit and delete topic', :js do
         visit edit_minute_path(minute)
@@ -165,46 +177,28 @@ RSpec.describe 'Minutes', type: :system do
           fill_in 'new_topic_field', with: 'CI上でテストが落ちています、皆さんはいかがでしょうか？'
           click_button '作成'
           expect(page).not_to have_content '話題にしたいこと・心配事はありません。'
-          expect(page).to have_selector 'li', text: 'CI上でテストが落ちています、皆さんはいかがでしょうか？(bob)'
+          expect(page).to have_selector 'li', text: 'CI上でテストが落ちています、皆さんはいかがでしょうか？(alice)'
           expect(page).to have_selector 'button', text: '編集'
           expect(page).to have_selector 'button', text: '削除'
 
           click_button '編集'
           fill_in 'edit_topic_field', with: 'ローカル環境でもテストが落ちています'
           click_button '更新'
-          expect(page).to have_selector 'li', text: 'ローカル環境でもテストが落ちています(bob)'
+          expect(page).to have_selector 'li', text: 'ローカル環境でもテストが落ちています(alice)'
 
           click_button '削除'
-          expect(page).not_to have_selector 'li', text: 'ローカル環境でもテストが落ちています(bob)'
+          expect(page).not_to have_selector 'li', text: 'ローカル環境でもテストが落ちています(alice)'
         end
       end
 
-      scenario 'cannot edit and destroy topic created by others', :js do
-        minute.topics.create(content: 'テストが通らないのでどなたかペアプロをお願いします！', topicable: member)
+      scenario 'cannot edit and destroy topics created by others', :js do
+        minute.topics.create(content: 'テストが通らないのでどなたかペアプロをお願いします！', topicable: FactoryBot.create(:member, :another_member, course: rails_course))
 
         visit edit_minute_path(minute)
         within('#topics') do
-          expect(page).to have_selector 'li', text: 'テストが通らないのでどなたかペアプロをお願いします！(alice)'
+          expect(page).to have_selector 'li', text: 'テストが通らないのでどなたかペアプロをお願いします！(bob)'
           expect(page).not_to have_selector 'button', text: '編集'
           expect(page).not_to have_selector 'button', text: '削除'
-        end
-      end
-    end
-
-    context 'when next meeting date form' do
-      let!(:rails_course) { FactoryBot.create(:rails_course) }
-      let(:minute) { FactoryBot.create(:minute, next_meeting_date: Time.zone.local(2024, 10, 14), course: rails_course) }
-      let(:member) { FactoryBot.create(:member, course: rails_course) }
-
-      before do
-        login_as member
-        visit edit_minute_path(minute)
-      end
-
-      scenario 'display message when next meeting is holiday' do
-        within('#next_meeting_date_form') do
-          expect(page).to have_content '2024年10月14日'
-          expect(page).to have_content '次回開催日はスポーツの日です。もしミーティングをお休みにする場合は、開催日を変更しましょう。'
         end
       end
     end
