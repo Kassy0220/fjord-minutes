@@ -23,6 +23,7 @@ RSpec.describe 'OmniauthLogins', type: :system do
 
       expect(page).to have_content 'GitHub アカウントによる認証に成功しました。'
       expect(page).to have_selector 'h1', text: 'aliceさん'
+      expect(page).to have_content 'Railsエンジニアコース'
     end
 
     scenario 'user can log in as member of the front end course' do
@@ -31,6 +32,7 @@ RSpec.describe 'OmniauthLogins', type: :system do
 
       expect(page).to have_content 'GitHub アカウントによる認証に成功しました。'
       expect(page).to have_selector 'h1', text: 'aliceさん'
+      expect(page).to have_content 'フロントエンドエンジニアコース'
     end
   end
 
