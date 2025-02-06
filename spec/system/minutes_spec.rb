@@ -219,15 +219,26 @@ RSpec.describe 'Minutes', type: :system do
     end
 
     scenario 'display minutes by course' do
-      FactoryBot.create(:minute, meeting_date: Time.zone.local(2024, 10, 2), course: rails_course)
-      FactoryBot.create(:minute, meeting_date: Time.zone.local(2024, 10, 9), course: front_end_course)
+      rails_course_minute = FactoryBot.create(:minute, meeting_date: Time.zone.local(2024, 10, 2), course: rails_course)
+      front_end_course_minute = FactoryBot.create(:minute, meeting_date: Time.zone.local(2024, 10, 9), course: front_end_course)
 
       visit course_minutes_path(rails_course)
-      expect(page).not_to have_content 'Railsエンジニアコースの議事録はまだ作成されていません。'
-      expect(page).to have_link 'ふりかえり・計画ミーティング2024年10月02日'
-      expect(page).not_to have_link 'ふりかえり・計画ミーティング2024年10月09日'
+      within('#course_tab') do
+        expect(page).to have_link 'Railsエンジニアコース'
+        expect(page).to have_link 'フロントエンドエンジニアコース'
+      end
 
-      visit course_minutes_path(front_end_course)
+      within('#course_tab') do
+        click_link 'Railsエンジニアコース'
+      end
+      expect(current_path).to eq course_minutes_path(rails_course)
+      expect(page).to have_link 'ふりかえり・計画ミーティング2024年10月02日', href: minute_path(rails_course_minute)
+      expect(page).not_to have_link 'ふりかえり・計画ミーティング2024年10月09日', href: minute_path(front_end_course_minute)
+
+      within('#course_tab') do
+        click_link 'フロントエンドエンジニアコース'
+      end
+      expect(current_path).to eq course_minutes_path(front_end_course)
       expect(page).not_to have_link 'ふりかえり・計画ミーティング2024年10月02日'
       expect(page).to have_link 'ふりかえり・計画ミーティング2024年10月09日'
     end
@@ -268,21 +279,6 @@ RSpec.describe 'Minutes', type: :system do
       visit course_minutes_path(rails_course)
       expect(page).to have_link 'GitHub Wikiで確認', href: github_wiki_url(exported_minute)
       expect(page).not_to have_link 'GitHub Wikiで確認', href: github_wiki_url(not_exported_minute)
-    end
-
-    scenario 'can access minutes list for each course by tab' do
-      FactoryBot.create(:minute, meeting_date: Time.zone.local(2024, 10, 2), course: rails_course)
-      FactoryBot.create(:minute, meeting_date: Time.zone.local(2024, 10, 9), course: front_end_course)
-
-      visit course_minutes_path(rails_course)
-      expect(page).to have_link 'Railsエンジニアコース'
-      expect(page).to have_link 'フロントエンドエンジニアコース'
-
-      click_link 'Railsエンジニアコース'
-      expect(current_path).to eq course_minutes_path(rails_course)
-
-      click_link 'フロントエンドエンジニアコース'
-      expect(current_path).to eq course_minutes_path(front_end_course)
     end
   end
 
