@@ -16,20 +16,21 @@ export default function Release({
   const onReceivedData = useCallback(
     function (data) {
       if ('minute' in data.body) {
-        const key = `release_${description}`
-        setInformationContent(data.body.minute[key])
+        setInformationContent(data.body.minute[description])
       }
     },
     [description]
   )
   useChannel(minuteId, onReceivedData)
 
-  const label = description === 'branch' ? 'リリースブランチ' : 'リリースノート'
-
   return (
     <ul>
       <li>
-        <span className="block mb-2">{label}</span>
+        <span className="block mb-2">
+          {description === 'release_branch'
+            ? 'リリースブランチ'
+            : 'リリースノート'}
+        </span>
         <ul>
           {isEditing ? (
             <EditForm
@@ -60,10 +61,7 @@ function EditForm({ minuteId, description, content, course, setIsEditing }) {
 
   const handleClick = async function (e) {
     e.preventDefault()
-    const parameter =
-      description === 'branch'
-        ? { minute: { release_branch: inputValue } }
-        : { minute: { release_note: inputValue } }
+    const parameter = { minute: { [description]: inputValue } }
 
     const response = await sendRequest(
       `/api/minutes/${minuteId}`,
@@ -80,7 +78,7 @@ function EditForm({ minuteId, description, content, course, setIsEditing }) {
   }
 
   const placeholder = (description, course) => {
-    if (description === 'note') {
+    if (description === 'release_note') {
       return 'https://bootcamp.fjord.jp/announcements/1000'
     } else {
       return course === 'Railsエンジニアコース'
@@ -96,7 +94,7 @@ function EditForm({ minuteId, description, content, course, setIsEditing }) {
         value={inputValue}
         placeholder={placeholder(description, course)}
         onChange={handleInput}
-        id={`release_${description}_field`}
+        id={`${description}_field`}
         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-500 inline-block w-[500px] p-2.5 "
       />
       <button type="button" onClick={handleClick} className="button mt-2">
