@@ -3,8 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe 'Members', type: :system do
-  context 'when show members' do
-    scenario 'can access member show page' do
+  describe 'show member' do
+    scenario 'user can see member page of all course' do
       rails_course = FactoryBot.create(:rails_course)
       front_end_course = FactoryBot.create(:front_end_course)
       member = FactoryBot.create(:member, course: rails_course)
@@ -20,7 +20,7 @@ RSpec.describe 'Members', type: :system do
       expect(page).not_to have_button 'チーム開発を抜ける'
     end
 
-    context 'when display member attendances' do
+    describe 'display member\'s attendances' do
       let(:rails_course) { FactoryBot.create(:rails_course) }
       let(:member) { FactoryBot.create(:member, course: rails_course, created_at: Time.zone.local(2024, 12, 1)) }
 
@@ -28,7 +28,7 @@ RSpec.describe 'Members', type: :system do
         login_as member
       end
 
-      scenario 'all attendances are listed', :js do
+      scenario 'all attendances are displayed as table', :js do
         create_minutes(course: rails_course, first_meeting_date: Time.zone.local(2025, 1, 1), count: 4)
         FactoryBot.create(:attendance, member:, minute: rails_course.minutes.first)
         FactoryBot.create(:attendance, :night, member:, minute: rails_course.minutes.second)
@@ -52,7 +52,7 @@ RSpec.describe 'Members', type: :system do
         end
       end
 
-      scenario 'attendance is listed per year', :js do
+      scenario 'attendances are divided by year', :js do
         FactoryBot.create(:minute, meeting_date: Time.zone.local(2024, 12, 18), course: rails_course)
         FactoryBot.create(:minute, meeting_date: Time.zone.local(2025, 1, 1), course: rails_course)
         rails_course.minutes.each { |minute| FactoryBot.create(:attendance, member:, minute:) }
@@ -71,7 +71,7 @@ RSpec.describe 'Members', type: :system do
         end
       end
 
-      scenario 'attendance is divided in half year', :js do
+      scenario 'attendances are divided in half year', :js do
         create_minutes(course: rails_course, first_meeting_date: Time.zone.local(2025, 1, 1), count: 13)
         rails_course.minutes.each { |minute| FactoryBot.create(:attendance, member:, minute:) }
 
@@ -95,7 +95,7 @@ RSpec.describe 'Members', type: :system do
         end
       end
 
-      scenario 'display attendances until the hibernation started if the member is hibernated', :js do
+      scenario 'attendances are displayed until the hibernation started if the member is hibernated', :js do
         hibernated_member = FactoryBot.create(:member, :another_member, course: rails_course, created_at: Time.zone.local(2025, 1, 1))
         FactoryBot.create(:minute, meeting_date: Time.zone.local(2025, 1, 1), course: rails_course)
         FactoryBot.create(:minute, meeting_date: Time.zone.local(2025, 1, 15), course: rails_course)
@@ -108,7 +108,7 @@ RSpec.describe 'Members', type: :system do
         expect(page).not_to have_selector 'dt[data-attendance-on="2025-02-05"]', text: '02/15'
       end
 
-      scenario 'does not display attendances during the hibernated period', :js do
+      scenario 'attendances during the hibernated period are not displayed', :js do
         FactoryBot.create(:minute, meeting_date: Time.zone.local(2025, 1, 1), course: rails_course)
         FactoryBot.create(:minute, meeting_date: Time.zone.local(2025, 1, 15), course: rails_course)
         FactoryBot.create(:minute, meeting_date: Time.zone.local(2025, 2, 5), course: rails_course)
@@ -128,14 +128,14 @@ RSpec.describe 'Members', type: :system do
         end
       end
 
-      scenario 'show as not attending meeting if the member have not yet attended meeting' do
+      scenario 'show message if the member have not yet attended meeting' do
         visit member_path(member)
         expect(page).to have_content 'aliceさんはまだミーティングに出席していません'
       end
     end
   end
 
-  context 'when list members' do
+  describe 'show members' do
     let!(:rails_course) { FactoryBot.create(:rails_course) }
     let(:front_end_course) { FactoryBot.create(:front_end_course) }
     let!(:member) { FactoryBot.create(:member, course: rails_course) }
@@ -169,7 +169,7 @@ RSpec.describe 'Members', type: :system do
       expect(page).to have_selector "img[src='#{front_end_member.avatar_url}']"
     end
 
-    scenario 'member\'s last half year attendance is displayed' do
+    scenario 'member\'s recent attendances are also displayed' do
       create_minutes(course: rails_course, first_meeting_date: Time.zone.local(2025, 1, 1), count: 13)
       member.update!(created_at: Time.zone.local(2024, 12, 31))
       another_member = FactoryBot.create(:member, :another_member, course: rails_course, created_at: Time.zone.local(2025, 4, 1))
@@ -200,7 +200,7 @@ RSpec.describe 'Members', type: :system do
       end
     end
 
-    scenario 'show as not attending meeting if the member have not yet attended meeting' do
+    scenario 'show message if the member have not yet attended meeting' do
       login_as member
       visit course_members_path(rails_course)
       within("li[data-member='#{member.id}']") do
@@ -208,80 +208,84 @@ RSpec.describe 'Members', type: :system do
       end
     end
 
-    scenario 'admin can view active member and all member' do
-      hibernated_member = FactoryBot.create(:member, :another_member, course: rails_course)
-      FactoryBot.create(:hibernation, member: hibernated_member, created_at: Time.zone.local(2025, 1, 1))
+    context 'when logged in as member' do
+      scenario 'view only active member' do
+        hibernated_member = FactoryBot.create(:member, :another_member, course: rails_course)
+        FactoryBot.create(:hibernation, member: hibernated_member, created_at: Time.zone.local(2025, 1, 1))
 
-      login_as_admin FactoryBot.create(:admin)
-      visit course_members_path(rails_course)
-      within('#status_tab') do
-        expect(page).to have_link '現役', href: course_members_path(rails_course, status: 'active')
-        expect(page).to have_link '全て', href: course_members_path(rails_course, status: 'all')
-      end
+        login_as member
+        visit course_members_path(rails_course)
+        expect(page).not_to have_selector 'div#status_tab'
+        expect(page).to have_link member.name, href: member_path(member)
+        expect(page).not_to have_link hibernated_member.name, href: member_path(hibernated_member)
 
-      within('#status_tab') do
-        click_link '現役'
-      end
-      expect(page).to have_content 'alice'
-      expect(page).not_to have_content hibernated_member.name
-
-      within('#status_tab') do
-        click_link '全て'
-      end
-      expect(page).to have_content 'alice'
-      within("li[data-member='#{hibernated_member.id}']") do
-        expect(page).to have_content hibernated_member.name
-        expect(page).to have_content '離脱中'
+        visit course_members_path(rails_course, status: 'hibernated')
+        expect(page).to have_link member.name, href: member_path(member)
+        expect(page).not_to have_link hibernated_member.name, href: member_path(hibernated_member)
       end
     end
 
-    scenario 'member can view only active member' do
-      hibernated_member = FactoryBot.create(:member, :another_member, course: rails_course)
-      FactoryBot.create(:hibernation, member: hibernated_member, created_at: Time.zone.local(2025, 1, 1))
+    context 'when logged in as admin' do
+      scenario 'view active member and all member' do
+        hibernated_member = FactoryBot.create(:member, :another_member, course: rails_course)
+        FactoryBot.create(:hibernation, member: hibernated_member, created_at: Time.zone.local(2025, 1, 1))
 
-      login_as member
-      visit course_members_path(rails_course)
-      expect(page).not_to have_selector 'div#status_tab'
-      expect(page).to have_link member.name, href: member_path(member)
-      expect(page).not_to have_link hibernated_member.name, href: member_path(hibernated_member)
+        login_as_admin FactoryBot.create(:admin)
+        visit course_members_path(rails_course)
+        within('#status_tab') do
+          expect(page).to have_link '現役', href: course_members_path(rails_course, status: 'active')
+          expect(page).to have_link '全て', href: course_members_path(rails_course, status: 'all')
+        end
 
-      visit course_members_path(rails_course, status: 'hibernated')
-      expect(page).to have_link member.name, href: member_path(member)
-      expect(page).not_to have_link hibernated_member.name, href: member_path(hibernated_member)
-    end
-
-    scenario 'admin can make member hibernated' do
-      login_as_admin FactoryBot.create(:admin)
-      visit course_members_path(rails_course)
-      within("li[data-member='#{member.id}']") do
+        within('#status_tab') do
+          click_link '現役'
+        end
         expect(page).to have_content 'alice'
-        expect(page).not_to have_content '離脱中'
-        expect(page).to have_link 'チームメンバーから外す'
-        page.accept_confirm do
-          click_link 'チームメンバーから外す'
+        expect(page).not_to have_content hibernated_member.name
+
+        within('#status_tab') do
+          click_link '全て'
+        end
+        expect(page).to have_content 'alice'
+        within("li[data-member='#{hibernated_member.id}']") do
+          expect(page).to have_content hibernated_member.name
+          expect(page).to have_content '離脱中'
         end
       end
-      # expect(current_page)だとクエリ部分が無視されてしまうため、expect(page).to have_current_pathでテストする
-      expect(page).to have_current_path(course_members_path(rails_course, status: 'all'))
-      expect(page).to have_content 'aliceをチームメンバーから外しました'
-      within("li[data-member='#{member.id}']") do
-        expect(page).to have_content '離脱中'
-        expect(page).not_to have_link 'チームメンバーから外す'
-      end
-    end
 
-    scenario 'admin cannot make member hibernated who already hibernated' do
-      login_as_admin FactoryBot.create(:admin)
-      visit course_members_path(rails_course)
-
-      FactoryBot.create(:hibernation, member:)
-      within("li[data-member='#{member.id}']") do
-        page.accept_confirm do
-          click_link 'チームメンバーから外す'
+      scenario 'can make member hibernated' do
+        login_as_admin FactoryBot.create(:admin)
+        visit course_members_path(rails_course)
+        within("li[data-member='#{member.id}']") do
+          expect(page).to have_content 'alice'
+          expect(page).not_to have_content '離脱中'
+          expect(page).to have_link 'チームメンバーから外す'
+          page.accept_confirm do
+            click_link 'チームメンバーから外す'
+          end
+        end
+        # expect(current_page)だとクエリ部分が無視されてしまうため、expect(page).to have_current_pathでテストする
+        expect(page).to have_current_path(course_members_path(rails_course, status: 'all'))
+        expect(page).to have_content 'aliceをチームメンバーから外しました'
+        within("li[data-member='#{member.id}']") do
+          expect(page).to have_content '離脱中'
+          expect(page).not_to have_link 'チームメンバーから外す'
         end
       end
-      expect(page).to have_current_path(course_members_path(rails_course, status: 'all'))
-      expect(page).to have_content 'aliceさんはすでにチームメンバーから外れています'
+
+      scenario 'cannot make member hibernated who already hibernated' do
+        login_as_admin FactoryBot.create(:admin)
+        visit course_members_path(rails_course)
+
+        FactoryBot.create(:hibernation, member:)
+        within("li[data-member='#{member.id}']") do
+          page.accept_confirm do
+            click_link 'チームメンバーから外す'
+          end
+        end
+        expect(page).to have_current_path(course_members_path(rails_course, status: 'all'))
+        expect(page).to have_content 'aliceさんはすでにチームメンバーから外れています'
+      end
     end
   end
 end
