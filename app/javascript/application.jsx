@@ -3,7 +3,7 @@ Turbo.session.drive = false
 
 import mountComponent from './mountComponent.jsx'
 import AttendeesList from './components/AttendeesList.jsx'
-import ReleaseInformationForm from './components/ReleaseInformationForm.jsx'
+import Release from './components/Release.jsx'
 import TopicList from './components/TopicList.jsx'
 import OtherForm from './components/OtherForm.jsx'
 import NextMeetingDateForm from './components/NextMeetingDateForm.jsx'
@@ -15,8 +15,8 @@ import './toggleAttendanceForm'
 import 'flowbite'
 
 mountComponent('attendees_list', AttendeesList)
-mountComponent('release_branch_form', ReleaseInformationForm)
-mountComponent('release_note_form', ReleaseInformationForm)
+mountComponent('release_branch', Release)
+mountComponent('release_note', Release)
 mountComponent('topics', TopicList)
 mountComponent('other_form', OtherForm)
 mountComponent('next_meeting_date_form', NextMeetingDateForm)
