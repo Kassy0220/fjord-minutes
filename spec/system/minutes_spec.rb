@@ -213,10 +213,12 @@ RSpec.describe 'Minutes', type: :system do
       login_as member
     end
 
-    scenario 'display minutes by course' do
+    scenario 'display messages if minute is none' do
       visit course_minutes_path(rails_course)
       expect(page).to have_content 'Railsエンジニアコースの議事録はまだ作成されていません。'
+    end
 
+    scenario 'display minutes by course' do
       FactoryBot.create(:minute, meeting_date: Time.zone.local(2024, 10, 2), course: rails_course)
       FactoryBot.create(:minute, meeting_date: Time.zone.local(2024, 10, 9), course: front_end_course)
 
