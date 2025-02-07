@@ -28,7 +28,7 @@ class Member < ApplicationRecord
   end
 
   def all_attendances
-    attendances = hibernated? ? attendance_list(to: hibernations.last.created_at) : attendance_list
+    attendances = hibernated? ? attendance_records(to: hibernations.last.created_at) : attendance_records
     attendances_by_year = attendances.group_by { |attendance| attendance[:date].year }
     attendances_by_year.transform_values do |annual_attendances|
       split_for_display(annual_attendances)
@@ -38,12 +38,12 @@ class Member < ApplicationRecord
   def recent_attendances
     from = was_hibernated? ? hibernations.where.not(finished_at: nil).last.finished_at : created_at
     to = hibernated? ? hibernations.last.created_at : nil
-    attendance_list(from:, to:).pop(12)
+    attendance_records(from:, to:).pop(12)
   end
 
   private
 
-  def attendance_list(from: created_at, to: nil)
+  def attendance_records(from: created_at, to: nil)
     Minute.joins("LEFT JOIN (SELECT * FROM attendances WHERE member_id = #{id}) AS attendances ON minutes.id = attendances.minute_id")
           .where(course_id:)
           .where(meeting_date: from..to)
