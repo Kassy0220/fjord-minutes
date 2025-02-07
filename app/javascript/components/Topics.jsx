@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import sendRequest from '../sendRequest.js'
 import useChannel from '../hooks/useChannel.js'
 
-export default function TopicList({
+export default function Topics({
   minuteId,
   topics,
   currentDevelopmentMemberId,
@@ -222,7 +222,7 @@ function CreateForm({ minuteId }) {
   )
 }
 
-TopicList.propTypes = {
+Topics.propTypes = {
   minuteId: PropTypes.number,
   topics: PropTypes.array,
   currentDevelopmentMemberId: PropTypes.number,

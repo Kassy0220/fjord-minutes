@@ -3,7 +3,7 @@ import fetcher from '../fetcher.js'
 import DOMPurify from 'dompurify'
 import PropTypes from 'prop-types'
 
-export default function AbsenteesList({ minuteId, course_name }) {
+export default function Absentees({ minuteId, course_name }) {
   const { data, error, isLoading } = useSWR(
     `/api/minutes/${minuteId}/attendances`,
     fetcher
@@ -13,7 +13,7 @@ export default function AbsenteesList({ minuteId, course_name }) {
   if (isLoading) return <p>読み込み中</p>
 
   return (
-    <ul id="absentees">
+    <ul>
       {data.absentees.map((absentee) => (
         <Absentee
           key={absentee.attendance_id}
@@ -69,7 +69,7 @@ function convertIssueNumberToLink(progress_report, course_name) {
   )
 }
 
-AbsenteesList.propTypes = {
+Absentees.propTypes = {
   minuteId: PropTypes.number,
   course_name: PropTypes.string,
 }
