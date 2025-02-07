@@ -5,7 +5,7 @@ class API::Minutes::TopicsController < API::Minutes::ApplicationController
     topic = current_development_member.topics.new(topic_params)
     topic.minute_id = @minute.id
     if topic.save
-      render json: @minute, status: :created
+      render json: topic, status: :created
       broadcast_to_channel
     else
       render json: { errors: topic.errors.full_messages }, status: :unprocessable_entity
