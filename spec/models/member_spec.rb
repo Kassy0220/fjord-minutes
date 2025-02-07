@@ -38,7 +38,7 @@ RSpec.describe Member, type: :model do
       expected_attendances = [{ minute_id: present_minute.id, date: Date.new(2024, 10, 2), attendance_id: Attendance.first.id, present: true, session: 'afternoon', absence_reason: nil },
                               { minute_id: absent_minute.id, date: Date.new(2024, 10, 16), attendance_id: Attendance.second.id, present: false, session: nil, absence_reason: '体調不良のため。' },
                               { minute_id: unexcused_absent_minute.id, date: Date.new(2024, 11, 6), attendance_id: nil, present: nil, session: nil, absence_reason: nil }]
-      expect(member.all_attendances).to eq({ 2024 => [expected_attendances] })
+      expect(member.all_attendances).to eq(expected_attendances)
     end
 
     it 'returns attendances until the hibernation started if the member is hibernated' do
@@ -46,36 +46,7 @@ RSpec.describe Member, type: :model do
 
       attendances_until_hibernation = [{ minute_id: present_minute.id, date: Date.new(2024, 10, 2), attendance_id: Attendance.first.id, present: true, session: 'afternoon', absence_reason: nil },
                                        { minute_id: absent_minute.id, date: Date.new(2024, 10, 16), attendance_id: Attendance.second.id, present: false, session: nil, absence_reason: '体調不良のため。' }]
-      expect(member.all_attendances).to eq({ 2024 => [attendances_until_hibernation] })
-    end
-
-    it 'does not include attendances during hibernated period' do
-      FactoryBot.create(:hibernation, finished_at: Time.zone.local(2024, 10, 31), member:, created_at: Time.zone.local(2024, 10, 3))
-
-      attendances_before_hibernation = [{ minute_id: present_minute.id, date: Date.new(2024, 10, 2), attendance_id: Attendance.first.id, present: true, session: 'afternoon', absence_reason: nil }]
-      attendances_after_hibernation = [{ minute_id: unexcused_absent_minute.id, date: Date.new(2024, 11, 6), attendance_id: nil, present: nil, session: nil, absence_reason: nil }]
-      expect(member.all_attendances).to eq({ 2024 => [attendances_before_hibernation, attendances_after_hibernation] })
-    end
-
-    it 'divides attendances by year' do
-      latest_minute = FactoryBot.create(:minute, meeting_date: Time.zone.local(2025, 1, 1), course: rails_course)
-      first_year_attendances = [{ minute_id: present_minute.id, date: Date.new(2024, 10, 2), attendance_id: Attendance.first.id, present: true, session: 'afternoon', absence_reason: nil },
-                                { minute_id: absent_minute.id, date: Date.new(2024, 10, 16), attendance_id: Attendance.second.id, present: false, session: nil, absence_reason: '体調不良のため。' },
-                                { minute_id: unexcused_absent_minute.id, date: Date.new(2024, 11, 6), attendance_id: nil, present: nil, session: nil, absence_reason: nil }]
-      second_year_attendances = [{ minute_id: latest_minute.id, date: Date.new(2025, 1, 1), attendance_id: nil, present: nil, session: nil, absence_reason: nil }]
-      expect(member.all_attendances).to eq({ 2024 => [first_year_attendances], 2025 => [second_year_attendances] })
-    end
-
-    it 'divides attendances in half of the year' do
-      create_minutes(course: rails_course, first_meeting_date: Time.zone.local(2025, 1, 1), count: 13)
-
-      attendances_in_the_latest_year = member.all_attendances[2025]
-      expect(attendances_in_the_latest_year.length).to eq 2
-      expect(attendances_in_the_latest_year.first.length).to eq 12
-      expect(attendances_in_the_latest_year.first.last[:date]).to eq Date.new(2025, 6, 18)
-
-      expect(attendances_in_the_latest_year.second.length).to eq 1
-      expect(attendances_in_the_latest_year.second.last[:date]).to eq Date.new(2025, 7, 2)
+      expect(member.all_attendances).to eq(attendances_until_hibernation)
     end
   end
 
