@@ -2,7 +2,7 @@ import useSWR from 'swr'
 import fetcher from '../fetcher.js'
 import PropTypes from 'prop-types'
 
-export default function AttendeesList({ minuteId }) {
+export default function Attendees({ minuteId }) {
   const { data, error, isLoading } = useSWR(
     `/api/minutes/${minuteId}/attendances`,
     fetcher
@@ -37,7 +37,7 @@ function Attendee({ attendee }) {
   )
 }
 
-AttendeesList.propTypes = {
+Attendees.propTypes = {
   minuteId: PropTypes.number,
 }
 

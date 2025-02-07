@@ -2,24 +2,24 @@ import { Turbo } from '@hotwired/turbo-rails'
 Turbo.session.drive = false
 
 import mountComponent from './mountComponent.jsx'
-import AttendeesList from './components/AttendeesList.jsx'
+import Attendees from './components/Attendees.jsx'
 import Release from './components/Release.jsx'
-import TopicList from './components/TopicList.jsx'
+import Topics from './components/Topics.jsx'
 import OtherForm from './components/OtherForm.jsx'
 import NextMeetingDateForm from './components/NextMeetingDateForm.jsx'
-import AbsenteesList from './components/AbsenteesList.jsx'
-import UnexcusedAbsenteesList from './components/UnexcusedAbsenteesList.jsx'
+import Absentees from './components/Absentees.jsx'
+import UnexcusedAbsentees from './components/UnexcusedAbsentees.jsx'
 import MinutePreview from './components/MinutePreview.jsx'
 import './toggleAttendanceForm'
 
 import 'flowbite'
 
-mountComponent('attendees_list', AttendeesList)
+mountComponent('attendees', Attendees)
+mountComponent('absentees', Absentees)
+mountComponent('unexcused_absentees', UnexcusedAbsentees)
 mountComponent('release_branch', Release)
 mountComponent('release_note', Release)
-mountComponent('topics', TopicList)
+mountComponent('topics', Topics)
 mountComponent('other_form', OtherForm)
 mountComponent('next_meeting_date_form', NextMeetingDateForm)
-mountComponent('absentees_list', AbsenteesList)
-mountComponent('unexcused_absentees_list', UnexcusedAbsenteesList)
 mountComponent('minute_preview', MinutePreview)
