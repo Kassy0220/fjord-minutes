@@ -31,7 +31,7 @@
     <% if @member.all_attendances.empty? %>
       <p><%= @member.name %>さんはまだミーティングに出席していません</p>
     <% else %>
-      <% @member.all_attendances.each do |year, attendances_by_year| %>
+      <% split_attendances(@member.all_attendances, @member).each do |year, attendances_by_year| %>
         <div class="mb-8" data-meeting-year="<%= year %>">
           <p class="mb-4 font-bold border-b-[1px] border-gray-200"><%= year %>年</p>
           <% attendances_by_year.each.with_index do |attendances, i| %>
