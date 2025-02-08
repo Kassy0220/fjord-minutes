@@ -3,23 +3,23 @@ Rails.application.routes.draw do
   root "home#index"
   get 'pp', to: 'home#pp'
   get 'terms_of_service', to: 'home#terms_of_service'
-  resources :minutes, only: [:show, :edit] do
-    resources :attendances, only: [ :new, :create ], module: :minutes
-    resources :exports, only: [ :create ], module: :minutes
+  resources :minutes, only: %i[show edit] do
+    resources :attendances, only: %i[new create], module: :minutes
+    resources :exports, only: %i[create], module: :minutes
   end
-  resources :attendances, only: [ :edit, :update ]
+  resources :attendances, only: %i[edit update]
   resources :courses, only: [] do
-    resources :members, only: [:index], module: :courses
-    resources :minutes, only: [:index], module: :courses
+    resources :members, only: %i[index], module: :courses
+    resources :minutes, only: %i[index], module: :courses
   end
-  resources :members, only: [:show] do
-    resources :hibernations, only: [:create], module: :members
+  resources :members, only: %i[show] do
+    resources :hibernations, only: %i[create], module: :members
   end
 
   namespace :api do
-    resources :minutes, only: [ :update ] do
-      resources :topics, only: [ :create, :update, :destroy ], module: :minutes
-      resources :attendances, only: [ :index ], module: :minutes
+    resources :minutes, only: %i[update] do
+      resources :topics, only: %i[create update destroy], module: :minutes
+      resources :attendances, only: %i[index], module: :minutes
     end
   end
 
