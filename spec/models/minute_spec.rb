@@ -24,4 +24,11 @@ RSpec.describe Minute, type: :model do
       end
     end
   end
+
+  describe '#title' do
+    it 'returns formatted minute title' do
+      minute = FactoryBot.build(:minute, meeting_date: Time.zone.local(2025, 1, 8))
+      expect(minute.title).to eq 'ふりかえり・計画ミーティング2025年01月08日'
+    end
+  end
 end
