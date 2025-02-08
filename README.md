@@ -1,10 +1,32 @@
 # FjordMinutes
-フィヨルドブートキャンプのチーム開発プラクティスで行われているミーティングの議事録を作成するアプリケーションです。
+フィヨルドブートキャンプのチーム開発プラクティスで行われているミーティングを、議事録の作成と出席管理でサポートするサービスです。
 
-## FjordMinutesでできること
-- サービスが議事録を自動で作成してくれます
-- チームメンバーが、議事録に出席やミーティング内で話す内容を登録することができます
-- ファシリテーターは、作成した議事録をGitHub Wikiに出力することができます
+## FjordMinutes でできること
+### 議事録を自動で作成
+ミーティングが行われた翌日に、次回のミーティングの議事録が自動で作成されます。
+
+議事録が作成されるとDiscordに通知が送られます。
+
+<img width="50%" alt="Discord通知" src="https://github.com/user-attachments/assets/02c0b33a-1991-44a4-9491-e69245054040">
+
+### ミーティングに出席を登録
+出席登録ページからミーティングに出席登録を行うことができます。
+
+<img width="50%" alt="出席登録画面" src="https://github.com/user-attachments/assets/b7ad9d66-6ed5-46ff-9b77-ba3ab48d680a">
+
+チームメンバーの出席は記録され、一覧で確認することが可能です。
+
+<img width="50%" alt="チームメンバーの全出席" src="https://github.com/user-attachments/assets/d1a0f2a8-4f2c-40f1-82e2-6ade24573eb0">
+
+### 議事録を編集
+議事録の内容を編集することができます(管理者とチームメンバーで編集できる内容は異なります)。
+
+<img width="50%" alt="議事録編集画面" src="https://i.gyazo.com/4bd955b793702ae27d59ae3361926a3e.gif">
+
+### 議事録をGitHub Wikiに反映
+管理者は議事録をGitHubリポジトリのWikiに反映させることが可能です。
+
+<img width="50%" alt="GitHubWikiにエクスポートするボタン" src="https://github.com/user-attachments/assets/fc82e505-3cbc-409d-bebb-c748d3219f12">
 
 ## インストールと起動
 以下のコマンドで、アプリのセットアップとサーバーの起動を行うことができます。
