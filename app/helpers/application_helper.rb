@@ -8,7 +8,7 @@ module ApplicationHelper
       description:,
       keywords: 'チーム開発ミーティング, 議事録, フィヨルドブートキャンプ, FBC',
       og: {
-        url: 'https://fjord-minutes-eded74419c61.herokuapp.com',
+        url: 'https://fjord-minutes.com',
         type: 'website',
         title: page_title,
         description:,
@@ -18,7 +18,7 @@ module ApplicationHelper
       twitter: {
         card: 'summary',
         site: '@cassy0220',
-        domain: 'https://fjord-minutes-eded74419c61.herokuapp.com'
+        domain: 'https://fjord-minutes.com'
       }
     }
   end
