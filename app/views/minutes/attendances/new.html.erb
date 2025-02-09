@@ -24,17 +24,23 @@
       <% end %>
 
       <div class="mt-8 mb-12 flex gap-x-6 w-[550px] mx-auto">
-        <div class="w-40 border border-blue-700 rounded-lg py-2 px-4">
-          <%= form.radio_button :status, "afternoon", class: "cursor-pointer border border-blue-700 mr-2" %>
-          <%= form.label :status_afternoon, "#{AttendanceForm.human_attribute_name('status.afternoon')}に出席", class: "cursor-pointer text-blue-700 align-middle font-bold" %>
+        <div class="w-full h-10 border border-blue-700 rounded-lg">
+          <%= form.radio_button :status, "afternoon", class: "hidden peer/afternoon" %>
+          <%= form.label(:status_afternoon, id: "label_afternoon", class: "radio_button_label peer-checked/afternoon:after:content-[""] peer-checked/afternoon:after:w-2 peer-checked/afternoon:after:h-2 peer-checked/afternoon:after:rounded-full peer-checked/afternoon:after:bg-blue-700 peer-checked/afternoon:after:absolute peer-checked/afternoon:after:left-4 peer-checked/afternoon:bg-blue-100") do %>
+            <%= content_tag(:span, "#{AttendanceForm.human_attribute_name('status.afternoon')}に出席", class: "block w-full pl-10") %>
+          <% end %>
         </div>
-        <div class="w-40 border border-blue-700 rounded-lg py-2 px-4">
-          <%= form.radio_button :status, "night", class: "cursor-pointer border border-blue-700 mr-2" %>
-          <%= form.label :status_night, "#{AttendanceForm.human_attribute_name('status.night')}に出席", class: "cursor-pointer text-blue-700 align-middle font-bold" %>
+        <div class="w-full h-10 border border-blue-700 rounded-lg">
+          <%= form.radio_button :status, "night", class: "hidden peer/night" %>
+          <%= form.label(:status_night, id: "label_night", class: "radio_button_label peer-checked/night:after:content-[""] peer-checked/night:after:w-2 peer-checked/night:after:h-2 peer-checked/night:after:rounded-full peer-checked/night:after:bg-blue-700 peer-checked/night:after:absolute peer-checked/night:after:left-4 peer-checked/night:bg-blue-100") do %>
+            <%= content_tag(:span, "#{AttendanceForm.human_attribute_name('status.night')}に出席", class: "block w-full pl-10") %>
+          <% end %>
         </div>
-        <div class="w-40 border border-blue-700 rounded-lg py-2 px-4">
-          <%= form.radio_button :status, "absent", class: "cursor-pointer border border-blue-700 mr-2" %>
-          <%= form.label :status_absent, AttendanceForm.human_attribute_name('status.absent'), class: "cursor-pointer text-blue-700 align-middle font-bold ml-4" %>
+        <div class="w-full h-10 border border-blue-700 rounded-lg">
+          <%= form.radio_button :status, "absent", class: "hidden peer/absent" %>
+          <%= form.label(:status_absent, id: "label_absent", class: "radio_button_label peer-checked/absent:after:content-[""] peer-checked/absent:after:w-2 peer-checked/absent:after:h-2 peer-checked/absent:after:rounded-full peer-checked/absent:after:bg-blue-700 peer-checked/absent:after:absolute peer-checked/absent:after:left-4 peer-checked/absent:bg-blue-100") do %>
+            <%= content_tag(:span, "#{AttendanceForm.human_attribute_name('status.absent')}", class: "block w-full pl-16") %>
+          <% end %>
         </div>
       </div>
 

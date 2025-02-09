@@ -28,7 +28,7 @@ RSpec.describe 'Attendances', type: :system do
           click_link '出席予定を登録する'
 
           expect(current_path).to eq new_minute_attendance_path(minute)
-          choose '昼の部に出席'
+          find('#label_afternoon').click
           click_button '出席を登録'
 
           expect(current_path).to eq edit_minute_path(minute)
@@ -47,7 +47,7 @@ RSpec.describe 'Attendances', type: :system do
           expect(page).to have_link '出席予定を登録する'
           click_link '出席予定を登録する'
 
-          choose '夜の部に出席'
+          find('#label_night').click
           click_button '出席を登録'
 
           expect(current_path).to eq edit_minute_path(minute)
@@ -66,7 +66,7 @@ RSpec.describe 'Attendances', type: :system do
           expect(page).to have_link '出席予定を登録する'
           click_link '出席予定を登録する'
 
-          choose '欠席'
+          find('#label_absent').click
           fill_in '欠席理由', with: '仕事の都合のため。'
           fill_in '進捗報告', with: '#1000 チームメンバーのレビュー待ちの状態です。'
           click_button '出席を登録'
@@ -127,7 +127,7 @@ RSpec.describe 'Attendances', type: :system do
           # 出欠を選択していない場合、送信ボタンはdisabledとなる
           expect(page).to have_button '出席を登録', disabled: true
 
-          choose '欠席'
+          find('#label_absent').click
           click_button '出席を登録'
           expect(page).to have_content '欠席理由を入力してください'
           expect(page).to have_content '進捗報告を入力してください'
@@ -137,7 +137,7 @@ RSpec.describe 'Attendances', type: :system do
       scenario 'member cannot create attendance to the same meeting twice' do
         travel_to minute.meeting_date do
           visit new_minute_attendance_path(minute)
-          choose '昼の部に出席'
+          find('#label_afternoon').click
           click_button '出席を登録'
 
           visit new_minute_attendance_path(minute)
