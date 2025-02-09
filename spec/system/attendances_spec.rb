@@ -176,10 +176,11 @@ RSpec.describe 'Attendances', type: :system do
         travel_to minute.meeting_date do
           visit edit_minute_path(minute)
           click_link '出席予定を変更する'
-          expect(current_path).to eq edit_attendance_path(attendance)
 
-          expect(page).to have_checked_field '昼の部に出席'
-          choose '欠席'
+          expect(current_path).to eq edit_attendance_path(attendance)
+          # デザインの都合上ラジオボタンは display: none; となっているため、visible: false をつける
+          expect(page).to have_checked_field('昼の部に出席', visible: false)
+          find('#label_absent').click
           fill_in '欠席理由', with: '体調不良のため。'
           fill_in '進捗報告', with: '#1000 チームメンバーのレビュー待ちの状態です。'
           click_button '出席を更新'
@@ -202,10 +203,11 @@ RSpec.describe 'Attendances', type: :system do
         travel_to minute.meeting_date do
           visit edit_minute_path(minute)
           click_link '出席予定を変更する'
-          expect(current_path).to eq edit_attendance_path(attendance)
 
-          expect(page).to have_checked_field '欠席'
-          choose '夜の部に出席'
+          expect(current_path).to eq edit_attendance_path(attendance)
+          # デザインの都合上ラジオボタンは display: none; となっているため、visible: false をつける
+          expect(page).to have_checked_field('欠席', visible: false)
+          find('#label_night').click
           click_button '出席を更新'
 
           expect(current_path).to eq edit_minute_path(minute)
@@ -225,7 +227,7 @@ RSpec.describe 'Attendances', type: :system do
           visit edit_minute_path(minute)
           click_link '出席予定を変更する'
 
-          choose '欠席'
+          find('#label_absent').click
           click_button '出席を更新'
           expect(page).to have_content '欠席理由を入力してください'
           expect(page).to have_content '進捗報告を入力してください'
