@@ -58,4 +58,7 @@
     .flash_alert {
         @apply py-2.5 px-4 my-5 text-red-500 bg-red-100 font-medium rounded-lg inline-block;
     }
+    .radio_button_label {
+        @apply flex items-center w-full h-full relative block text-blue-700 rounded-lg font-bold cursor-pointer before:content-[""] before:w-4 before:h-4 before:rounded-full before:border before:border-blue-700 before:absolute before:left-3;
+    }
 }
