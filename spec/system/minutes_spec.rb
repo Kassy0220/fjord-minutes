@@ -324,8 +324,8 @@ RSpec.describe 'Minutes', type: :system do
 
     scenario 'admin can export minute to GitHub Wiki' do
       # GitHub Wikiリポジトリにpushされないようにする
-      allow(GithubWikiManager).to receive(:export_minute).and_call_original
-      allow(GithubWikiManager).to receive(:export_minute).with(minute).and_return(nil)
+      allow(MinuteGithubExporter).to receive(:export_to_github_wiki).and_call_original
+      allow(MinuteGithubExporter).to receive(:export_to_github_wiki).with(minute).and_return(nil)
 
       login_as_admin FactoryBot.create(:admin)
       visit minute_path(minute)

@@ -29,7 +29,7 @@ class MeetingSecretary
   end
 
   def create_first_minute
-    cloned_repository_path = GithubWikiManager.new(@course).working_directory
+    cloned_repository_path = MinuteGithubExporter.new(@course).working_directory
     latest_meeting_date = get_latest_meeting_date_from_cloned_minutes(cloned_repository_path)
     unless latest_meeting_date.before? Time.zone.today
       leave_log("create_first_minute, #{@course.name}, not_executed, latest meeting isn't finished.")

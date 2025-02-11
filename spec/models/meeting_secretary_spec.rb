@@ -37,9 +37,9 @@ RSpec.describe MeetingSecretary, type: :model do
     let(:latest_meeting_date) { Date.new(2024, 11, 6) }
 
     before do
-      # GithubWikiManager.new が呼ばれると Git.clone が実行されてしまい困るため、newメソッドをスタブする
-      github_wiki_manager_double = instance_double(GithubWikiManager)
-      allow(GithubWikiManager).to receive(:new).and_return(github_wiki_manager_double)
+      # MinuteGithubExporter.new が呼ばれると Git.clone が実行されてしまい困るため、newメソッドをスタブする
+      github_wiki_manager_double = instance_double(MinuteGithubExporter)
+      allow(MinuteGithubExporter).to receive(:new).and_return(github_wiki_manager_double)
       allow(github_wiki_manager_double).to receive(:working_directory).and_return(Rails.root.join('stubbed_repository'))
       # クローンしたリポジトリを利用するメソッドをスタブ
       allow(meeting_secretary).to receive_messages(get_latest_meeting_date_from_cloned_minutes: latest_meeting_date,
