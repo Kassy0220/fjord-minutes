@@ -4,7 +4,7 @@ class Minutes::ExportsController < Minutes::ApplicationController
   before_action :authenticate_admin!
 
   def create
-    GithubWikiManager.export_minute(@minute)
+    MinuteGithubExporter.export_to_github_wiki(@minute)
     @minute.update!(exported: true) unless @minute.exported?
     redirect_to course_minutes_path(@minute.course), notice: 'GitHub Wikiに議事録を反映させました'
   end

@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-class GithubWikiManager
+class MinuteGithubExporter
   CLONED_BOOTCAMP_WIKI_PATH = Rails.root.join('bootcamp_wiki_repository').freeze
   CLONED_AGENT_WIKI_PATH = Rails.root.join('agent_wiki_repository').freeze
 
-  def self.export_minute(minute)
+  def self.export_to_github_wiki(minute)
     new(minute.course).commit_and_push(minute)
   end
 
