@@ -3,6 +3,6 @@
 set -e
 
 bundle exec rubocop
-bundle exec erblint --lint-all
+bundle exec erb_lint --lint-all
 npm run lint:eslint
 npm run lint:prettier
