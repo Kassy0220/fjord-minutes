@@ -3,6 +3,29 @@
 require 'rails_helper'
 
 RSpec.describe MeetingSecretary, type: :model do
+  describe '.prepare_for_meeting' do
+    it 'create minute and notify today meeting for all course' do
+      rails_course = FactoryBot.create(:rails_course)
+      front_end_course = FactoryBot.create(:front_end_course)
+
+      # MeetingSecretary#create_first_minuteと#notify_today_meetingが実行されると外部にリクエストが送られてしまうため、モック化しておく
+      rails_course_meeting_secretary = instance_double(described_class)
+      allow(rails_course_meeting_secretary).to receive_messages(create_first_minute: nil, notify_today_meeting: nil)
+      front_end_course_meeting_secretary = instance_double(described_class)
+      allow(front_end_course_meeting_secretary).to receive_messages(create_first_minute: nil, notify_today_meeting: nil)
+
+      allow(described_class).to receive(:new).with(rails_course).and_return(rails_course_meeting_secretary)
+      allow(described_class).to receive(:new).with(front_end_course).and_return(front_end_course_meeting_secretary)
+
+      described_class.prepare_for_meeting
+
+      expect(rails_course_meeting_secretary).to have_received(:create_first_minute)
+      expect(rails_course_meeting_secretary).to have_received(:notify_today_meeting)
+      expect(front_end_course_meeting_secretary).to have_received(:create_first_minute)
+      expect(front_end_course_meeting_secretary).to have_received(:notify_today_meeting)
+    end
+  end
+
   describe '#create_minute' do
     let(:rails_course) { FactoryBot.create(:rails_course) }
     let(:latest_minute) { FactoryBot.create(:minute, next_meeting_date: Time.zone.local(2024, 11, 20), course: rails_course) }
