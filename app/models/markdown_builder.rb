@@ -27,8 +27,7 @@ class MarkdownBuilder
   private
 
   def afternoon_attendees
-    @minute.attendances.where(session: :afternoon)
-           .includes(:member)
+    @minute.attendances.at_afternoon_session.with_members
            .order(:member_id)
            .pluck(:name)
            .map { |name| "- #{member_link(name)}" }
@@ -36,8 +35,7 @@ class MarkdownBuilder
   end
 
   def night_attendees
-    @minute.attendances.where(session: :night)
-           .includes(:member)
+    @minute.attendances.at_night_session.with_members
            .order(:member_id)
            .pluck(:name)
            .map { |name| "- #{member_link(name)}" }
@@ -45,8 +43,7 @@ class MarkdownBuilder
   end
 
   def absentees
-    @minute.attendances.where(present: false)
-           .includes(:member)
+    @minute.attendances.absent.with_members
            .order(:member_id)
            .pluck(:absence_reason, :progress_report, :name)
            .map { |absence_reason, progress_report, name| "- #{member_link(name)}\n  - 欠席理由\n    - #{absence_reason}\n  - 進捗報告\n#{split_line_to_list(progress_report)}" }
