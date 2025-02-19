@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Attendance < ApplicationRecord
-  enum :session, { afternoon: 0, night: 1 }
+  enum :session, { afternoon: 0, night: 1 }, suffix: true
 
   belongs_to :minute
   belongs_to :member
