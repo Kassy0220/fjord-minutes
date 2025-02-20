@@ -17,4 +17,8 @@ class Course < ApplicationRecord
   def wiki_repository_url
     { 'Railsエンジニアコース' => ENV.fetch('BOOTCAMP_WIKI_URL', nil), 'フロントエンドエンジニアコース' => ENV.fetch('AGENT_WIKI_URL', nil) }[name]
   end
+
+  def discord_webhook_url
+    { 'Railsエンジニアコース' => ENV.fetch('RAILS_COURSE_CHANNEL_URL', nil), 'フロントエンドエンジニアコース' => ENV.fetch('FRONT_END_COURSE_CHANNEL_URL', nil) }[name]
+  end
 end
