@@ -13,4 +13,11 @@ RSpec.describe Course, type: :model do
       expect(course.meeting_years).to contain_exactly(2024, 2025, 2026)
     end
   end
+
+  describe '#repositoory_url' do
+    it 'returns GitHub repository URL for each course' do
+      expect(FactoryBot.build(:rails_course).repository_url).to eq 'https://github.com/fjordllc/bootcamp'
+      expect(FactoryBot.build(:front_end_course).repository_url).to eq 'https://github.com/fjordllc/agent'
+    end
+  end
 end

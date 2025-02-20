@@ -9,4 +9,8 @@ class Course < ApplicationRecord
   def meeting_years
     minutes.map { |minute| minute.meeting_date.year }.uniq
   end
+
+  def repository_url
+    { 'Railsエンジニアコース' => 'https://github.com/fjordllc/bootcamp', 'フロントエンドエンジニアコース' => 'https://github.com/fjordllc/agent' }[name]
+  end
 end
