@@ -278,6 +278,7 @@ RSpec.describe 'Minutes', type: :system do
     scenario 'display github wiki link when the minute is exported' do
       # CI上でリポジトリのwikiのURLを参照した際にエラーが発生しないように、適当な値を返すようにする
       allow(ENV).to receive(:fetch).with('BOOTCAMP_WIKI_URL', nil).and_return('https://example.com/fjordllc/bootcamp-wiki.wiki.git')
+      allow(ENV).to receive(:fetch).with('AGENT_WIKI_URL', nil).and_return('https://example.com/fjordllc/agent-wiki.wiki.git')
 
       exported_minute = FactoryBot.create(:minute, meeting_date: Time.zone.local(2024, 1, 1), exported: true, course: rails_course)
       not_exported_minute = FactoryBot.create(:minute, meeting_date: Time.zone.local(2024, 1, 15), course: rails_course)
