@@ -10,6 +10,6 @@ class Minute < ApplicationRecord
   end
 
   def title
-    "ふりかえり・計画ミーティング#{meeting_date.strftime('%Y年%m月%d日')}"
+    "ふりかえり・計画ミーティング#{I18n.l(meeting_date)}"
   end
 end

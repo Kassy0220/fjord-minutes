@@ -8,7 +8,7 @@
 
 <div class="page_body">
   <div>
-    <p class="text-lg text-center"><%= @minute.meeting_date.strftime('%Y年%m月%d日') %>のMTGの出席予定を登録</p>
+    <p class="text-lg text-center"><%= l(@minute.meeting_date) %>のMTGの出席予定を登録</p>
 
     <%= form_with(model: [ @minute, @attendance_form ], **@attendance_form.form_with_options, id: "attendance_form", class: "contents") do |form| %>
       <% if @attendance_form.errors.any? %>
