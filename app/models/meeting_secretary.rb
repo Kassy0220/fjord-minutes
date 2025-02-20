@@ -76,7 +76,7 @@ class MeetingSecretary
   end
 
   def get_next_meeting_date_from_cloned_minutes(meeting_date, repository_path)
-    filename = "ふりかえり・計画ミーティング#{meeting_date.strftime('%Y年%m月%d日')}.md"
+    filename = "ふりかえり・計画ミーティング#{I18n.l(meeting_date)}.md"
     minute_content = File.read(File.join(repository_path, filename))
     _, year, month, day = *minute_content.match(/# 次回のMTG\n\n- (\d{4})年(\d{2})月(\d{2})日/)
     Time.zone.local(year.to_i, month.to_i, day.to_i)
