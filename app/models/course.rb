@@ -13,4 +13,8 @@ class Course < ApplicationRecord
   def repository_url
     { 'Railsエンジニアコース' => 'https://github.com/fjordllc/bootcamp', 'フロントエンドエンジニアコース' => 'https://github.com/fjordllc/agent' }[name]
   end
+
+  def wiki_repository_url
+    { 'Railsエンジニアコース' => ENV.fetch('BOOTCAMP_WIKI_URL', nil), 'フロントエンドエンジニアコース' => ENV.fetch('AGENT_WIKI_URL', nil) }[name]
+  end
 end

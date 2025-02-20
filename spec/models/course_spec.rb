@@ -20,4 +20,16 @@ RSpec.describe Course, type: :model do
       expect(FactoryBot.build(:front_end_course).repository_url).to eq 'https://github.com/fjordllc/agent'
     end
   end
+
+  describe '#wiki_repository_url' do
+    before do
+      allow(ENV).to receive(:fetch).with('BOOTCAMP_WIKI_URL', nil).and_return('https://example.com/fjordllc/bootcamp-wiki.wiki.git')
+      allow(ENV).to receive(:fetch).with('AGENT_WIKI_URL', nil).and_return('https://example.com/fjordllc/agent-wiki.wiki.git')
+    end
+
+    it 'returns GitHub Wiki repository URL for each course' do
+      expect(FactoryBot.build(:rails_course).wiki_repository_url).to eq 'https://example.com/fjordllc/bootcamp-wiki.wiki.git'
+      expect(FactoryBot.build(:front_end_course).wiki_repository_url).to eq 'https://example.com/fjordllc/agent-wiki.wiki.git'
+    end
+  end
 end
