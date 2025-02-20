@@ -70,8 +70,7 @@ class MarkdownBuilder
   end
 
   def next_date
-    day_of_the_week = %w[日 月 火 水 木 金 土][@minute.next_meeting_date.wday]
-    meeting_date = "#{@minute.next_meeting_date.strftime('%Y年%m月%d日')}(#{day_of_the_week})"
+    meeting_date = I18n.l(@minute.next_meeting_date, format: :long)
     return "- #{meeting_date}" unless HolidayJp.holiday?(@minute.next_meeting_date)
 
     holiday_name = HolidayJp.between(@minute.next_meeting_date, @minute.next_meeting_date).first.name
