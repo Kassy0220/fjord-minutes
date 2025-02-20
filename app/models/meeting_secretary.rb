@@ -25,7 +25,7 @@ class MeetingSecretary
 
     new_minute = @course.minutes.create!(meeting_date:, next_meeting_date:)
     leave_log("create_minute, #{@course.name}, executed")
-    Discord::Notifier.message(NotificationMessageBuilder.build(:minute_creation, @course, new_minute), url: webhook_url)
+    Discord::Notifier.message(NotificationMessageBuilder.build(:minute_creation, @course, new_minute), url: @course.discord_webhook_url)
   end
 
   def create_first_minute
@@ -41,7 +41,7 @@ class MeetingSecretary
 
     new_minute = @course.minutes.create!(meeting_date:, next_meeting_date:)
     leave_log("create_first_minute, #{@course.name}, executed")
-    Discord::Notifier.message(NotificationMessageBuilder.build(:minute_creation, @course, new_minute), url: webhook_url)
+    Discord::Notifier.message(NotificationMessageBuilder.build(:minute_creation, @course, new_minute), url: @course.discord_webhook_url)
   end
 
   def notify_today_meeting
@@ -61,7 +61,7 @@ class MeetingSecretary
       return
     end
 
-    Discord::Notifier.message(NotificationMessageBuilder.build(:today_meeting, @course, latest_minute), url: webhook_url)
+    Discord::Notifier.message(NotificationMessageBuilder.build(:today_meeting, @course, latest_minute), url: @course.discord_webhook_url)
     leave_log("notify_today_meeting, #{@course.name}, executed")
     latest_minute.update!(notified_at: Time.zone.now)
   end
@@ -80,10 +80,6 @@ class MeetingSecretary
     minute_content = File.read(File.join(repository_path, filename))
     _, year, month, day = *minute_content.match(/# 次回のMTG\n\n- (\d{4})年(\d{2})月(\d{2})日/)
     Time.zone.local(year.to_i, month.to_i, day.to_i)
-  end
-
-  def webhook_url
-    @course.name == 'Railsエンジニアコース' ? ENV.fetch('RAILS_COURSE_CHANNEL_URL', nil) : ENV.fetch('FRONT_END_COURSE_CHANNEL_URL', nil)
   end
 
   def leave_log(message)
