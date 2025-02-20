@@ -55,8 +55,7 @@ class MarkdownBuilder
   end
 
   def rewrite_issue_number_as_link(progress_report)
-    repository_url = @minute.course.name == 'Railsエンジニアコース' ? 'https://github.com/fjordllc/bootcamp' : 'https://github.com/fjordllc/agent'
-    progress_report.gsub(/#(\d+)/, "[#\\1](#{repository_url}/issues/\\1)")
+    progress_report.gsub(/#(\d+)/, "[#\\1](#{@minute.course.repository_url}/issues/\\1)")
   end
 
   def member_link(name)
