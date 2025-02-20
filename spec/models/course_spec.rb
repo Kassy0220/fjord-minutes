@@ -13,4 +13,35 @@ RSpec.describe Course, type: :model do
       expect(course.meeting_years).to contain_exactly(2024, 2025, 2026)
     end
   end
+
+  describe '#repositoory_url' do
+    it 'returns GitHub repository URL for each course' do
+      expect(FactoryBot.build(:rails_course).repository_url).to eq 'https://github.com/fjordllc/bootcamp'
+      expect(FactoryBot.build(:front_end_course).repository_url).to eq 'https://github.com/fjordllc/agent'
+    end
+  end
+
+  describe '#wiki_repository_url' do
+    before do
+      allow(ENV).to receive(:fetch).with('BOOTCAMP_WIKI_URL', nil).and_return('https://example.com/fjordllc/bootcamp-wiki.wiki.git')
+      allow(ENV).to receive(:fetch).with('AGENT_WIKI_URL', nil).and_return('https://example.com/fjordllc/agent-wiki.wiki.git')
+    end
+
+    it 'returns GitHub Wiki repository URL for each course' do
+      expect(FactoryBot.build(:rails_course).wiki_repository_url).to eq 'https://example.com/fjordllc/bootcamp-wiki.wiki.git'
+      expect(FactoryBot.build(:front_end_course).wiki_repository_url).to eq 'https://example.com/fjordllc/agent-wiki.wiki.git'
+    end
+  end
+
+  describe '#discord_webhook_url' do
+    before do
+      allow(ENV).to receive(:fetch).with('RAILS_COURSE_CHANNEL_URL', nil).and_return('https://discord.com/api/webhooks/111/abcdef')
+      allow(ENV).to receive(:fetch).with('FRONT_END_COURSE_CHANNEL_URL', nil).and_return('https://discord.com/api/webhooks/222/ghijkl')
+    end
+
+    it 'returns Discord webhook URL for each course' do
+      expect(FactoryBot.build(:rails_course).discord_webhook_url).to eq 'https://discord.com/api/webhooks/111/abcdef'
+      expect(FactoryBot.build(:front_end_course).discord_webhook_url).to eq 'https://discord.com/api/webhooks/222/ghijkl'
+    end
+  end
 end
