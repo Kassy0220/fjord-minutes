@@ -24,7 +24,7 @@ class Member < ApplicationRecord
   end
 
   def hibernated?
-    hibernations.where(finished_at: nil).any?
+    hibernations.exists?(finished_at: nil)
   end
 
   def all_attendances
@@ -49,6 +49,6 @@ class Member < ApplicationRecord
   end
 
   def was_hibernated?
-    hibernations.where.not(finished_at: nil).any?
+    hibernations.where.not(finished_at: nil).exists?
   end
 end

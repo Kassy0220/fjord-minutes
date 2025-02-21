@@ -26,7 +26,7 @@ class Minutes::AttendancesController < Minutes::ApplicationController
   end
 
   def already_registered_attendance
-    @minute.attendances.where(member_id: current_member.id).any?
+    @minute.attendances.exists?(member_id: current_member.id)
   end
 
   def redirect_admin_access
@@ -34,7 +34,7 @@ class Minutes::AttendancesController < Minutes::ApplicationController
   end
 
   def prohibit_duplicate_access
-    redirect_to edit_minute_url(@minute), alert: t('.failure.duplicate_access') if @minute.attendances.where(member_id: current_member.id).any?
+    redirect_to edit_minute_url(@minute), alert: t('.failure.duplicate_access') if @minute.attendances.exists?(member_id: current_member.id)
   end
 
   def prohibit_access_to_finished_minute
