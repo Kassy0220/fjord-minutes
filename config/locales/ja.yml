@@ -77,6 +77,8 @@ ja:
     update:
       success: 出席予定を更新しました
       failure: 終了したミーティングの出席予定は変更できません
+  authentications:
+    failure: GitHub アカウントによる認証に失敗しました。
   date:
     abbr_day_names:
       - 日
