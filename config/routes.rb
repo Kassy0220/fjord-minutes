@@ -27,6 +27,7 @@ Rails.application.routes.draw do
   devise_for :admins, skip: :all
   devise_scope :member do
     get "/auth/:provider/callback" => "authentications#create"
+    get "/auth/failure" => "authentications#failure"
     delete "logout", to: "members/sessions#destroy", as: "logout"
   end
 
