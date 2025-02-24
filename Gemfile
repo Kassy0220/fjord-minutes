@@ -4,8 +4,7 @@ source 'https://rubygems.org'
 
 ruby file: '.ruby-version'
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
-# 一旦Railsのバージョンを7.2.1で固定する。将来7.2.2.1までバージョンを上げる
-gem 'rails', '7.2.1'
+gem 'rails', '7.2.2.1'
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem 'sprockets-rails'
 # Use postgresql as the database for Active Record
