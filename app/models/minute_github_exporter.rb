@@ -39,7 +39,7 @@ class MinuteGithubExporter
 
   def commit_minute_markdown(minute)
     filename = "#{minute.title}.md"
-    File.write(File.join(@working_directory, filename), MarkdownBuilder.build(minute))
+    File.write(File.join(@working_directory, filename), minute.to_markdown)
 
     @git.add(filename)
     @git.commit("#{filename} committed")

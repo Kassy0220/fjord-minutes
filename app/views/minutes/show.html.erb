@@ -10,7 +10,7 @@
 <div class="page_body">
   <h2 class="mb-8 text-xl font-bold md:text-2xl"><%= @minute.title %></h2>
 
-  <%= content_tag :div, id: 'minute_preview', data: {markdown: MarkdownBuilder.build(@minute)}.to_json, class: 'mb-4' do %><% end %>
+  <%= content_tag :div, id: 'minute_preview', data: {markdown: @minute.to_markdown}.to_json, class: 'mb-4' do %><% end %>
 
   <div class="my-8 flex justify-center items-center gap-x-4">
     <%= link_to '編集する', edit_minute_path(@minute),
