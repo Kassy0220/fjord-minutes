@@ -16,8 +16,14 @@
     <%= link_to '編集する', edit_minute_path(@minute),
                 class: "block w-52 h-14 border border-blue-700 rounded-lg text-center leading-[54px] hover:no-underline hover:bg-blue-100" %>
     <% if admin_signed_in? %>
-      <%= button_to minute_exports_path(@minute), form: { class: 'text-center h-14' },  class: 'button m-auto w-52' do %>
-        GitHub Wiki に<br>エクスポート
+      <% if current_admin.github_credential %>
+        <%= button_to minute_exports_path(@minute), form: { class: 'text-center h-14' },  class: 'button m-auto w-52' do %>
+          GitHub Wiki に<br>エクスポート
+        <% end %>
+      <% else %>
+        <%= link_to "https://github.com/login/oauth/authorize?client_id=#{ENV.fetch('GITHUB_APP_CLIENT_ID', nil)}&state=#{@minute.id}", class: 'button m-auto w-52 text-center' do %>
+          Github Wiki に<br>エクスポート
+        <% end %>
       <% end %>
     <% end %>
   </div>
