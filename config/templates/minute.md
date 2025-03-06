@@ -28,19 +28,19 @@
 木曜日の15時頃リリースします
 
 - リリースブランチ
-  - <%= "#{minute.release_branch}" %>
+  - <%= "#{release_branch}" %>
 - リリースノート
-  - <%= "#{minute.release_note}" %>
+  - <%= "#{release_note}" %>
 
 ## 話題にしたいこと・心配事
 
 明確に共有すべき事・困っている事以外にも、気分的に心配な事などを話すためにあります。
 
-<%= "#{topics}" %>
+<%= "#{discussed_topics}" %>
 
 ## その他
 
-<%= "#{minute.other}" %>
+<%= "#{other}" %>
 
 ## 次回のMTG
 
