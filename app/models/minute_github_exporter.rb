@@ -4,8 +4,8 @@ class MinuteGithubExporter
   CLONED_BOOTCAMP_WIKI_PATH = Rails.root.join('bootcamp_wiki_repository').freeze
   CLONED_AGENT_WIKI_PATH = Rails.root.join('agent_wiki_repository').freeze
 
-  def self.export_to_github_wiki(minute)
-    new(minute.course).commit_and_push(minute)
+  def self.export_to_github_wiki(minute, access_token)
+    new(minute.course).commit_and_push(minute, access_token)
   end
 
   attr_reader :working_directory
@@ -21,12 +21,12 @@ class MinuteGithubExporter
            end
   end
 
-  def commit_and_push(minute)
+  def commit_and_push(minute, access_token)
     @git.pull
     set_github_account
     commit_minute_markdown(minute)
 
-    create_credential_file
+    create_credential_file(access_token)
     @git.push('origin', 'master') # GitHub Wiki のデフォルトブランチはmaster
   end
 
@@ -45,14 +45,14 @@ class MinuteGithubExporter
     @git.commit("#{filename} committed")
   end
 
-  def create_credential_file
+  def create_credential_file(access_token)
     credential_file_path = Rails.root.join('.netrc')
     return if File.exist?(credential_file_path)
 
     content = <<~CREDENTIAL
       machine github.com
       login #{ENV.fetch('GITHUB_USER_NAME', nil)}
-      password #{ENV.fetch('GITHUB_ACCESS_TOKEN', nil)}
+      password #{access_token}
     CREDENTIAL
 
     File.open(credential_file_path, 'w+') do |file|

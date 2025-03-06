@@ -61,6 +61,9 @@ ja:
         next_meeting_date: 次回ミーティング開催日
       topic:
         content: 内容
+  exports:
+    create:
+      success: GitHub Wikiに議事録を反映させました
   date:
     abbr_day_names:
       - 日
