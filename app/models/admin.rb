@@ -7,6 +7,7 @@ class Admin < ApplicationRecord
          :rememberable, :validatable
 
   has_many :topics, as: :topicable, dependent: :destroy
+  has_one :github_credential, dependent: :destroy
 
   def self.from_omniauth(auth)
     find_or_create_by(provider: auth.provider, uid: auth.uid) do |member|
