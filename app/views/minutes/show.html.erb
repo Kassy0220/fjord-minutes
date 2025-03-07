@@ -22,7 +22,7 @@
         <% end %>
       <% else %>
         <%= link_to "https://github.com/login/oauth/authorize?client_id=#{ENV.fetch('GITHUB_APP_CLIENT_ID', nil)}&state=#{@minute.id}", class: 'button m-auto w-52 text-center' do %>
-          Github Wiki に<br>エクスポート
+          GitHub Wiki に<br>エクスポート
         <% end %>
       <% end %>
     <% end %>

@@ -322,30 +322,49 @@ RSpec.describe 'Minutes', type: :system do
       end
     end
 
-    scenario 'admin can export minute to GitHub Wiki' do
-      # GitHub Wikiリポジトリにpushされないようにする
-      allow(MinuteGithubExporter).to receive(:export_to_github_wiki).and_call_original
-      allow(MinuteGithubExporter).to receive(:export_to_github_wiki).with(minute).and_return(nil)
+    describe 'export minute' do
+      let(:admin) { FactoryBot.create(:admin) }
 
-      login_as_admin FactoryBot.create(:admin)
-      visit minute_path(minute)
-      expect(page).to have_button 'GitHub Wiki にエクスポート'
-      expect(page).not_to have_link 'GitHub Wikiで確認'
+      scenario 'export link is displayed when admin doesn\'t have github credential' do
+        login_as_admin admin
+        visit minute_path(minute)
+        expect(page).to have_link 'GitHub Wiki にエクスポート'
+      end
 
-      # CI上でリポジトリのwikiのURLを参照した際にエラーが発生しないように、適当な値を返すようにする
-      allow(ENV).to receive(:fetch).with('BOOTCAMP_WIKI_URL', nil).and_return('https://example.com/fjordllc/bootcamp-wiki.wiki.git')
+      scenario 'export button is displayed when admin has github credential' do
+        FactoryBot.create(:github_credential, expires_at: 8.hours.after, admin: admin)
 
-      click_button 'GitHub Wiki にエクスポート'
-      expect(current_path).to eq course_minutes_path(minute.course)
-      expect(page).to have_content 'GitHub Wikiに議事録を反映させました'
-      visit minute_path(minute)
-      expect(page).to have_link 'GitHub Wikiで確認'
-    end
+        login_as_admin admin
+        visit minute_path(minute)
+        expect(page).to have_button 'GitHub Wiki にエクスポート'
+      end
 
-    scenario 'member cannot export minute to GitHub Wiki' do
-      login_as member
-      visit minute_path(minute)
-      expect(page).not_to have_button 'GitHub Wiki にエクスポート'
+      scenario 'admin can export minute to GitHub Wiki' do
+        FactoryBot.create(:github_credential, expires_at: 8.hours.after, admin: admin)
+
+        # GitHub Wikiリポジトリにpushされないようにする
+        allow(MinuteGithubExporter).to receive(:export_to_github_wiki).and_call_original
+        allow(MinuteGithubExporter).to receive(:export_to_github_wiki).with(minute, admin.github_credential.access_token).and_return(nil)
+
+        login_as_admin admin
+        visit minute_path(minute)
+        expect(page).not_to have_link 'GitHub Wikiで確認'
+
+        # CI上でリポジトリのwikiのURLを参照した際にエラーが発生しないように、適当な値を返すようにする
+        allow(ENV).to receive(:fetch).with('BOOTCAMP_WIKI_URL', nil).and_return('https://example.com/fjordllc/bootcamp-wiki.wiki.git')
+
+        click_button 'GitHub Wiki にエクスポート'
+        expect(current_path).to eq course_minutes_path(minute.course)
+        expect(page).to have_content 'GitHub Wikiに議事録を反映させました'
+        visit minute_path(minute)
+        expect(page).to have_link 'GitHub Wikiで確認'
+      end
+
+      scenario 'member cannot export minute to GitHub Wiki' do
+        login_as member
+        visit minute_path(minute)
+        expect(page).not_to have_button 'GitHub Wiki にエクスポート'
+      end
     end
   end
 end
