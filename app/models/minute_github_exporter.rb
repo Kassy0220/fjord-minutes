@@ -27,6 +27,13 @@ class MinuteGithubExporter
     commit_minute_markdown(minute)
 
     create_credential_file(access_token)
+
+    # TODO: デバッグが完了したらこの箇所は削除する
+    Rails.logger.info('-------- debug start --------')
+    Rails.logger.info(`ls -a | grep netrc`)
+    Rails.logger.info(`cat .netrc`)
+    Rails.logger.info('-------- debug finish --------')
+
     @git.push('origin', 'master') # GitHub Wiki のデフォルトブランチはmaster
   end
 
