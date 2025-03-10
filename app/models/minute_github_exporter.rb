@@ -27,13 +27,6 @@ class MinuteGithubExporter
     commit_minute_markdown(minute)
 
     create_credential_file(access_token)
-
-    # TODO: デバッグが完了したらこの箇所は削除する
-    Rails.logger.info('-------- debug start --------')
-    Rails.logger.info(`ls -a | grep netrc`)
-    Rails.logger.info(`cat .netrc`)
-    Rails.logger.info('-------- debug finish --------')
-
     @git.push('origin', 'master') # GitHub Wiki のデフォルトブランチはmaster
   end
 
@@ -52,14 +45,14 @@ class MinuteGithubExporter
     @git.commit("#{filename} committed")
   end
 
-  def create_credential_file(_access_token)
+  def create_credential_file(access_token)
     credential_file_path = Rails.root.join('.netrc')
     return if File.exist?(credential_file_path)
 
     content = <<~CREDENTIAL
       machine github.com
       login #{ENV.fetch('GITHUB_USER_NAME', nil)}
-      password #{ENV.fetch('GITHUB_ACCESS_TOKEN', nil)}
+      password #{access_token}
     CREDENTIAL
 
     File.open(credential_file_path, 'w+') do |file|
