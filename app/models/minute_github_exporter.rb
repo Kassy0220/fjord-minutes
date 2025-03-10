@@ -52,14 +52,14 @@ class MinuteGithubExporter
     @git.commit("#{filename} committed")
   end
 
-  def create_credential_file(access_token)
+  def create_credential_file(_access_token)
     credential_file_path = Rails.root.join('.netrc')
     return if File.exist?(credential_file_path)
 
     content = <<~CREDENTIAL
       machine github.com
       login #{ENV.fetch('GITHUB_USER_NAME', nil)}
-      password #{access_token}
+      password #{ENV.fetch('GITHUB_ACCESS_TOKEN', nil)}
     CREDENTIAL
 
     File.open(credential_file_path, 'w+') do |file|
