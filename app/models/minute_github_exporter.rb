@@ -27,7 +27,11 @@ class MinuteGithubExporter
     commit_minute_markdown(minute)
 
     create_credential_file(github_account_name, access_token)
-    @git.push('origin', 'master') # GitHub Wiki のデフォルトブランチはmaster
+    begin
+      @git.push('origin', 'master') # GitHub Wiki のデフォルトブランチはmaster
+    ensure
+      File.delete('.netrc')
+    end
   end
 
   private
