@@ -51,5 +51,7 @@ jobs:
         run: bin/rails db:schema:load
       - name: Prepare asset
         run: bundle exec rake assets:precompile
+      - name: Check Chromedriver version
+        run: chromedriver --version
       - name: Run tests
         run: bundle exec rspec
