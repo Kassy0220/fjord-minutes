@@ -344,7 +344,7 @@ RSpec.describe 'Minutes', type: :system do
 
         # GitHub Wikiリポジトリにpushされないようにする
         allow(MinuteGithubExporter).to receive(:export_to_github_wiki).and_call_original
-        allow(MinuteGithubExporter).to receive(:export_to_github_wiki).with(minute, admin.github_credential.access_token).and_return(nil)
+        allow(MinuteGithubExporter).to receive(:export_to_github_wiki).with(minute, admin.name, admin.github_credential.access_token).and_return(nil)
 
         login_as_admin admin
         visit minute_path(minute)
