@@ -52,11 +52,14 @@ jobs:
       - name: Prepare asset
         run: bundle exec rake assets:precompile
       - name: setup chrome and chromedriver
+        id: setup-chrome
         uses: browser-actions/setup-chrome@v1
         with:
           chrome-version: 132.0.6834.159
           install-chromedriver: true
       - name: Check Chromedriver version
         run: chromedriver --version
+      - name: check chrome installed path
+        run: ${{ steps.setup-chrome.outputs.chrome-path }}
       - name: Run tests
         run: bundle exec rspec
