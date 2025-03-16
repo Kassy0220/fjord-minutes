@@ -51,6 +51,10 @@ jobs:
         run: bin/rails db:schema:load
       - name: Prepare asset
         run: bundle exec rake assets:precompile
+      - name: setup chromedriver
+        uses: nanasess/setup-chromedriver@v2
+        with:
+          chromedriver-version: '132.0.6834.159'
       - name: Check Chromedriver version
         run: chromedriver --version
       - name: Run tests
