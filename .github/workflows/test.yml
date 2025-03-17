@@ -51,5 +51,14 @@ jobs:
         run: bin/rails db:schema:load
       - name: Prepare asset
         run: bundle exec rake assets:precompile
+      - name: setup chrome and chromedriver
+        uses: browser-actions/setup-chrome@v1
+        with:
+          chrome-version: 132.0.6834.159
+          install-chromedriver: true
+      - name: Check Chrome version
+        run: chrome --version
+      - name: Check Chromedriver version
+        run: chromedriver --version
       - name: Run tests
         run: bundle exec rspec
