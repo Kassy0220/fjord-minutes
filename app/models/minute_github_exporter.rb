@@ -28,8 +28,8 @@ class MinuteGithubExporter
 
     create_credential_file(github_account_name, access_token)
     Rails.logger.info('debug start -----------------------------')
-    Rails.logger.info(`cat #{Rails.root.join('.netrc')}`)
-    Rails.logger.info(`wc #{Rails.root.join('.netrc')}`)
+    Rails.logger.info(`cat ~/.netrc`)
+    Rails.logger.info(`wc ~/.netrc`)
     Rails.logger.info('debug finish -----------------------------')
     begin
       @git.push('origin', 'master') # GitHub Wiki のデフォルトブランチはmaster
