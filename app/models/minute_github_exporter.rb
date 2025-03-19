@@ -61,7 +61,6 @@ class MinuteGithubExporter
     File.open(credential_file_path, 'w+') do |file|
       file.puts content
     end
-    File.chmod(0o400, credential_file_path)
   end
 
   def rails_course?
