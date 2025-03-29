@@ -30,8 +30,6 @@ Rails.application.routes.draw do
     delete "logout", to: "members/sessions#destroy", as: "logout"
   end
 
-  get "/github_app/callback" => "exports#create"
-
   # Render dynamic PWA files from app/views/pwa/*
   get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
 end
