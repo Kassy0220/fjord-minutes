@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_03_06_064851) do
+ActiveRecord::Schema[7.2].define(version: 2025_01_31_120737) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -46,16 +46,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_06_064851) do
     t.integer "meeting_week"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "github_credentials", force: :cascade do |t|
-    t.string "access_token", null: false
-    t.string "refresh_token", null: false
-    t.datetime "expires_at", null: false
-    t.bigint "admin_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["admin_id"], name: "index_github_credentials_on_admin_id"
   end
 
   create_table "hibernations", force: :cascade do |t|
@@ -109,7 +99,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_06_064851) do
 
   add_foreign_key "attendances", "members"
   add_foreign_key "attendances", "minutes"
-  add_foreign_key "github_credentials", "admins"
   add_foreign_key "hibernations", "members"
   add_foreign_key "members", "courses"
   add_foreign_key "minutes", "courses"

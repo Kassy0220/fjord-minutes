@@ -325,26 +325,16 @@ RSpec.describe 'Minutes', type: :system do
     describe 'export minute' do
       let(:admin) { FactoryBot.create(:admin) }
 
-      scenario 'export link is displayed when admin doesn\'t have github credential' do
-        login_as_admin admin
-        visit minute_path(minute)
-        expect(page).to have_link 'GitHub Wiki にエクスポート'
-      end
-
-      scenario 'export button is displayed when admin has github credential' do
-        FactoryBot.create(:github_credential, expires_at: 8.hours.after, admin: admin)
-
+      scenario 'export button is displayed when logged in as admin' do
         login_as_admin admin
         visit minute_path(minute)
         expect(page).to have_button 'GitHub Wiki にエクスポート'
       end
 
       scenario 'admin can export minute to GitHub Wiki' do
-        FactoryBot.create(:github_credential, expires_at: 8.hours.after, admin: admin)
-
         # GitHub Wikiリポジトリにpushされないようにする
         allow(MinuteGithubExporter).to receive(:export_to_github_wiki).and_call_original
-        allow(MinuteGithubExporter).to receive(:export_to_github_wiki).with(minute, admin.name, admin.github_credential.access_token).and_return(nil)
+        allow(MinuteGithubExporter).to receive(:export_to_github_wiki).with(minute).and_return(nil)
 
         login_as_admin admin
         visit minute_path(minute)
