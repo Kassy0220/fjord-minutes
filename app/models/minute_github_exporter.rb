@@ -13,11 +13,9 @@ class MinuteGithubExporter
   def initialize(course)
     @course = course
     @working_directory = rails_course? ? CLONED_BOOTCAMP_WIKI_PATH : CLONED_AGENT_WIKI_PATH
-    @git = if Dir.exist?(@working_directory)
-             Git.open(@working_directory, log: Logger.new($stdout))
-           else
-             Git.clone(wiki_repository_url, @working_directory)
-           end
+    # インストールアクセストークンを更新するため、ワーキングディレクトリが残っていれば削除する
+    FileUtils.rm_r(@working_directory) if File.exist?(@working_directory)
+    @git = Git.clone(wiki_repository_url, @working_directory, log: Logger.new($stdout))
   end
 
   def commit_and_push(minute)
