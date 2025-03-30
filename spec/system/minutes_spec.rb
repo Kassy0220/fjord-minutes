@@ -333,16 +333,15 @@ RSpec.describe 'Minutes', type: :system do
       end
 
       scenario 'admin can export minute to GitHub Wiki' do
-        # GitHub Wikiリポジトリにpushされないようにする
-        allow(MinuteGithubExporter).to receive(:export_to_github_wiki).and_call_original
-        allow(MinuteGithubExporter).to receive(:export_to_github_wiki).with(minute).and_return(nil)
-
         login_as_admin admin
         visit minute_path(minute)
         expect(page).not_to have_link 'GitHub Wikiで確認'
 
         # CI上でリポジトリのwikiのURLを参照した際にエラーが発生しないように、適当な値を返すようにする
         allow(ENV).to receive(:fetch).with('BOOTCAMP_WIKI_URL', nil).and_return('https://example.com/fjordllc/bootcamp-wiki.wiki.git')
+        # GitHub Wikiリポジトリにpushされないように、コントローラー内で取得されるMinuteオブジェクトをスタブする
+        allow(Minute).to receive(:find).with(minute.id.to_s).and_return(minute)
+        allow(minute).to receive(:export_to_github_wiki).and_return(nil)
 
         click_button 'GitHub Wiki にエクスポート'
         expect(current_path).to eq course_minutes_path(minute.course)

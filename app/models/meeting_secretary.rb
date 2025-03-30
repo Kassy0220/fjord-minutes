@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 class MeetingSecretary
+  CLONED_BOOTCAMP_WIKI_PATH = Rails.root.join('bootcamp_wiki_repository').freeze
+  CLONED_AGENT_WIKI_PATH = Rails.root.join('agent_wiki_repository').freeze
+
   def self.prepare_for_meeting
     Course.find_each do |course|
       secretary = new(course)
@@ -29,7 +32,9 @@ class MeetingSecretary
   end
 
   def create_first_minute
-    cloned_repository_path = MinuteGithubExporter.new(@course).working_directory
+    cloned_repository_path = rails_course? ? CLONED_BOOTCAMP_WIKI_PATH : CLONED_AGENT_WIKI_PATH
+    Git.clone(wiki_repository_url, cloned_repository_path) unless File.exist?(cloned_repository_path)
+
     latest_meeting_date = get_latest_meeting_date_from_cloned_minutes(cloned_repository_path)
     unless latest_meeting_date.before? Time.zone.today
       leave_log("create_first_minute, #{@course.name}, not_executed, latest meeting isn't finished.")
@@ -67,6 +72,14 @@ class MeetingSecretary
   end
 
   private
+
+  def wiki_repository_url
+    rails_course? ? ENV.fetch('BOOTCAMP_WIKI_URL', nil) : ENV.fetch('AGENT_WIKI_URL', nil)
+  end
+
+  def rails_course?
+    @course.name == 'Railsエンジニアコース'
+  end
 
   def get_latest_meeting_date_from_cloned_minutes(repository_path)
     Dir.glob('ふりかえり・計画ミーティング*', base: repository_path).map do |filename|
