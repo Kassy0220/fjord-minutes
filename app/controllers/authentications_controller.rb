@@ -23,7 +23,7 @@ class AuthenticationsController < Devise::OmniauthCallbacksController
       set_flash_message(:notice, :success_with_hibernation)
     else
       session['devise.github_data'] = request.env['omniauth.auth'].except(:extra)
-      redirect_to root_url
+      redirect_to root_path
     end
   end
 
