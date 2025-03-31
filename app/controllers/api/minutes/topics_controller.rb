@@ -5,7 +5,7 @@ class API::Minutes::TopicsController < API::Minutes::ApplicationController
     topic = current_development_member.topics.new(topic_params)
     topic.minute_id = @minute.id
     if topic.save
-      render json: topic, status: :created
+      render json: topic.as_json(root: 'topic', only: [:id]), status: :created
       broadcast_to_channel
     else
       render json: { errors: topic.errors.full_messages }, status: :unprocessable_entity
@@ -15,7 +15,7 @@ class API::Minutes::TopicsController < API::Minutes::ApplicationController
   def update
     topic = current_development_member.topics.find(params[:id])
     if topic.update(topic_params)
-      render json: topic, status: :ok
+      render json: topic.as_json(root: 'topic', only: [:id]), status: :ok
       broadcast_to_channel
     else
       render json: { errors: topic.errors.full_messages }, status: :unprocessable_entity
