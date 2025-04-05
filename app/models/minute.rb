@@ -26,7 +26,7 @@ class Minute < ApplicationRecord
     git.config('user.email', ENV.fetch('GITHUB_USER_EMAIL', nil))
 
     filename = "#{title}.md"
-    File.write(File.join(working_directory, filename), MarkdownBuilder.build(self))
+    File.write(File.join(working_directory, filename), to_markdown)
     git.add(filename)
     git.commit("#{filename} committed")
     git.push('origin', 'master') # GitHub Wiki のデフォルトブランチはmaster
