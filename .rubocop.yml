@@ -20,6 +20,9 @@ AllCops:
 Layout/LineLength:
   Max: 200
 
+Metrics/ClassLength:
+  CountAsOne: ['hash', 'heredoc', 'method_call']
+
 RSpec/VerifiedDoubleReference:
   Enabled: true
 
