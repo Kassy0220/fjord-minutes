@@ -27,6 +27,7 @@ ja:
       admin: 管理者
       attendance: 出席
       course: コース
+      meeting: ミーティング
       member: メンバー
       minute: 議事録
       topic: 話題にしたいこと・心配事
@@ -49,6 +50,9 @@ ja:
       course/meeting_week:
         odd: 奇数週 (第一・第三週)
         even: 偶数週 (第二・第四週)
+      meeting:
+        date: ミーティング開催日
+        next_date: 次回ミーティング開催日
       member:
         email: メールアドレス
         password: パスワード
