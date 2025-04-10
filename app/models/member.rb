@@ -40,7 +40,7 @@ class Member < ApplicationRecord
   private
 
   def attendance_records(from: created_at, to: nil)
-    Meeting.joins("LEFT JOIN (SELECT * FROM attendances WHERE member_id = #{id}) AS attendances ON meetings.id = attendances.meeting_id")
+    Meeting.joins(ActiveRecord::Base.sanitize_sql_array(['LEFT JOIN attendances ON meetings.id = attendances.meeting_id AND attendances.member_id = ?', id]))
            .where(course_id:)
            .where(date: from..to)
            .order(:date)
