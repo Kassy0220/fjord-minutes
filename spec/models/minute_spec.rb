@@ -3,29 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe Minute, type: :model do
-  describe '#already_finished?' do
-    let(:meeting) { FactoryBot.build(:meeting, course: FactoryBot.create(:rails_course)) }
-    let(:minute) { FactoryBot.build(:minute, meeting:) }
-
-    it 'returns false if today is before the meeting date' do
-      travel_to meeting.date.yesterday do
-        expect(minute.already_finished?).to be false
-      end
-    end
-
-    it 'returns false if today is the meeting date' do
-      travel_to meeting.date do
-        expect(minute.already_finished?).to be false
-      end
-    end
-
-    it 'returns true if today is after the meeting date' do
-      travel_to meeting.date.tomorrow do
-        expect(minute.already_finished?).to be true
-      end
-    end
-  end
-
   describe '#title' do
     it 'returns formatted minute title' do
       minute = FactoryBot.build(:minute, meeting: FactoryBot.build(:meeting, date: Time.zone.local(2025, 1, 8)))
