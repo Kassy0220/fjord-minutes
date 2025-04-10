@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 class Meeting < ApplicationRecord
+  include Rails.application.routes.url_helpers
   DAY_OF_THE_WEEK_FOR_MEETING = { sun: 0, mon: 1, tue: 2, wed: 3, thu: 4, fri: 5, sat: 6 }[:wed]
+  TEMPLATE_FOR_TODAY_MEETING = 'config/templates/today_meeting_message.md'
 
   before_create :set_next_date
 
@@ -11,6 +13,14 @@ class Meeting < ApplicationRecord
 
   def already_finished?
     date.before?(Time.zone.today)
+  end
+
+  def notify_meeting_day
+    notification_message = ERB.new(File.read(TEMPLATE_FOR_TODAY_MEETING))
+                              .result_with_hash({ discord_role_id:, course_name: course.name, url: new_meeting_attendance_url(self) })
+    Discord::Notifier.message(notification_message, url: course.discord_webhook_url)
+    Rails.logger.info("notify_today_meeting, #{course.name}, executed")
+    update!(notified_at: Time.zone.now)
   end
 
   private
@@ -42,5 +52,9 @@ class Meeting < ApplicationRecord
     end
 
     meeting_days
+  end
+
+  def discord_role_id
+    ENV.fetch('TEAM_MEMBER_ROLE_ID', nil).to_i
   end
 end

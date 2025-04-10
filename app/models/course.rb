@@ -5,7 +5,6 @@ class Course < ApplicationRecord
   CLONED_BOOTCAMP_WIKI_PATH = Rails.root.join('bootcamp_wiki_repository').freeze
   CLONED_AGENT_WIKI_PATH = Rails.root.join('agent_wiki_repository').freeze
   TEMPLATE_FOR_MINUTE_CREATION = 'config/templates/minute_creation_message.md'
-  TEMPLATE_FOR_TODAY_MEETING = 'config/templates/today_meeting_message.md'
 
   enum :meeting_week, { odd: 0, even: 1 }, suffix: true
 
