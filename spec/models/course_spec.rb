@@ -44,4 +44,72 @@ RSpec.describe Course, type: :model do
       expect(FactoryBot.build(:front_end_course).discord_webhook_url).to eq 'https://discord.com/api/webhooks/222/ghijkl'
     end
   end
+
+  describe '#create_next_meeting_and_minute' do
+    let(:rails_course) { FactoryBot.create(:rails_course) }
+
+    context 'when create the first meeting' do
+      let(:latest_meeting_date) { Date.new(2024, 11, 6) }
+
+      before do
+        # Git.cloneが実行されないようにスタブを行う
+        allow(ENV).to receive(:fetch).and_call_original
+        allow(ENV).to receive(:fetch).with('BOOTCAMP_WIKI_URL', nil).and_return('https://example.com/fjordllc/bootcamp-wiki.wiki.git')
+        allow(Git).to receive(:clone).with('https://example.com/fjordllc/bootcamp-wiki.wiki.git', Rails.root.join('bootcamp_wiki_repository')).and_return(nil)
+        # クローンしたリポジトリを利用するメソッドをスタブ
+        allow(rails_course).to receive_messages(get_latest_meeting_date_from_cloned_minutes: latest_meeting_date,
+                                                get_next_meeting_date_from_cloned_minutes: Date.new(2024, 11, 20))
+      end
+
+      it 'create next meeting and minute' do
+        allow(Discord::Notifier).to receive(:message).and_return(nil)
+
+        travel_to latest_meeting_date.tomorrow do
+          expect { rails_course.create_next_meeting_and_minute }.to change(rails_course.meetings, :count).by(1).and change(rails_course.minutes, :count).by(1)
+        end
+        expect(Meeting.last.date).to eq Date.new(2024, 11, 20)
+      end
+
+      it 'does not create next meeting and minute if the latest meeting is not finished' do
+        number_of_minutes = rails_course.minutes.count
+        travel_to latest_meeting_date do
+          expect { rails_course.create_next_meeting_and_minute }.not_to change(rails_course.meetings, :count)
+          expect(number_of_minutes).to eq rails_course.minutes.count
+        end
+      end
+    end
+
+    context 'when create the second and subsequent meeting' do
+      let(:latest_meeting) { FactoryBot.create(:meeting, course: rails_course) }
+
+      it 'create next meeting and minute' do
+        allow(Discord::Notifier).to receive(:message).and_return(nil)
+
+        travel_to latest_meeting.date.tomorrow do
+          expect { rails_course.create_next_meeting_and_minute }.to change(rails_course.meetings, :count).by(1).and change(rails_course.minutes, :count).by(1)
+        end
+        expect(Meeting.last.date).to eq Date.new(2024, 10, 16)
+      end
+
+      it 'does not create next meeting and minute if the latest meeting is not finished' do
+        number_of_minutes = rails_course.minutes.count
+        travel_to latest_meeting.date do
+          expect { rails_course.create_next_meeting_and_minute }.not_to change(rails_course.meetings, :count)
+          expect(number_of_minutes).to eq rails_course.minutes.count
+        end
+      end
+    end
+
+    # 定期処理が2回実行されてしまった場合のテスト
+    it 'does not create meetings with the same date' do
+      allow(Discord::Notifier).to receive(:message).and_return(nil)
+
+      latest_meeting = FactoryBot.create(:meeting, course: rails_course)
+      travel_to latest_meeting.date.tomorrow do
+        expect { rails_course.create_next_meeting_and_minute }.to change(rails_course.meetings, :count)
+        expect { rails_course.create_next_meeting_and_minute }.not_to change(rails_course.meetings, :count)
+        expect(Discord::Notifier).to have_received(:message).once
+      end
+    end
+  end
 end
