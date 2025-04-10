@@ -10,10 +10,6 @@ class Minute < ApplicationRecord
   has_many :attendances, through: :meeting
   has_one :course, through: :meeting
 
-  def already_finished?
-    meeting.date.before?(Time.zone.today)
-  end
-
   def title
     "ふりかえり・計画ミーティング#{I18n.l(meeting.date)}"
   end
