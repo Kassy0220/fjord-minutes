@@ -11,6 +11,7 @@ courses = courses_data.map do |course_data|
     course.meeting_week = course_data[:meeting_week]
   end
 end
+rails_course = courses.first
 
 # add member data
 members_data = [
@@ -51,7 +52,7 @@ members = members_data.map do |member_data|
     member.uid = member_data[:email] # developer認証でログインできるように、uidにはemailの値にしておく
     member.name = member_data[:name]
     member.avatar_url = 'https://i.gyazo.com/40600d4c2f36e6ec49ec17af0ef610d3.png'
-    member.course = courses.first
+    member.course = rails_course
   end
 end
 
@@ -92,38 +93,14 @@ returned_member_hibernation = returned_member.hibernations.create!
 returned_member_hibernation.update!(created_at: Time.zone.local(2025, 6, 30), finished_at: Time.zone.local(2025, 8, 15))
 
 # add meeting data
-meeting_dates = [
-  { date: Time.zone.local(2025, 1, 15), next_date: Time.zone.local(2025, 2, 5) },
-  { date: Time.zone.local(2025, 2, 5), next_date: Time.zone.local(2025, 2, 19) },
-  { date: Time.zone.local(2025, 2, 19), next_date: Time.zone.local(2025, 3, 5) },
-  { date: Time.zone.local(2025, 3, 5), next_date: Time.zone.local(2025, 3, 19) },
-  { date: Time.zone.local(2025, 3, 19), next_date: Time.zone.local(2025, 4, 2) },
-  { date: Time.zone.local(2025, 4, 2), next_date: Time.zone.local(2025, 4, 16) },
-  { date: Time.zone.local(2025, 4, 16), next_date: Time.zone.local(2025, 5, 7) },
-  { date: Time.zone.local(2025, 5, 7), next_date: Time.zone.local(2025, 5, 21) },
-  { date: Time.zone.local(2025, 5, 21), next_date: Time.zone.local(2025, 6, 4) },
-  { date: Time.zone.local(2025, 6, 4), next_date: Time.zone.local(2025, 6, 18) },
-  { date: Time.zone.local(2025, 6, 18), next_date: Time.zone.local(2025, 7, 2) },
-  { date: Time.zone.local(2025, 7, 2), next_date: Time.zone.local(2025, 7, 16) },
-  { date: Time.zone.local(2025, 7, 16), next_date: Time.zone.local(2025, 8, 6) },
-  { date: Time.zone.local(2025, 8, 6), next_date: Time.zone.local(2025, 8, 20) },
-  { date: Time.zone.local(2025, 8, 20), next_date: Time.zone.local(2025, 9, 3) },
-  { date: Time.zone.local(2025, 9, 3), next_date: Time.zone.local(2025, 9, 17) },
-  { date: Time.zone.local(2025, 9, 17), next_date: Time.zone.local(2025, 10, 1) },
-  { date: Time.zone.local(2025, 10, 1), next_date: Time.zone.local(2025, 10, 15) },
-  { date: Time.zone.local(2025, 10, 15), next_date: Time.zone.local(2025, 11, 5) },
-  { date: Time.zone.local(2025, 11, 5), next_date: Time.zone.local(2025, 11, 19) },
-  { date: Time.zone.local(2025, 11, 19), next_date: Time.zone.local(2025, 12, 3) },
-  { date: Time.zone.local(2025, 12, 3), next_date: Time.zone.local(2025, 12, 17) },
-  { date: Time.zone.local(2025, 12, 17), next_date: Time.zone.local(2026, 1, 7) },
-  { date: Time.zone.local(2026, 1, 7), next_date: Time.zone.local(2026, 1, 21) }
-]
+Meeting.find_or_create_by!(date: Time.zone.local(2025, 1, 15), course: rails_course)
 
-meetings = meeting_dates.map do |date|
-  Meeting.find_or_create_by!(**date) do |meeting|
-    meeting.course = courses.first
-  end
+23.times do
+  meeting_date = rails_course.meetings.order(:date).last.next_date
+  Meeting.find_or_create_by!(date: meeting_date, course: rails_course)
 end
+
+meetings = rails_course.meetings
 
 # add minute data
 minutes = meetings.map do |meeting|
