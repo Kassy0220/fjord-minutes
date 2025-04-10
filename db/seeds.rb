@@ -91,42 +91,46 @@ returned_member = Member.find_by(email: 'returned_member@example.com')
 returned_member_hibernation = returned_member.hibernations.create!
 returned_member_hibernation.update!(created_at: Time.zone.local(2025, 6, 30), finished_at: Time.zone.local(2025, 8, 15))
 
-# add minute data
+# add meeting data
 meeting_dates = [
-  { meeting_date: Time.zone.local(2025, 1, 15), next_meeting_date: Time.zone.local(2025, 2, 5) },
-  { meeting_date: Time.zone.local(2025, 2, 5), next_meeting_date: Time.zone.local(2025, 2, 19) },
-  { meeting_date: Time.zone.local(2025, 2, 19), next_meeting_date: Time.zone.local(2025, 3, 5) },
-  { meeting_date: Time.zone.local(2025, 3, 5), next_meeting_date: Time.zone.local(2025, 3, 19) },
-  { meeting_date: Time.zone.local(2025, 3, 19), next_meeting_date: Time.zone.local(2025, 4, 2) },
-  { meeting_date: Time.zone.local(2025, 4, 2), next_meeting_date: Time.zone.local(2025, 4, 16) },
-  { meeting_date: Time.zone.local(2025, 4, 16), next_meeting_date: Time.zone.local(2025, 5, 7) },
-  { meeting_date: Time.zone.local(2025, 5, 7), next_meeting_date: Time.zone.local(2025, 5, 21) },
-  { meeting_date: Time.zone.local(2025, 5, 21), next_meeting_date: Time.zone.local(2025, 6, 4) },
-  { meeting_date: Time.zone.local(2025, 6, 4), next_meeting_date: Time.zone.local(2025, 6, 18) },
-  { meeting_date: Time.zone.local(2025, 6, 18), next_meeting_date: Time.zone.local(2025, 7, 2) },
-  { meeting_date: Time.zone.local(2025, 7, 2), next_meeting_date: Time.zone.local(2025, 7, 16) },
-  { meeting_date: Time.zone.local(2025, 7, 16), next_meeting_date: Time.zone.local(2025, 8, 6) },
-  { meeting_date: Time.zone.local(2025, 8, 6), next_meeting_date: Time.zone.local(2025, 8, 20) },
-  { meeting_date: Time.zone.local(2025, 8, 20), next_meeting_date: Time.zone.local(2025, 9, 3) },
-  { meeting_date: Time.zone.local(2025, 9, 3), next_meeting_date: Time.zone.local(2025, 9, 17) },
-  { meeting_date: Time.zone.local(2025, 9, 17), next_meeting_date: Time.zone.local(2025, 10, 1) },
-  { meeting_date: Time.zone.local(2025, 10, 1), next_meeting_date: Time.zone.local(2025, 10, 15) },
-  { meeting_date: Time.zone.local(2025, 10, 15), next_meeting_date: Time.zone.local(2025, 11, 5) },
-  { meeting_date: Time.zone.local(2025, 11, 5), next_meeting_date: Time.zone.local(2025, 11, 19) },
-  { meeting_date: Time.zone.local(2025, 11, 19), next_meeting_date: Time.zone.local(2025, 12, 3) },
-  { meeting_date: Time.zone.local(2025, 12, 3), next_meeting_date: Time.zone.local(2025, 12, 17) },
-  { meeting_date: Time.zone.local(2025, 12, 17), next_meeting_date: Time.zone.local(2026, 1, 7) },
-  { meeting_date: Time.zone.local(2026, 1, 7), next_meeting_date: Time.zone.local(2026, 1, 21) }
+  { date: Time.zone.local(2025, 1, 15), next_date: Time.zone.local(2025, 2, 5) },
+  { date: Time.zone.local(2025, 2, 5), next_date: Time.zone.local(2025, 2, 19) },
+  { date: Time.zone.local(2025, 2, 19), next_date: Time.zone.local(2025, 3, 5) },
+  { date: Time.zone.local(2025, 3, 5), next_date: Time.zone.local(2025, 3, 19) },
+  { date: Time.zone.local(2025, 3, 19), next_date: Time.zone.local(2025, 4, 2) },
+  { date: Time.zone.local(2025, 4, 2), next_date: Time.zone.local(2025, 4, 16) },
+  { date: Time.zone.local(2025, 4, 16), next_date: Time.zone.local(2025, 5, 7) },
+  { date: Time.zone.local(2025, 5, 7), next_date: Time.zone.local(2025, 5, 21) },
+  { date: Time.zone.local(2025, 5, 21), next_date: Time.zone.local(2025, 6, 4) },
+  { date: Time.zone.local(2025, 6, 4), next_date: Time.zone.local(2025, 6, 18) },
+  { date: Time.zone.local(2025, 6, 18), next_date: Time.zone.local(2025, 7, 2) },
+  { date: Time.zone.local(2025, 7, 2), next_date: Time.zone.local(2025, 7, 16) },
+  { date: Time.zone.local(2025, 7, 16), next_date: Time.zone.local(2025, 8, 6) },
+  { date: Time.zone.local(2025, 8, 6), next_date: Time.zone.local(2025, 8, 20) },
+  { date: Time.zone.local(2025, 8, 20), next_date: Time.zone.local(2025, 9, 3) },
+  { date: Time.zone.local(2025, 9, 3), next_date: Time.zone.local(2025, 9, 17) },
+  { date: Time.zone.local(2025, 9, 17), next_date: Time.zone.local(2025, 10, 1) },
+  { date: Time.zone.local(2025, 10, 1), next_date: Time.zone.local(2025, 10, 15) },
+  { date: Time.zone.local(2025, 10, 15), next_date: Time.zone.local(2025, 11, 5) },
+  { date: Time.zone.local(2025, 11, 5), next_date: Time.zone.local(2025, 11, 19) },
+  { date: Time.zone.local(2025, 11, 19), next_date: Time.zone.local(2025, 12, 3) },
+  { date: Time.zone.local(2025, 12, 3), next_date: Time.zone.local(2025, 12, 17) },
+  { date: Time.zone.local(2025, 12, 17), next_date: Time.zone.local(2026, 1, 7) },
+  { date: Time.zone.local(2026, 1, 7), next_date: Time.zone.local(2026, 1, 21) }
 ]
 
-minutes = meeting_dates.map do |date|
-  Minute.find_or_create_by(meeting_date: date[:meeting_date]) do |minute|
+meetings = meeting_dates.map do |date|
+  Meeting.find_or_create_by!(**date) do |meeting|
+    meeting.course = courses.first
+  end
+end
+
+# add minute data
+minutes = meetings.map do |meeting|
+  Minute.find_or_create_by!(meeting: meeting) do |minute|
     minute.release_branch = ''
     minute.release_note = ''
     minute.other = ''
-    minute.meeting_date = date[:meeting_date]
-    minute.next_meeting_date = date[:next_meeting_date]
-    minute.course = courses.first
   end
 end
 
@@ -140,31 +144,31 @@ day_attendee = Member.find_by(email: 'day_attendee@example.com')
 night_attendee = Member.find_by(email: 'night_attendee@example.com')
 absentee = Member.find_by(email: 'absentee@example.com')
 
-minutes.each do |minute|
-  Attendance.find_or_create_by!(minute:, member: day_attendee) do |attendance|
+meetings.each do |meeting|
+  Attendance.find_or_create_by!(meeting:, member: day_attendee) do |attendance|
     attendance.present = true
     attendance.session = :afternoon
   end
-  Attendance.find_or_create_by!(minute:, member: night_attendee) do |attendance|
+  Attendance.find_or_create_by!(meeting:, member: night_attendee) do |attendance|
     attendance.present = true
     attendance.session = :night
   end
-  Attendance.find_or_create_by!(minute:, member: absentee) do |attendance|
+  Attendance.find_or_create_by!(meeting:, member: absentee) do |attendance|
     attendance.present = false
     attendance.absence_reason = '仕事の都合のため'
     attendance.progress_report = '今週の進捗はありません、仕事が忙しく時間が取れずにいます。'
   end
 end
 
-Minute.where(meeting_date: ..hibernated_member_hibernation.created_at).find_each do |minute|
-  Attendance.find_or_create_by!(minute:, member: hibernated_member) do |attendance|
+Meeting.where(date: ..hibernated_member_hibernation.created_at).find_each do |meeting|
+  Attendance.find_or_create_by!(meeting:, member: hibernated_member) do |attendance|
     attendance.present = true
     attendance.session = :afternoon
   end
 end
 
-Minute.where.not(meeting_date: returned_member_hibernation.created_at..returned_member_hibernation.finished_at).find_each do |minute|
-  Attendance.find_or_create_by!(minute:, member: returned_member) do |attendance|
+Meeting.where.not(date: returned_member_hibernation.created_at..returned_member_hibernation.finished_at).find_each do |meeting|
+  Attendance.find_or_create_by!(meeting:, member: returned_member) do |attendance|
     attendance.present = true
     attendance.session = :night
   end
