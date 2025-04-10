@@ -61,8 +61,6 @@ ja:
         release_branch: リリースブランチ
         release_note: リリースノート
         other: その他
-        meeting_date: ミーティング開催日
-        next_meeting_date: 次回ミーティング開催日
       topic:
         content: 内容
   meetings:
