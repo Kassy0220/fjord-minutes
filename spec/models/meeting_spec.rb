@@ -63,4 +63,20 @@ RSpec.describe Meeting, type: :model do
       end
     end
   end
+
+  describe '#notify_meeting_day' do
+    let(:rails_course) { FactoryBot.create(:rails_course) }
+    let(:latest_meeting) { FactoryBot.create(:meeting, course: rails_course) }
+
+    it 'send discord notification' do
+      allow(Discord::Notifier).to receive(:message).and_return(nil)
+
+      travel_to Time.zone.local(2024, 10, 2, 0, 30) do # 通知を送る時間を固定
+        expect(latest_meeting.notified_at).to be_nil
+        latest_meeting.notify_meeting_day
+        expect(Discord::Notifier).to have_received(:message)
+        expect(latest_meeting.notified_at).to eq Time.zone.local(2024, 10, 2, 0, 30)
+      end
+    end
+  end
 end
