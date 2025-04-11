@@ -6,7 +6,7 @@
 </div>
 
 <div class="page_body">
-  <% active_tab = params[:year] ? params[:year].to_i : @course.meeting_years.max %>
+  <% active_tab = params[:year]&.to_i || @course.meeting_years.max %>
   <%= render 'years_tab', course: @course, active_tab: active_tab %>
 
   <div>

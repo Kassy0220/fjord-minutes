@@ -7,7 +7,7 @@
 
 <div class="page_body">
   <% if admin_signed_in? %>
-    <% active_tab = params[:status] ? params[:status] : 'active' %>
+    <% active_tab = params[:status] || 'active' %>
     <%= render 'status_tab', course: @course, active_tab: active_tab %>
   <% end %>
 
