@@ -8,7 +8,8 @@ RSpec.describe 'Minutes', type: :system do
   describe 'edit minute' do
     context 'when logged in as admin' do
       let!(:rails_course) { FactoryBot.create(:rails_course) }
-      let(:minute) { FactoryBot.create(:minute, course: rails_course) }
+      let(:meeting) { FactoryBot.create(:meeting, course: rails_course) }
+      let(:minute) { FactoryBot.create(:minute, meeting:) }
 
       before do
         login_as_admin FactoryBot.create(:admin)
@@ -121,6 +122,7 @@ RSpec.describe 'Minutes', type: :system do
           click_button '更新'
           expect(page).not_to have_selector 'input'
           expect(page).to have_content '2024年10月23日'
+          expect(meeting.reload.next_date).to eq Date.new(2024, 10, 23)
         end
       end
 
@@ -139,7 +141,8 @@ RSpec.describe 'Minutes', type: :system do
 
     context 'when logged in as member' do
       let!(:rails_course) { FactoryBot.create(:rails_course) }
-      let(:minute) { FactoryBot.create(:minute, course: rails_course) }
+      let(:meeting) { FactoryBot.create(:meeting, course: rails_course) }
+      let(:minute) { FactoryBot.create(:minute, meeting:) }
       let(:member) { FactoryBot.create(:member, course: rails_course) }
 
       before do
@@ -219,8 +222,8 @@ RSpec.describe 'Minutes', type: :system do
     end
 
     scenario 'display minutes by course' do
-      rails_course_minute = FactoryBot.create(:minute, meeting_date: Time.zone.local(2024, 10, 2), course: rails_course)
-      front_end_course_minute = FactoryBot.create(:minute, meeting_date: Time.zone.local(2024, 10, 9), course: front_end_course)
+      rails_course_minute = FactoryBot.create(:minute, meeting: FactoryBot.create(:meeting, date: Time.zone.local(2024, 10, 2), course: rails_course))
+      front_end_course_minute = FactoryBot.create(:minute, meeting: FactoryBot.create(:meeting, date: Time.zone.local(2024, 10, 9), course: front_end_course))
 
       visit course_minutes_path(rails_course)
       within('#course_tab') do
@@ -244,8 +247,8 @@ RSpec.describe 'Minutes', type: :system do
     end
 
     scenario 'display minutes by year' do
-      FactoryBot.create(:minute, meeting_date: Time.zone.local(2024, 1, 1), course: rails_course)
-      FactoryBot.create(:minute, meeting_date: Time.zone.local(2025, 1, 1), course: rails_course)
+      FactoryBot.create(:minute, meeting: FactoryBot.create(:meeting, date: Time.zone.local(2024, 1, 1), course: rails_course))
+      FactoryBot.create(:minute, meeting: FactoryBot.create(:meeting, date: Time.zone.local(2025, 1, 1), course: rails_course))
 
       visit course_minutes_path(rails_course)
       within('#years_tab') do
@@ -267,8 +270,8 @@ RSpec.describe 'Minutes', type: :system do
     end
 
     scenario 'display latest year minutes when year is not specified' do
-      FactoryBot.create(:minute, meeting_date: Time.zone.local(2024, 1, 1), course: rails_course)
-      FactoryBot.create(:minute, meeting_date: Time.zone.local(2025, 1, 1), course: rails_course)
+      FactoryBot.create(:minute, meeting: FactoryBot.create(:meeting, date: Time.zone.local(2024, 1, 1), course: rails_course))
+      FactoryBot.create(:minute, meeting: FactoryBot.create(:meeting, date: Time.zone.local(2025, 1, 1), course: rails_course))
 
       visit course_minutes_path(rails_course)
       expect(page).not_to have_link 'ふりかえり・計画ミーティング2024年01月01日'
@@ -280,8 +283,8 @@ RSpec.describe 'Minutes', type: :system do
       allow(ENV).to receive(:fetch).with('BOOTCAMP_WIKI_URL', nil).and_return('https://example.com/fjordllc/bootcamp-wiki.wiki.git')
       allow(ENV).to receive(:fetch).with('AGENT_WIKI_URL', nil).and_return('https://example.com/fjordllc/agent-wiki.wiki.git')
 
-      exported_minute = FactoryBot.create(:minute, meeting_date: Time.zone.local(2024, 1, 1), exported: true, course: rails_course)
-      not_exported_minute = FactoryBot.create(:minute, meeting_date: Time.zone.local(2024, 1, 15), course: rails_course)
+      exported_minute = FactoryBot.create(:minute, exported: true, meeting: FactoryBot.create(:meeting, date: Time.zone.local(2024, 1, 1), course: rails_course))
+      not_exported_minute = FactoryBot.create(:minute, meeting: FactoryBot.create(:meeting, date: Time.zone.local(2024, 1, 15), course: rails_course))
 
       visit course_minutes_path(rails_course)
       expect(page).to have_link 'GitHub Wikiで確認', href: github_wiki_url(exported_minute)
@@ -292,7 +295,8 @@ RSpec.describe 'Minutes', type: :system do
   describe 'show minute' do
     let!(:rails_course) { FactoryBot.create(:rails_course) }
     let(:member) { FactoryBot.create(:member, course: rails_course) }
-    let(:minute) { FactoryBot.create(:minute, course: rails_course) }
+    let(:meeting) { FactoryBot.create(:meeting, course: rails_course) }
+    let(:minute) { FactoryBot.create(:minute, meeting:) }
 
     scenario 'show markdown and preview of the minute', :js do
       login_as member

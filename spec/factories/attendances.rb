@@ -7,7 +7,7 @@ FactoryBot.define do
     absence_reason { nil }
     progress_report { nil }
     association :member, factory: :member
-    association :minute, factory: :minute
+    association :meeting, factory: :meeting
 
     trait :night do
       session { :night }

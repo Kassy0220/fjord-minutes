@@ -28,6 +28,6 @@ class AttendancesController < ApplicationController
   end
 
   def prohibit_edit_attendance_to_finished_meeting
-    redirect_to edit_minute_url(@attendance.minute), alert: t('.failure') if @attendance.minute.already_finished?
+    redirect_to edit_minute_url(@attendance.minute), alert: t('.failure') if @attendance.meeting.already_finished?
   end
 end

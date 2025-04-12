@@ -19,7 +19,7 @@
           <% if course.minutes.none? %>
             まだ議事録は作成されていません
           <% else %>
-            <%= link_to "#{course.minutes.order(:meeting_date).last.title}", edit_minute_path(course.minutes.order(:meeting_date).last) %>
+            <%= link_to "#{course.meetings.order(:date).last.minute.title}", edit_minute_path(course.meetings.order(:date).last.minute) %>
           <% end %>
         </li>
       </ul>

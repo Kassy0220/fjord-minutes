@@ -61,13 +61,14 @@ ja:
         next_meeting_date: 次回ミーティング開催日
       topic:
         content: 内容
-  minutes:
+  meetings:
     attendances:
       create:
         success: 出席予定を登録しました
       failure:
         duplicate_access: すでに出席予定を登録済みです
         finished_meeting: 終了したミーティングには出席予定を登録できません
+  minutes:
     exports:
       create:
         success: GitHub Wikiに議事録を反映させました

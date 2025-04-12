@@ -13,6 +13,7 @@ dayjs.extend(weekday)
 
 export default function NextMeetingDateForm({
   minuteId,
+  meetingId,
   nextMeetingDate,
   isAdmin,
 }) {
@@ -20,8 +21,8 @@ export default function NextMeetingDateForm({
   const [isEditing, setIsEditing] = useState(false)
 
   const onReceivedData = useCallback(function (data) {
-    if ('minute' in data.body) {
-      setDate(data.body.minute.next_meeting_date)
+    if ('meeting' in data.body) {
+      setDate(data.body.meeting.next_date)
     }
   }, [])
   useChannel(minuteId, onReceivedData)
@@ -32,6 +33,7 @@ export default function NextMeetingDateForm({
         {isEditing ? (
           <EditForm
             minuteId={minuteId}
+            meetingId={meetingId}
             date={date}
             setIsEditing={setIsEditing}
           />
@@ -55,7 +57,7 @@ export default function NextMeetingDateForm({
   )
 }
 
-function EditForm({ minuteId, date, setIsEditing }) {
+function EditForm({ minuteId, meetingId, date, setIsEditing }) {
   const [selectedDate, setSelectedDate] = useState(new Date(date))
 
   const handleInput = function (date) {
@@ -65,11 +67,11 @@ function EditForm({ minuteId, date, setIsEditing }) {
   const handleClick = async function (e) {
     e.preventDefault()
     const parameter = {
-      minute: { next_meeting_date: dayjs(selectedDate).format('YYYY-MM-DD') },
+      meeting: { next_date: dayjs(selectedDate).format('YYYY-MM-DD') },
     }
 
     const response = await sendRequest(
-      `/api/minutes/${minuteId}`,
+      `/api/minutes/${minuteId}/meetings/${meetingId}`,
       'PATCH',
       parameter
     )
@@ -145,12 +147,14 @@ function NextMeetingDate({ date, setIsEditing, isAdmin }) {
 
 NextMeetingDateForm.propTypes = {
   minuteId: PropTypes.number,
+  meetingId: PropTypes.number,
   nextMeetingDate: PropTypes.string,
   isAdmin: PropTypes.bool,
 }
 
 EditForm.propTypes = {
   minuteId: PropTypes.number,
+  meetingId: PropTypes.number,
   date: PropTypes.string,
   setIsEditing: PropTypes.func,
 }

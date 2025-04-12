@@ -5,16 +5,17 @@ class Minute < ApplicationRecord
   CLONED_AGENT_WIKI_PATH = Rails.root.join('agent_wiki_repository').freeze
   TEMPLATE_PATH = 'config/templates/minute.md'
 
-  belongs_to :course
+  belongs_to :meeting
   has_many :topics, dependent: :destroy
-  has_many :attendances, dependent: :destroy
+  has_many :attendances, through: :meeting
+  has_one :course, through: :meeting
 
   def already_finished?
-    meeting_date.before?(Time.zone.today)
+    meeting.date.before?(Time.zone.today)
   end
 
   def title
-    "ふりかえり・計画ミーティング#{I18n.l(meeting_date)}"
+    "ふりかえり・計画ミーティング#{I18n.l(meeting.date)}"
   end
 
   def export_to_github_wiki
@@ -126,12 +127,12 @@ class Minute < ApplicationRecord
   end
 
   def next_date
-    meeting_date = I18n.l(next_meeting_date, format: :long)
-    return "- #{meeting_date}" unless HolidayJp.holiday?(next_meeting_date)
+    formatted_date = I18n.l(meeting.next_date, format: :long)
+    return "- #{formatted_date}" unless HolidayJp.holiday?(meeting.next_date)
 
-    holiday_name = HolidayJp.between(next_meeting_date, next_meeting_date).first.name
+    holiday_name = HolidayJp.between(meeting.next_date, meeting.next_date).first.name
     <<~DATE.chomp
-      - #{meeting_date}
+      - #{formatted_date}
         - 次回開催日は#{holiday_name}です。もしミーティングをお休みにする場合は、開催日を変更しましょう。
     DATE
   end

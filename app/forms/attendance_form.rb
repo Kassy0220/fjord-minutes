@@ -14,11 +14,11 @@ class AttendanceForm
 
   attr_accessor :attendance
 
-  def initialize(model: nil, minute: nil, member: nil, **attrs)
+  def initialize(model: nil, meeting: nil, member: nil, **attrs)
     attrs.symbolize_keys!
     if model
       @attendance = model
-      @minute = @attendance.minute || minute
+      @meeting = @attendance.meeting || meeting
       @member = @attendance.member || member
       attrs = transfer_attributes_from_model.merge(attrs)
     end
@@ -36,7 +36,7 @@ class AttendanceForm
     if attendance.persisted?
       { url: Rails.application.routes.url_helpers.attendance_path(attendance), method: :patch }
     else
-      { url: Rails.application.routes.url_helpers.minute_attendances_path(@minute), method: :post }
+      { url: Rails.application.routes.url_helpers.meeting_attendances_path(@meeting), method: :post }
     end
   end
 
@@ -53,7 +53,7 @@ class AttendanceForm
   end
 
   def transfer_attributes_to_model
-    attendance.minute = @minute
+    attendance.meeting = @meeting
     attendance.member = @member
 
     if status == 'absent'

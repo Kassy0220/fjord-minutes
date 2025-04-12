@@ -2,9 +2,9 @@ import useSWR from 'swr'
 import fetcher from '../fetcher.js'
 import PropTypes from 'prop-types'
 
-export default function UnexcusedAbsentees({ minuteId }) {
+export default function UnexcusedAbsentees({ meetingId }) {
   const { data, error, isLoading } = useSWR(
-    `/api/minutes/${minuteId}/attendances`,
+    `/api/meetings/${meetingId}/attendances`,
     fetcher
   )
 
@@ -25,5 +25,5 @@ export default function UnexcusedAbsentees({ minuteId }) {
 }
 
 UnexcusedAbsentees.propTypes = {
-  minuteId: PropTypes.number,
+  meetingId: PropTypes.number,
 }
