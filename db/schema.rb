@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_04_05_104031) do
+ActiveRecord::Schema[7.2].define(version: 2025_04_09_224801) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -32,13 +32,13 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_05_104031) do
     t.integer "session"
     t.string "absence_reason"
     t.text "progress_report"
-    t.bigint "minute_id", null: false
     t.bigint "member_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "meeting_id", null: false
+    t.index ["meeting_id"], name: "index_attendances_on_meeting_id"
+    t.index ["member_id", "meeting_id"], name: "index_attendances_on_member_id_and_meeting_id", unique: true
     t.index ["member_id"], name: "index_attendances_on_member_id"
-    t.index ["minute_id", "member_id"], name: "index_attendances_on_minute_id_and_member_id", unique: true
-    t.index ["minute_id"], name: "index_attendances_on_minute_id"
   end
 
   create_table "courses", force: :cascade do |t|
@@ -88,12 +88,11 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_05_104031) do
     t.date "meeting_date"
     t.date "next_meeting_date"
     t.datetime "notified_at"
-    t.bigint "course_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "exported", default: false
-    t.index ["course_id"], name: "index_minutes_on_course_id"
-    t.index ["meeting_date", "course_id"], name: "index_minutes_on_meeting_date_and_course_id", unique: true
+    t.bigint "meeting_id", null: false
+    t.index ["meeting_id"], name: "index_minutes_on_meeting_id"
   end
 
   create_table "topics", force: :cascade do |t|
@@ -107,11 +106,11 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_05_104031) do
     t.index ["topicable_id", "topicable_type"], name: "index_topics_on_topicable_id_and_topicable_type"
   end
 
+  add_foreign_key "attendances", "meetings"
   add_foreign_key "attendances", "members"
-  add_foreign_key "attendances", "minutes"
   add_foreign_key "hibernations", "members"
   add_foreign_key "meetings", "courses"
   add_foreign_key "members", "courses"
-  add_foreign_key "minutes", "courses"
+  add_foreign_key "minutes", "meetings"
   add_foreign_key "topics", "minutes"
 end

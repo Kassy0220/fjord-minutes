@@ -3,8 +3,9 @@
 class Attendance < ApplicationRecord
   enum :session, { afternoon: 0, night: 1 }, suffix: true
 
-  belongs_to :minute
+  belongs_to :meeting
   belongs_to :member
+  has_one :minute, through: :meeting
 
   scope :at_afternoon_session, -> { where(session: :afternoon) }
   scope :at_night_session, -> { where(session: :night) }

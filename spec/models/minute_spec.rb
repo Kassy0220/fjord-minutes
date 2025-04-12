@@ -4,22 +4,23 @@ require 'rails_helper'
 
 RSpec.describe Minute, type: :model do
   describe '#already_finished?' do
-    let(:minute) { FactoryBot.build(:minute) }
+    let(:meeting) { FactoryBot.build(:meeting, course: FactoryBot.create(:rails_course)) }
+    let(:minute) { FactoryBot.build(:minute, meeting:) }
 
     it 'returns false if today is before the meeting date' do
-      travel_to minute.meeting_date.yesterday do
+      travel_to meeting.date.yesterday do
         expect(minute.already_finished?).to be false
       end
     end
 
     it 'returns false if today is the meeting date' do
-      travel_to minute.meeting_date do
+      travel_to meeting.date do
         expect(minute.already_finished?).to be false
       end
     end
 
     it 'returns true if today is after the meeting date' do
-      travel_to minute.meeting_date.tomorrow do
+      travel_to meeting.date.tomorrow do
         expect(minute.already_finished?).to be true
       end
     end
@@ -27,21 +28,22 @@ RSpec.describe Minute, type: :model do
 
   describe '#title' do
     it 'returns formatted minute title' do
-      minute = FactoryBot.build(:minute, meeting_date: Time.zone.local(2025, 1, 8))
+      minute = FactoryBot.build(:minute, meeting: FactoryBot.build(:meeting, date: Time.zone.local(2025, 1, 8)))
       expect(minute.title).to eq 'ふりかえり・計画ミーティング2025年01月08日'
     end
   end
 
   describe '#to_markdown' do
     let(:rails_course) { FactoryBot.create(:rails_course) }
-    let(:minute) { FactoryBot.create(:minute, course: rails_course) }
-    let(:alice) { FactoryBot.create(:member, course: rails_course) }
+    let(:meeting) { FactoryBot.create(:meeting, course: rails_course) }
+    let(:minute) { FactoryBot.create(:minute, meeting:) }
 
     it 'returns markdown of minute' do
-      FactoryBot.create(:attendance, member: alice, minute:)
-      FactoryBot.create(:attendance, :night, member: FactoryBot.create(:member, :another_member, course: rails_course), minute:)
-      FactoryBot.create(:attendance, :absence_with_multiple_progress_reports, member: FactoryBot.create(:member, :absent_member, course: rails_course), minute:)
-      FactoryBot.create(:topic, :by_member, minute:, topicable: alice)
+      alice = FactoryBot.create(:member, course: rails_course)
+      FactoryBot.create(:attendance, member: alice, meeting: meeting)
+      FactoryBot.create(:attendance, :night, member: FactoryBot.create(:member, :another_member, course: rails_course), meeting: meeting)
+      FactoryBot.create(:attendance, :absence_with_multiple_progress_reports, member: FactoryBot.create(:member, :absent_member, course: rails_course), meeting: meeting)
+      FactoryBot.create(:topic, :by_member, minute: minute, topicable: alice)
 
       expected = <<~MARKDOWN
         # ふりかえり
@@ -108,7 +110,7 @@ RSpec.describe Minute, type: :model do
     end
 
     it 'warning text is added when next meeting date is holiday' do
-      minute.update!(next_meeting_date: Time.zone.local(2024, 11, 3))
+      meeting.update!(next_date: Time.zone.local(2024, 11, 3))
       warning_text = <<~TEXT
         - 2024年11月03日(日)
           - 次回開催日は文化の日です。もしミーティングをお休みにする場合は、開催日を変更しましょう。

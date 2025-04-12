@@ -40,12 +40,12 @@ class Member < ApplicationRecord
   private
 
   def attendance_records(from: created_at, to: nil)
-    Minute.joins("LEFT JOIN (SELECT * FROM attendances WHERE member_id = #{id}) AS attendances ON minutes.id = attendances.minute_id")
-          .where(course_id:)
-          .where(meeting_date: from..to)
-          .order(:meeting_date)
-          .pluck(:id, :meeting_date, attendances: %i[id present session absence_reason])
-          .map { |data| { minute_id: data[0], date: data[1], attendance_id: data[2], present: data[3], session: data[4], absence_reason: data[5] } }
+    Meeting.joins("LEFT JOIN (SELECT * FROM attendances WHERE member_id = #{id}) AS attendances ON meetings.id = attendances.meeting_id")
+           .where(course_id:)
+           .where(date: from..to)
+           .order(:date)
+           .pluck(:id, :date, attendances: %i[id present session absence_reason])
+           .map { |data| { meeting_id: data[0], date: data[1], attendance_id: data[2], present: data[3], session: data[4], absence_reason: data[5] } }
   end
 
   def was_hibernated?

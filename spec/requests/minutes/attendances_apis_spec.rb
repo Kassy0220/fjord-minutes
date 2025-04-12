@@ -4,15 +4,15 @@ require 'rails_helper'
 
 RSpec.describe 'Minutes::Attendances API', type: :request do
   let(:rails_course) { FactoryBot.create(:rails_course) }
-  let(:minute) { FactoryBot.create(:minute, course: rails_course) }
+  let(:meeting) { FactoryBot.create(:meeting, course: rails_course) }
   let(:alice) { FactoryBot.create(:member, course: rails_course) }
   let(:bob) { FactoryBot.create(:member, :another_member, course: rails_course) }
   let(:absent_member) { FactoryBot.create(:member, :absent_member, course: rails_course) }
 
   before do
-    FactoryBot.create(:attendance, member: alice, minute:)
-    FactoryBot.create(:attendance, :night, member: bob, minute:)
-    FactoryBot.create(:attendance, :absence, member: absent_member, minute:)
+    FactoryBot.create(:attendance, member: alice, meeting:)
+    FactoryBot.create(:attendance, :night, member: bob, meeting:)
+    FactoryBot.create(:attendance, :absence, member: absent_member, meeting:)
     sign_in alice
   end
 
@@ -28,7 +28,7 @@ RSpec.describe 'Minutes::Attendances API', type: :request do
                     progress_report: 'PRのチームメンバーのレビューが通り、komagataさんにレビュー依頼をお願いしているところです。' }],
       unexcused_absentees: [{ member_id: unexcused_absentee.id, name: 'unexcused_absentee' }]
     }.as_json
-    get api_minute_attendances_path(minute), headers: { 'Content-Type' => 'application/json' }, as: :json
+    get api_meeting_attendances_path(meeting), headers: { 'Content-Type' => 'application/json' }, as: :json
     expect(response).to have_http_status(:success)
     expect(response.parsed_body).to eq expected_data
   end

@@ -4,11 +4,11 @@ class Course < ApplicationRecord
   enum :meeting_week, { odd: 0, even: 1 }, suffix: true
 
   has_many :meetings, dependent: :restrict_with_exception
-  has_many :minutes, dependent: :restrict_with_exception
+  has_many :minutes, through: :meetings
   has_many :members, dependent: :restrict_with_exception
 
   def meeting_years
-    minutes.map { |minute| minute.meeting_date.year }.uniq
+    meetings.map { |meeting| meeting.date.year }.uniq
   end
 
   def repository_url

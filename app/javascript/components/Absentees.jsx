@@ -3,9 +3,9 @@ import fetcher from '../fetcher.js'
 import DOMPurify from 'dompurify'
 import PropTypes from 'prop-types'
 
-export default function Absentees({ minuteId, course_name }) {
+export default function Absentees({ meetingId, course_name }) {
   const { data, error, isLoading } = useSWR(
-    `/api/minutes/${minuteId}/attendances`,
+    `/api/meetings/${meetingId}/attendances`,
     fetcher
   )
 
@@ -70,7 +70,7 @@ function convertIssueNumberToLink(progress_report, course_name) {
 }
 
 Absentees.propTypes = {
-  minuteId: PropTypes.number,
+  meetingId: PropTypes.number,
   course_name: PropTypes.string,
 }
 

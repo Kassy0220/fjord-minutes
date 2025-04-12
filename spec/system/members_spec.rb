@@ -29,10 +29,10 @@ RSpec.describe 'Members', type: :system do
       end
 
       scenario 'all attendances are displayed as table', :js do
-        create_minutes(course: rails_course, first_meeting_date: Time.zone.local(2025, 1, 1), count: 4)
-        FactoryBot.create(:attendance, member:, minute: rails_course.minutes.first)
-        FactoryBot.create(:attendance, :night, member:, minute: rails_course.minutes.second)
-        FactoryBot.create(:attendance, :absence, member:, minute: rails_course.minutes.third)
+        create_meetings(course: rails_course, first_meeting_date: Time.zone.local(2025, 1, 1), count: 4)
+        FactoryBot.create(:attendance, member:, meeting: rails_course.meetings.first)
+        FactoryBot.create(:attendance, :night, member:, meeting: rails_course.meetings.second)
+        FactoryBot.create(:attendance, :absence, member:, meeting: rails_course.meetings.third)
 
         visit member_path(member)
         expect(page).to have_selector 'dt[data-attendance-on="2025-01-01"]', text: '01/01'
@@ -53,9 +53,9 @@ RSpec.describe 'Members', type: :system do
       end
 
       scenario 'attendances are divided by year', :js do
-        FactoryBot.create(:minute, meeting_date: Time.zone.local(2024, 12, 18), course: rails_course)
-        FactoryBot.create(:minute, meeting_date: Time.zone.local(2025, 1, 1), course: rails_course)
-        rails_course.minutes.each { |minute| FactoryBot.create(:attendance, member:, minute:) }
+        FactoryBot.create(:meeting, date: Time.zone.local(2024, 12, 18), course: rails_course)
+        FactoryBot.create(:meeting, date: Time.zone.local(2025, 1, 1), course: rails_course)
+        rails_course.meetings.each { |meeting| FactoryBot.create(:attendance, member:, meeting:) }
 
         visit member_path(member)
         expect(page).to have_selector 'div[data-meeting-year="2024"]'
@@ -72,8 +72,8 @@ RSpec.describe 'Members', type: :system do
       end
 
       scenario 'attendances are divided in half year', :js do
-        create_minutes(course: rails_course, first_meeting_date: Time.zone.local(2025, 1, 1), count: 13)
-        rails_course.minutes.each { |minute| FactoryBot.create(:attendance, member:, minute:) }
+        create_meetings(course: rails_course, first_meeting_date: Time.zone.local(2025, 1, 1), count: 13)
+        rails_course.meetings.each { |meeting| FactoryBot.create(:attendance, member:, meeting:) }
 
         visit member_path(member)
         expect(page).to have_selector 'div[data-attendance-table="1"]'
@@ -97,9 +97,9 @@ RSpec.describe 'Members', type: :system do
 
       scenario 'attendances are displayed until the hibernation started if the member is hibernated', :js do
         hibernated_member = FactoryBot.create(:member, :another_member, course: rails_course, created_at: Time.zone.local(2025, 1, 1))
-        FactoryBot.create(:minute, meeting_date: Time.zone.local(2025, 1, 1), course: rails_course)
-        FactoryBot.create(:minute, meeting_date: Time.zone.local(2025, 1, 15), course: rails_course)
-        FactoryBot.create(:minute, meeting_date: Time.zone.local(2025, 2, 5), course: rails_course)
+        FactoryBot.create(:meeting, date: Time.zone.local(2025, 1, 1), course: rails_course)
+        FactoryBot.create(:meeting, date: Time.zone.local(2025, 1, 15), course: rails_course)
+        FactoryBot.create(:meeting, date: Time.zone.local(2025, 2, 5), course: rails_course)
         FactoryBot.create(:hibernation, member: hibernated_member, created_at: Time.zone.local(2025, 2, 1))
 
         visit member_path(hibernated_member)
@@ -109,9 +109,9 @@ RSpec.describe 'Members', type: :system do
       end
 
       scenario 'attendances during the hibernated period are not displayed', :js do
-        FactoryBot.create(:minute, meeting_date: Time.zone.local(2025, 1, 1), course: rails_course)
-        FactoryBot.create(:minute, meeting_date: Time.zone.local(2025, 1, 15), course: rails_course)
-        FactoryBot.create(:minute, meeting_date: Time.zone.local(2025, 2, 5), course: rails_course)
+        FactoryBot.create(:meeting, date: Time.zone.local(2025, 1, 1), course: rails_course)
+        FactoryBot.create(:meeting, date: Time.zone.local(2025, 1, 15), course: rails_course)
+        FactoryBot.create(:meeting, date: Time.zone.local(2025, 2, 5), course: rails_course)
         FactoryBot.create(:hibernation, finished_at: Time.zone.local(2025, 1, 31), member:, created_at: Time.zone.local(2025, 1, 10))
 
         visit member_path(member)
@@ -170,12 +170,12 @@ RSpec.describe 'Members', type: :system do
     end
 
     scenario 'member\'s recent attendances are also displayed' do
-      create_minutes(course: rails_course, first_meeting_date: Time.zone.local(2025, 1, 1), count: 13)
+      create_meetings(course: rails_course, first_meeting_date: Time.zone.local(2025, 1, 1), count: 13)
       member.update!(created_at: Time.zone.local(2024, 12, 31))
       another_member = FactoryBot.create(:member, :another_member, course: rails_course, created_at: Time.zone.local(2025, 4, 1))
-      rails_course.minutes.each do |minute|
-        FactoryBot.create(:attendance, member:, minute:) if member.created_at.before?(minute.meeting_date)
-        FactoryBot.create(:attendance, :night, member: another_member, minute:) if another_member.created_at.before?(minute.meeting_date)
+      rails_course.meetings.each do |meeting|
+        FactoryBot.create(:attendance, member:, meeting:) if member.created_at.before?(meeting.date)
+        FactoryBot.create(:attendance, :night, member: another_member, meeting:) if another_member.created_at.before?(meeting.date)
       end
 
       login_as member

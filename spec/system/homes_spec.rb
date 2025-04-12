@@ -51,10 +51,10 @@ RSpec.describe 'Homes', type: :system do
   scenario 'admin dashboard displays the course details' do
     rails_course = FactoryBot.create(:rails_course)
     front_end_course = FactoryBot.create(:front_end_course)
-    FactoryBot.create(:minute, meeting_date: Time.zone.local(2024, 10, 2), course: rails_course)
-    rails_course_latest_minute = FactoryBot.create(:minute, meeting_date: Time.zone.local(2024, 10, 16), course: rails_course)
-    FactoryBot.create(:minute, meeting_date: Time.zone.local(2024, 10, 9), course: front_end_course)
-    front_end_course_latest_minute = FactoryBot.create(:minute, meeting_date: Time.zone.local(2024, 10, 23), course: front_end_course)
+    FactoryBot.create(:minute, meeting: FactoryBot.create(:meeting, date: Time.zone.local(2024, 10, 2), course: rails_course))
+    rails_course_latest_minute = FactoryBot.create(:minute, meeting: FactoryBot.create(:meeting, date: Time.zone.local(2024, 10, 16), course: rails_course))
+    FactoryBot.create(:minute, meeting: FactoryBot.create(:meeting, date: Time.zone.local(2024, 10, 9), course: front_end_course))
+    front_end_course_latest_minute = FactoryBot.create(:minute, meeting: FactoryBot.create(:meeting, date: Time.zone.local(2024, 10, 23), course: front_end_course))
 
     login_as_admin FactoryBot.create(:admin)
     visit root_path
