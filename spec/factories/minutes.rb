@@ -9,6 +9,6 @@ FactoryBot.define do
     next_meeting_date { Time.zone.local(2024, 10, 16) }
     notified_at { nil }
     exported { false }
-    association :course, factory: :rails_course
+    association :meeting, factory: :meeting
   end
 end

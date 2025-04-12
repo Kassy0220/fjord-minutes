@@ -8,7 +8,7 @@
 
 <div class="page_body">
   <div>
-    <p class="text-lg text-center"><%= l(@attendance_form.attendance.minute.meeting_date) %>のMTGの出席予定を編集</p>
+    <p class="text-lg text-center"><%= l(@attendance_form.attendance.meeting.date) %>のMTGの出席予定を編集</p>
 
     <%= form_with(model: @attendance_form, **@attendance_form.form_with_options, id: "attendance_form", class: "contents") do |form| %>
       <% if @attendance_form.errors.any? %>

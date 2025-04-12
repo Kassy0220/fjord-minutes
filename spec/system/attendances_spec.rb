@@ -4,8 +4,7 @@ require 'rails_helper'
 
 RSpec.describe 'Attendances', type: :system do
   scenario 'not logged in user cannot access create attendance page' do
-    minute = FactoryBot.create(:minute)
-    visit new_minute_attendance_path(minute)
+    visit new_meeting_attendance_path(FactoryBot.create(:meeting))
 
     expect(current_path).to eq root_path
     expect(page).to have_content 'ログインもしくはアカウント登録してください。'
@@ -14,7 +13,8 @@ RSpec.describe 'Attendances', type: :system do
   context 'when logged in as member' do
     describe 'create attendance' do
       let(:rails_course) { FactoryBot.create(:rails_course) }
-      let(:minute) { FactoryBot.create(:minute, course: rails_course) }
+      let(:meeting) { FactoryBot.create(:meeting, course: rails_course) }
+      let(:minute) { FactoryBot.create(:minute, meeting:) }
       let(:member) { FactoryBot.create(:member, course: rails_course) }
 
       before do
@@ -22,12 +22,12 @@ RSpec.describe 'Attendances', type: :system do
       end
 
       scenario 'for afternoon session', :js do
-        travel_to minute.meeting_date do
+        travel_to meeting.date do
           visit edit_minute_path(minute)
           expect(page).to have_link '出席予定を登録する'
           click_link '出席予定を登録する'
 
-          expect(current_path).to eq new_minute_attendance_path(minute)
+          expect(current_path).to eq new_meeting_attendance_path(meeting)
           find('#label_afternoon').click
           click_button '出席を登録'
 
@@ -42,7 +42,7 @@ RSpec.describe 'Attendances', type: :system do
       end
 
       scenario 'for night session', :js do
-        travel_to minute.meeting_date do
+        travel_to meeting.date do
           visit edit_minute_path(minute)
           expect(page).to have_link '出席予定を登録する'
           click_link '出席予定を登録する'
@@ -61,7 +61,7 @@ RSpec.describe 'Attendances', type: :system do
       end
 
       scenario 'as absence', :js do
-        travel_to minute.meeting_date do
+        travel_to meeting.date do
           visit edit_minute_path(minute)
           expect(page).to have_link '出席予定を登録する'
           click_link '出席予定を登録する'
@@ -96,7 +96,7 @@ RSpec.describe 'Attendances', type: :system do
         hibernated_member.hibernations.create!
         expect(hibernated_member.hibernated?).to be true
 
-        travel_to minute.meeting_date do
+        travel_to meeting.date do
           visit edit_minute_path(minute)
           within('#afternoon_attendees', visible: false) do
             expect(page).not_to have_selector 'li', text: hibernated_member.name
@@ -121,8 +121,9 @@ RSpec.describe 'Attendances', type: :system do
       end
 
       scenario 'member cannot create attendance with invalid input', :js do
-        travel_to minute.meeting_date do
-          visit new_minute_attendance_path(minute)
+        travel_to meeting.date do
+          visit edit_minute_path(minute)
+          click_link '出席予定を登録する'
 
           # 出欠を選択していない場合、送信ボタンはdisabledとなる
           expect(page).to have_button '出席を登録', disabled: true
@@ -135,27 +136,25 @@ RSpec.describe 'Attendances', type: :system do
       end
 
       scenario 'member cannot create attendance to the same meeting twice' do
-        travel_to minute.meeting_date do
-          visit new_minute_attendance_path(minute)
+        travel_to meeting.date do
+          visit edit_minute_path(minute)
+          click_link '出席予定を登録する'
+
           find('#label_afternoon').click
           click_button '出席を登録'
 
-          visit new_minute_attendance_path(minute)
+          visit new_meeting_attendance_path(meeting)
           expect(current_path).to eq edit_minute_path(minute)
           expect(page).to have_content 'すでに出席予定を登録済みです'
         end
       end
 
-      scenario 'attendance registration button is not displayed if meeting is finished' do
-        travel_to minute.meeting_date.tomorrow do
+      scenario 'member cannot create attendance if meeting is finished' do
+        travel_to meeting.date.tomorrow do
           visit edit_minute_path(minute)
           expect(page).not_to have_link '出席予定を登録する'
-        end
-      end
 
-      scenario 'member cannot access create attendance page if meeting is finished' do
-        travel_to minute.meeting_date.tomorrow do
-          visit new_minute_attendance_path(minute)
+          visit new_meeting_attendance_path(meeting)
           expect(current_path).to eq edit_minute_path(minute)
           expect(page).to have_content '終了したミーティングには出席予定を登録できません'
         end
@@ -164,7 +163,8 @@ RSpec.describe 'Attendances', type: :system do
 
     describe 'edit attendance' do
       let(:rails_course) { FactoryBot.create(:rails_course) }
-      let(:minute) { FactoryBot.create(:minute, course: rails_course) }
+      let(:meeting) { FactoryBot.create(:meeting, course: rails_course) }
+      let(:minute) { FactoryBot.create(:minute, meeting:) }
       let(:member) { FactoryBot.create(:member, course: rails_course) }
 
       before do
@@ -172,8 +172,8 @@ RSpec.describe 'Attendances', type: :system do
       end
 
       scenario 'from present to absent', :js do
-        attendance = FactoryBot.create(:attendance, member:, minute:)
-        travel_to minute.meeting_date do
+        attendance = FactoryBot.create(:attendance, member:, meeting:)
+        travel_to meeting.date do
           visit edit_minute_path(minute)
           click_link '出席予定を変更する'
 
@@ -199,8 +199,8 @@ RSpec.describe 'Attendances', type: :system do
       end
 
       scenario 'from absent to present', :js do
-        attendance = FactoryBot.create(:attendance, :absence, member:, minute:)
-        travel_to minute.meeting_date do
+        attendance = FactoryBot.create(:attendance, :absence, member:, meeting:)
+        travel_to meeting.date do
           visit edit_minute_path(minute)
           click_link '出席予定を変更する'
 
@@ -222,8 +222,8 @@ RSpec.describe 'Attendances', type: :system do
       end
 
       scenario 'member cannot update attendance with invalid input' do
-        FactoryBot.create(:attendance, member:, minute:)
-        travel_to minute.meeting_date do
+        FactoryBot.create(:attendance, member:, meeting:)
+        travel_to meeting.date do
           visit edit_minute_path(minute)
           click_link '出席予定を変更する'
 
@@ -234,16 +234,12 @@ RSpec.describe 'Attendances', type: :system do
         end
       end
 
-      scenario 'edit attendance button is not displayed if meeting is finished' do
-        travel_to minute.meeting_date.tomorrow do
+      scenario 'member cannot edit attendance if meeting is finished' do
+        attendance = FactoryBot.create(:attendance, member:, meeting:)
+        travel_to meeting.date.tomorrow do
           visit edit_minute_path(minute)
           expect(page).not_to have_link '出席予定を変更する'
-        end
-      end
 
-      scenario 'member cannot access edit attendance page if meeting is finished' do
-        attendance = FactoryBot.create(:attendance, member:, minute:)
-        travel_to minute.meeting_date.tomorrow do
           visit edit_attendance_path(attendance)
           expect(current_path).to eq edit_minute_path(minute)
           expect(page).to have_content '終了したミーティングの出席予定は変更できません'
@@ -254,19 +250,18 @@ RSpec.describe 'Attendances', type: :system do
 
   context 'when logged in as admin' do
     let!(:rails_course) { FactoryBot.create(:rails_course) }
-    let(:minute) { FactoryBot.create(:minute, course: rails_course) }
+    let(:meeting) { FactoryBot.create(:meeting, course: rails_course) }
+    let(:minute) { FactoryBot.create(:minute, meeting:) }
 
     before do
       login_as_admin FactoryBot.create(:admin)
     end
 
-    scenario 'attendance registration button is not displayed' do
+    scenario 'admin cannot visit create attendance page' do
       visit edit_minute_path(minute)
       expect(page).not_to have_link '出席予定を登録する'
-    end
 
-    scenario 'redirect to edit minute page if access create attendance page' do
-      visit new_minute_attendance_path(minute)
+      visit new_meeting_attendance_path(meeting)
       expect(current_path).to eq edit_minute_path(minute)
     end
   end

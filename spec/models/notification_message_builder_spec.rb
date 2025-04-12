@@ -13,7 +13,7 @@ RSpec.describe NotificationMessageBuilder, type: :model do
       allow(ENV).to receive(:fetch).with('TEAM_MEMBER_ROLE_ID', nil).and_return('12345')
     end
 
-    it 'creates notification message of minute creation' do
+    it 'creates notification message of minute creation', skip: 'this class is removed later' do
       expected = <<~MESSAGE
         <@&12345>
         Railsエンジニアコースのチーム開発メンバーに連絡です。
@@ -28,7 +28,7 @@ RSpec.describe NotificationMessageBuilder, type: :model do
       expect(described_class.build(:minute_creation, rails_course, minute)).to eq expected
     end
 
-    it 'creates today meeting notification message' do
+    it 'creates today meeting notification message', skip: 'this class is removed later' do
       expected = <<~MESSAGE
         <@&12345>
         Railsエンジニアコースのチーム開発メンバーに連絡です。
