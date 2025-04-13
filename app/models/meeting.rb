@@ -20,8 +20,8 @@ class Meeting < ApplicationRecord
   end
 
   def next_month_meeting_date
-    year = date.month <= 11 ? date.year : date.year + 1
-    next_month = date.month <= 11 ? date.month + 1 : 1
+    year = date.next_month.year
+    next_month = date.next_month.month
 
     meeting_days = all_meeting_days_in_month(year, next_month)
     course.meeting_week == 'odd' ? Time.zone.local(year, next_month, meeting_days.first) : Time.zone.local(year, next_month, meeting_days.second)
