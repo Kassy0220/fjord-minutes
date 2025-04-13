@@ -45,7 +45,7 @@ class Member < ApplicationRecord
            .where(date: from..to)
            .order(:date)
            .pluck(:id, :date, attendances: %i[id present session absence_reason])
-           .map { |data| { meeting_id: data[0], date: data[1], attendance_id: data[2], present: data[3], session: data[4], absence_reason: data[5] } }
+           .map { |row| { meeting_id: row[0], date: row[1], attendance_id: row[2], present: row[3], session: row[4], absence_reason: row[5] } }
   end
 
   def was_hibernated?
