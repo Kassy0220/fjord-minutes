@@ -20,8 +20,8 @@ class Minute < ApplicationRecord
     # インストールアクセストークンを更新するため、ワーキングディレクトリが残っていれば削除する
     FileUtils.rm_r(working_directory) if File.exist?(working_directory)
     git = Git.clone(wiki_repository_url, working_directory, log: Logger.new($stdout))
-    git.config('user.name', ENV.fetch('GITHUB_USER_NAME', nil))
-    git.config('user.email', ENV.fetch('GITHUB_USER_EMAIL', nil))
+    git.config('user.name', ENV.fetch('GITHUB_USER_NAME'))
+    git.config('user.email', ENV.fetch('GITHUB_USER_EMAIL'))
 
     filename = "#{title}.md"
     File.write(File.join(working_directory, filename), to_markdown)
@@ -48,7 +48,7 @@ class Minute < ApplicationRecord
 
   def wiki_repository_url
     token = create_install_access_token
-    url = rails_course? ? ENV.fetch('BOOTCAMP_WIKI_URL', nil) : ENV.fetch('AGENT_WIKI_URL', nil)
+    url = rails_course? ? ENV.fetch('BOOTCAMP_WIKI_URL') : ENV.fetch('AGENT_WIKI_URL')
     url.sub(%r{(https://)(github\.com.+)}, "\\1x-access-token:#{token}@\\2")
   end
 
@@ -57,12 +57,12 @@ class Minute < ApplicationRecord
     payload = {
       iat: Time.now.to_i - 60,
       exp: Time.now.to_i + (10 * 60),
-      iss: ENV.fetch('GITHUB_APP_ID', nil)
+      iss: ENV.fetch('GITHUB_APP_ID')
     }
     jwt = JWT.encode(payload, private_key, 'RS256')
 
     response = Net::HTTP.post(
-      URI("https://api.github.com/app/installations/#{ENV.fetch('GITHUB_APP_INSTALLATIONS_ID', nil)}/access_tokens"),
+      URI("https://api.github.com/app/installations/#{ENV.fetch('GITHUB_APP_INSTALLATIONS_ID')}/access_tokens"),
       nil,
       {
         Accept: 'application/vnd.github+json',
