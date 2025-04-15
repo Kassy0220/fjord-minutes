@@ -3,6 +3,7 @@
 class Minute < ApplicationRecord
   CLONED_BOOTCAMP_WIKI_PATH = Rails.root.join('bootcamp_wiki_repository').freeze
   CLONED_AGENT_WIKI_PATH = Rails.root.join('agent_wiki_repository').freeze
+  DEFAULT_BRANCH_FOR_GITHUB_WIKI = 'master'
   TEMPLATE_PATH = 'config/templates/minute.md'
 
   belongs_to :meeting
@@ -26,7 +27,7 @@ class Minute < ApplicationRecord
     File.write(File.join(working_directory, filename), to_markdown)
     git.add(filename)
     git.commit("#{filename} committed")
-    git.push('origin', 'master') # GitHub Wiki のデフォルトブランチはmaster
+    git.push('origin', DEFAULT_BRANCH_FOR_GITHUB_WIKI)
   end
 
   def to_markdown
