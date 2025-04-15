@@ -49,7 +49,7 @@ class Minute < ApplicationRecord
   def wiki_repository_url
     token = create_install_access_token
     url = rails_course? ? ENV.fetch('BOOTCAMP_WIKI_URL') : ENV.fetch('AGENT_WIKI_URL')
-    url.sub(%r{(https://)(github\.com.+)}, "\\1x-access-token:#{token}@\\2")
+    url.sub(%r{(?<=^https://)}, "x-access-token:#{token}@")
   end
 
   def create_install_access_token
