@@ -26,7 +26,12 @@ class Minute < ApplicationRecord
     git.config('user.email', ENV.fetch('GITHUB_USER_EMAIL'))
 
     filename = "#{title}.md"
-    File.write(File.join(working_directory, filename), to_markdown)
+    filepath = File.join(working_directory, filename)
+    # Minute#titleにユーザーの入力値が含まれるようになった場合、ディレクトリトラバーサルが発生する危険性がある
+    # 現時点でのMinute#titleの実装では問題が発生しないが、念の為ファイル名の確認を行っておく
+    raise 'Error!, Invalid file name.' unless File.dirname(filepath) == working_directory.to_s
+
+    File.write(filepath, to_markdown)
     git.add(filename)
     git.commit("#{filename} committed")
     git.push('origin', DEFAULT_BRANCH_FOR_GITHUB_WIKI)
