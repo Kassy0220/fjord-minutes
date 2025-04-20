@@ -4,8 +4,8 @@ class Minute < ApplicationRecord
   CLONED_BOOTCAMP_WIKI_PATH = Rails.root.join('bootcamp_wiki_repository').freeze
   CLONED_AGENT_WIKI_PATH = Rails.root.join('agent_wiki_repository').freeze
   DEFAULT_BRANCH_FOR_GITHUB_WIKI = 'master'
-  CLOCK_DRIFT_BUFFER = 60
-  TOKEN_EXPIRATION_TIME = 600
+  CLOCK_DRIFT_BUFFER_SEC = 60
+  TOKEN_EXPIRATION_TIME_SEC = 600
   TEMPLATE_PATH = 'config/templates/minute.md'
 
   belongs_to :meeting
@@ -57,8 +57,8 @@ class Minute < ApplicationRecord
   def create_install_access_token
     private_key = OpenSSL::PKey::RSA.new(Rails.application.credentials.github_app_private_key)
     payload = {
-      iat: Time.now.to_i - CLOCK_DRIFT_BUFFER,
-      exp: Time.now.to_i + TOKEN_EXPIRATION_TIME,
+      iat: Time.now.to_i - CLOCK_DRIFT_BUFFER_SEC,
+      exp: Time.now.to_i + TOKEN_EXPIRATION_TIME_SEC,
       iss: ENV.fetch('GITHUB_APP_ID')
     }
     jwt = JWT.encode(payload, private_key, 'RS256')
