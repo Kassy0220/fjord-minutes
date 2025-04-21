@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class API::Meetings::ApplicationController < API::BaseController
+class API::Meetings::ApplicationController < API::ApplicationController
   before_action :set_meeting
 
   private
