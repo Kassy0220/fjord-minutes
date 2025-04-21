@@ -7,6 +7,7 @@ class Course < ApplicationRecord
   TEMPLATE_FOR_MINUTE_CREATION = 'config/templates/minute_creation_message.md'
 
   enum :meeting_week, { odd: 0, even: 1 }, suffix: true
+  enum :kind, { back_end: 0, front_end: 1 }, suffix: true
 
   has_many :meetings, dependent: :restrict_with_exception
   has_many :minutes, through: :meetings
