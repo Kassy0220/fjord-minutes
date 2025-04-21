@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class API::MinutesController < API::BaseController
+class API::MinutesController < API::ApplicationController
   before_action :authenticate_admin!
 
   def update
