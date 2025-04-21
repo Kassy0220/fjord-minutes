@@ -84,7 +84,7 @@ class Minute < ApplicationRecord
   end
 
   def rails_course?
-    course.name == 'Railsエンジニアコース'
+    course.kind == 'back_end'
   end
 
   def afternoon_attendees

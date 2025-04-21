@@ -18,15 +18,15 @@ class Course < ApplicationRecord
   end
 
   def repository_url
-    { 'Railsエンジニアコース' => 'https://github.com/fjordllc/bootcamp', 'フロントエンドエンジニアコース' => 'https://github.com/fjordllc/agent' }[name]
+    { 'back_end' => 'https://github.com/fjordllc/bootcamp', 'front_end' => 'https://github.com/fjordllc/agent' }[kind]
   end
 
   def wiki_repository_url
-    { 'Railsエンジニアコース' => ENV.fetch('BOOTCAMP_WIKI_URL', nil), 'フロントエンドエンジニアコース' => ENV.fetch('AGENT_WIKI_URL', nil) }[name]
+    { 'back_end' => ENV.fetch('BOOTCAMP_WIKI_URL', nil), 'front_end' => ENV.fetch('AGENT_WIKI_URL', nil) }[kind]
   end
 
   def discord_webhook_url
-    { 'Railsエンジニアコース' => ENV.fetch('RAILS_COURSE_CHANNEL_URL', nil), 'フロントエンドエンジニアコース' => ENV.fetch('FRONT_END_COURSE_CHANNEL_URL', nil) }[name]
+    { 'back_end' => ENV.fetch('RAILS_COURSE_CHANNEL_URL', nil), 'front_end' => ENV.fetch('FRONT_END_COURSE_CHANNEL_URL', nil) }[kind]
   end
 
   def create_next_meeting_and_minute
@@ -53,7 +53,7 @@ class Course < ApplicationRecord
       return [latest_meeting.date, latest_meeting.next_date]
     end
 
-    cloned_repository_path = name == 'Railsエンジニアコース' ? CLONED_BOOTCAMP_WIKI_PATH : CLONED_AGENT_WIKI_PATH
+    cloned_repository_path = kind == 'back_end' ? CLONED_BOOTCAMP_WIKI_PATH : CLONED_AGENT_WIKI_PATH
     Git.clone(wiki_repository_url, cloned_repository_path) unless File.exist?(cloned_repository_path)
 
     latest_meeting_date = get_latest_meeting_date_from_cloned_minutes(cloned_repository_path)
