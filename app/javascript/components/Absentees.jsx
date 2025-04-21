@@ -3,7 +3,7 @@ import fetcher from '../fetcher.js'
 import DOMPurify from 'dompurify'
 import PropTypes from 'prop-types'
 
-export default function Absentees({ meetingId, course_name }) {
+export default function Absentees({ meetingId, course_kind }) {
   const { data, error, isLoading } = useSWR(
     `/api/meetings/${meetingId}/attendances`,
     fetcher
@@ -18,14 +18,14 @@ export default function Absentees({ meetingId, course_name }) {
         <Absentee
           key={absentee.attendance_id}
           absentee={absentee}
-          course_name={course_name}
+          course_kind={course_kind}
         />
       ))}
     </ul>
   )
 }
 
-function Absentee({ absentee, course_name }) {
+function Absentee({ absentee, course_kind }) {
   return (
     <li className="mb-4">
       <a href={`https://github.com/${absentee.name}`}>{`@${absentee.name}`}</a>
@@ -44,7 +44,7 @@ function Absentee({ absentee, course_name }) {
                 <span
                   dangerouslySetInnerHTML={{
                     __html: DOMPurify.sanitize(
-                      convertIssueNumberToLink(report, course_name)
+                      convertIssueNumberToLink(report, course_kind)
                     ),
                   }}
                 ></span>
@@ -57,9 +57,9 @@ function Absentee({ absentee, course_name }) {
   )
 }
 
-function convertIssueNumberToLink(progress_report, course_name) {
+function convertIssueNumberToLink(progress_report, course_kind) {
   const repositoryUrl =
-    course_name === 'Railsエンジニアコース'
+    course_kind === 'back_end'
       ? 'https://github.com/fjordllc/bootcamp'
       : 'https://github.com/fjordllc/agent'
 
@@ -71,10 +71,10 @@ function convertIssueNumberToLink(progress_report, course_name) {
 
 Absentees.propTypes = {
   meetingId: PropTypes.number,
-  course_name: PropTypes.string,
+  course_kind: PropTypes.string,
 }
 
 Absentee.propTypes = {
   absentee: PropTypes.object,
-  course_name: PropTypes.string,
+  course_kind: PropTypes.string,
 }
