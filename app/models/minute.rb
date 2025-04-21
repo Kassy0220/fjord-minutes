@@ -29,7 +29,7 @@ class Minute < ApplicationRecord
     filepath = File.join(working_directory, filename)
     # Minute#titleにユーザーの入力値が含まれるようになった場合、ディレクトリトラバーサルが発生する危険性がある
     # 現時点でのMinute#titleの実装では問題が発生しないが、念の為ファイル名の確認を行っておく
-    raise 'Error!, Invalid file name.' unless File.dirname(filepath) == working_directory.to_s
+    raise "Error!, Invalid file name: #{filename}" unless File.dirname(filepath) == working_directory.to_s
 
     File.write(filepath, to_markdown)
     git.add(filename)
