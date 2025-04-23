@@ -66,7 +66,7 @@ RSpec.describe AttendanceForm, type: :model do
       let(:attendance) { FactoryBot.create(:attendance, meeting:, member:) }
 
       it 'can update an attendance with valid attributes' do
-        expect(attendance.present).to be true
+        expect(attendance.attended).to be true
         expect(attendance.session).to eq 'afternoon'
         expect(attendance.absence_reason).to be_nil
         expect(attendance.progress_report).to be_nil
@@ -74,19 +74,19 @@ RSpec.describe AttendanceForm, type: :model do
         valid_attributes = { status: 'absent', absence_reason: '職場のイベントに参加するため', progress_report: '#1200 PRを作成しレビュー依頼中です。' }
         attendance_form = described_class.new(model: attendance, meeting:, member:, **valid_attributes)
         attendance_form.save
-        expect(attendance.present).to be false
+        expect(attendance.attended).to be false
         expect(attendance.session).to be_nil
         expect(attendance.absence_reason).to eq '職場のイベントに参加するため'
         expect(attendance.progress_report).to eq '#1200 PRを作成しレビュー依頼中です。'
       end
 
       it 'cannot update an attendance with invalid attributes' do
-        expect(attendance.present).to be true
+        expect(attendance.attended).to be true
 
         attributes_without_absence_reason_and_progress_report = { status: 'absent' }
         attendance_form = described_class.new(model: attendance, meeting:, member:, **attributes_without_absence_reason_and_progress_report)
         attendance_form.save
-        expect(attendance.present).to be true
+        expect(attendance.attended).to be true
       end
     end
   end
