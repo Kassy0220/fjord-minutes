@@ -5,6 +5,6 @@ class Courses::MinutesController < Courses::ApplicationController
     return @minutes = [] if @course.minutes.none?
 
     year = params[:year] ? params[:year].to_i : @course.meeting_years.max
-    @minutes = @course.minutes.includes(:course, :meeting).where(meetings: { date: Time.zone.local(year, 1, 1, 0, 0, 0)..Time.zone.local(year, 12, 31, 23, 59, 59) }).order(meetings: { date: :asc })
+    @minutes = @course.minutes.includes(:course, :meeting).where(meetings: { date: Time.zone.local(year).all_year }).order(meetings: { date: :asc })
   end
 end
