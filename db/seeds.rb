@@ -5,7 +5,7 @@
 # The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
 
 # add course data
-courses_data = [{ name: 'Railsエンジニアコース', meeting_week: :odd }, { name: 'フロントエンドエンジニアコース', meeting_week: :even }]
+courses_data = [{ name: 'Railsエンジニアコース', meeting_week: :odd, kind: :back_end }, { name: 'フロントエンドエンジニアコース', meeting_week: :even, kind: :front_end }]
 courses = courses_data.map do |course_data|
   Course.find_or_create_by!(name: course_data[:name]) do |course|
     course.meeting_week = course_data[:meeting_week]
