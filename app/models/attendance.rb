@@ -9,14 +9,14 @@ class Attendance < ApplicationRecord
 
   scope :at_afternoon_session, -> { where(session: :afternoon) }
   scope :at_night_session, -> { where(session: :night) }
-  scope :absent, -> { where(present: false) }
+  scope :absent, -> { where(attended: false) }
   scope :with_members, -> { includes(:member) }
 
-  validates :present, inclusion: { in: [true, false] }
-  validates :session, presence: true, if: proc { |attendance| attendance.present? }
-  validates :session, absence: true, unless: proc { |attendance| attendance.present? }
-  validates :absence_reason, presence: true, unless: proc { |attendance| attendance.present? }
-  validates :progress_report, presence: true, unless: proc { |attendance| attendance.present? }
-  validates :absence_reason, absence: true, if: proc { |attendance| attendance.present? }
-  validates :progress_report, absence: true, if: proc { |attendance| attendance.present? }
+  validates :attended, inclusion: { in: [true, false] }
+  validates :session, presence: true, if: proc { |attendance| attendance.attended? }
+  validates :session, absence: true, unless: proc { |attendance| attendance.attended? }
+  validates :absence_reason, presence: true, unless: proc { |attendance| attendance.attended? }
+  validates :progress_report, presence: true, unless: proc { |attendance| attendance.attended? }
+  validates :absence_reason, absence: true, if: proc { |attendance| attendance.attended? }
+  validates :progress_report, absence: true, if: proc { |attendance| attendance.attended? }
 end

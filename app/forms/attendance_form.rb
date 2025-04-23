@@ -43,9 +43,9 @@ class AttendanceForm
   private
 
   def transfer_attributes_from_model
-    return {} if attendance.present.nil? # model: Attendance.new が渡された場合は空のハッシュを返しておく
+    return {} if attendance.attended.nil? # model: Attendance.new が渡された場合は空のハッシュを返しておく
 
-    if attendance.present?
+    if attendance.attended?
       { status: attendance.session }
     else
       { status: 'absent', absence_reason: attendance.absence_reason, progress_report: attendance.progress_report }
@@ -57,12 +57,12 @@ class AttendanceForm
     attendance.member = @member
 
     if status == 'absent'
-      attendance.present = false
+      attendance.attended = false
       attendance.session = nil
       attendance.absence_reason = absence_reason
       attendance.progress_report = progress_report
     else
-      attendance.present = true
+      attendance.attended = true
       attendance.session = status
       attendance.absence_reason = nil
       attendance.progress_report = nil
