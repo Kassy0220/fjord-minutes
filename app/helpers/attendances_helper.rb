@@ -16,8 +16,8 @@ module AttendancesHelper
     end
   end
 
-  def attendance_status(present, time)
-    return '---' if present.nil?
+  def attendance_status(attended, time)
+    return '---' if attended.nil?
 
     { 'afternoon' => '昼', 'night' => '夜' }[time]
   end
