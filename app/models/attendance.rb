@@ -13,10 +13,10 @@ class Attendance < ApplicationRecord
   scope :with_members, -> { includes(:member) }
 
   validates :attended, inclusion: { in: [true, false] }
-  validates :session, presence: true, if: proc { |attendance| attendance.attended? }
-  validates :session, absence: true, unless: proc { |attendance| attendance.attended? }
-  validates :absence_reason, presence: true, unless: proc { |attendance| attendance.attended? }
-  validates :progress_report, presence: true, unless: proc { |attendance| attendance.attended? }
-  validates :absence_reason, absence: true, if: proc { |attendance| attendance.attended? }
-  validates :progress_report, absence: true, if: proc { |attendance| attendance.attended? }
+  validates :session, presence: true, if: -> { attended? }
+  validates :session, absence: true, unless: -> { attended? }
+  validates :absence_reason, presence: true, unless: -> { attended? }
+  validates :progress_report, presence: true, unless: -> { attended? }
+  validates :absence_reason, absence: true, if: -> { attended? }
+  validates :progress_report, absence: true, if: -> { attended? }
 end
