@@ -5,8 +5,8 @@ require 'rails_helper'
 RSpec.describe MinutesHelper, type: :helper do
   describe '#github_wiki_url' do
     before do
-      allow(ENV).to receive(:fetch).with('BOOTCAMP_WIKI_URL', nil).and_return('https://example.com/fjordllc/bootcamp.wiki.git')
-      allow(ENV).to receive(:fetch).with('AGENT_WIKI_URL', nil).and_return('https://example.com/fjordllc/agent.wiki.git')
+      allow(ENV).to receive(:fetch).with('BOOTCAMP_WIKI_URL').and_return('https://example.com/fjordllc/bootcamp.wiki.git')
+      allow(ENV).to receive(:fetch).with('AGENT_WIKI_URL').and_return('https://example.com/fjordllc/agent.wiki.git')
     end
 
     it 'returns minute url on GitHub Wiki' do
