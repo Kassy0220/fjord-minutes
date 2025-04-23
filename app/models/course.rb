@@ -22,7 +22,7 @@ class Course < ApplicationRecord
   end
 
   def wiki_repository_url
-    { 'back_end' => ENV.fetch('BOOTCAMP_WIKI_URL', nil), 'front_end' => ENV.fetch('AGENT_WIKI_URL', nil) }[kind]
+    { 'back_end' => ENV.fetch('BOOTCAMP_WIKI_URL'), 'front_end' => ENV.fetch('AGENT_WIKI_URL') }[kind]
   end
 
   def discord_webhook_url
