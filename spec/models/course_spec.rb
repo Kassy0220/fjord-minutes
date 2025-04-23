@@ -23,8 +23,8 @@ RSpec.describe Course, type: :model do
 
   describe '#wiki_repository_url' do
     before do
-      allow(ENV).to receive(:fetch).with('BOOTCAMP_WIKI_URL', nil).and_return('https://example.com/fjordllc/bootcamp-wiki.wiki.git')
-      allow(ENV).to receive(:fetch).with('AGENT_WIKI_URL', nil).and_return('https://example.com/fjordllc/agent-wiki.wiki.git')
+      allow(ENV).to receive(:fetch).with('BOOTCAMP_WIKI_URL').and_return('https://example.com/fjordllc/bootcamp-wiki.wiki.git')
+      allow(ENV).to receive(:fetch).with('AGENT_WIKI_URL').and_return('https://example.com/fjordllc/agent-wiki.wiki.git')
     end
 
     it 'returns GitHub Wiki repository URL for each course' do
@@ -54,7 +54,8 @@ RSpec.describe Course, type: :model do
       before do
         # Git.cloneが実行されないようにスタブを行う
         allow(ENV).to receive(:fetch).and_call_original
-        allow(ENV).to receive(:fetch).with('BOOTCAMP_WIKI_URL', nil).and_return('https://example.com/fjordllc/bootcamp-wiki.wiki.git')
+        allow(ENV).to receive(:fetch).with('BOOTCAMP_WIKI_URL').and_return('https://example.com/fjordllc/bootcamp-wiki.wiki.git')
+        allow(ENV).to receive(:fetch).with('AGENT_WIKI_URL').and_return('https://example.com/fjordllc/agent-wiki.wiki.git')
         allow(Git).to receive(:clone).with('https://example.com/fjordllc/bootcamp-wiki.wiki.git', Rails.root.join('bootcamp_wiki_repository')).and_return(nil)
         # クローンしたリポジトリを利用するメソッドをスタブ
         allow(rails_course).to receive_messages(get_latest_meeting_date_from_cloned_minutes: latest_meeting_date,

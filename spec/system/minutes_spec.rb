@@ -280,8 +280,8 @@ RSpec.describe 'Minutes', type: :system do
 
     scenario 'display github wiki link when the minute is exported' do
       # CI上でリポジトリのwikiのURLを参照した際にエラーが発生しないように、適当な値を返すようにする
-      allow(ENV).to receive(:fetch).with('BOOTCAMP_WIKI_URL', nil).and_return('https://example.com/fjordllc/bootcamp-wiki.wiki.git')
-      allow(ENV).to receive(:fetch).with('AGENT_WIKI_URL', nil).and_return('https://example.com/fjordllc/agent-wiki.wiki.git')
+      allow(ENV).to receive(:fetch).with('BOOTCAMP_WIKI_URL').and_return('https://example.com/fjordllc/bootcamp-wiki.wiki.git')
+      allow(ENV).to receive(:fetch).with('AGENT_WIKI_URL').and_return('https://example.com/fjordllc/agent-wiki.wiki.git')
 
       exported_minute = FactoryBot.create(:minute, exported: true, meeting: FactoryBot.create(:meeting, date: Time.zone.local(2024, 1, 1), course: rails_course))
       not_exported_minute = FactoryBot.create(:minute, meeting: FactoryBot.create(:meeting, date: Time.zone.local(2024, 1, 15), course: rails_course))
@@ -342,7 +342,8 @@ RSpec.describe 'Minutes', type: :system do
         expect(page).not_to have_link 'GitHub Wikiで確認'
 
         # CI上でリポジトリのwikiのURLを参照した際にエラーが発生しないように、適当な値を返すようにする
-        allow(ENV).to receive(:fetch).with('BOOTCAMP_WIKI_URL', nil).and_return('https://example.com/fjordllc/bootcamp-wiki.wiki.git')
+        allow(ENV).to receive(:fetch).with('BOOTCAMP_WIKI_URL').and_return('https://example.com/fjordllc/bootcamp-wiki.wiki.git')
+        allow(ENV).to receive(:fetch).with('AGENT_WIKI_URL').and_return('https://example.com/fjordllc/agent-wiki.wiki.git')
         # GitHub Wikiリポジトリにpushされないように、コントローラー内で取得されるMinuteオブジェクトをスタブする
         allow(Minute).to receive(:find).with(minute.id.to_s).and_return(minute)
         allow(minute).to receive(:export_to_github_wiki).and_return(nil)
