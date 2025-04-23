@@ -44,7 +44,7 @@ RSpec.describe 'Members', type: :system do
         expect(page).to have_selector 'dt[data-attendance-on="2025-02-19"]', text: '02/19'
         expect(page).to have_selector 'dd[data-attendance-on="2025-02-19"]', text: '---'
 
-        attendance = Attendance.find_by(present: false)
+        attendance = Attendance.find_by(attended: false)
         expect(page).not_to have_selector "div#absence_reason_for_attendance_#{attendance.id}", text: '体調不良のため。'
         within('dd[data-attendance-on="2025-02-05"]') do
           find("span[data-tooltip-target='absence_reason_for_attendance_#{attendance.id}']").hover

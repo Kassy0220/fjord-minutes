@@ -35,17 +35,17 @@ RSpec.describe Member, type: :model do
 
     it 'returns all attendances since the member sign up' do
       FactoryBot.create(:meeting, date: Time.zone.local(2024, 9, 18), course: rails_course)
-      expected_attendances = [{ meeting_id: present_meeting.id, date: Date.new(2024, 10, 2), attendance_id: Attendance.first.id, present: true, session: 'afternoon', absence_reason: nil },
-                              { meeting_id: absent_meeting.id, date: Date.new(2024, 10, 16), attendance_id: Attendance.second.id, present: false, session: nil, absence_reason: '体調不良のため。' },
-                              { meeting_id: unexcused_absent_meeting.id, date: Date.new(2024, 11, 6), attendance_id: nil, present: nil, session: nil, absence_reason: nil }]
+      expected_attendances = [{ meeting_id: present_meeting.id, date: Date.new(2024, 10, 2), attendance_id: Attendance.first.id, attended: true, session: 'afternoon', absence_reason: nil },
+                              { meeting_id: absent_meeting.id, date: Date.new(2024, 10, 16), attendance_id: Attendance.second.id, attended: false, session: nil, absence_reason: '体調不良のため。' },
+                              { meeting_id: unexcused_absent_meeting.id, date: Date.new(2024, 11, 6), attendance_id: nil, attended: nil, session: nil, absence_reason: nil }]
       expect(member.all_attendances).to eq(expected_attendances)
     end
 
     it 'returns attendances until the hibernation started if the member is hibernated' do
       FactoryBot.create(:hibernation, member:, created_at: Time.zone.local(2024, 11, 1))
 
-      attendances_until_hibernation = [{ meeting_id: present_meeting.id, date: Date.new(2024, 10, 2), attendance_id: Attendance.first.id, present: true, session: 'afternoon', absence_reason: nil },
-                                       { meeting_id: absent_meeting.id, date: Date.new(2024, 10, 16), attendance_id: Attendance.second.id, present: false, session: nil, absence_reason: '体調不良のため。' }]
+      attendances_until_hibernation = [{ meeting_id: present_meeting.id, date: Date.new(2024, 10, 2), attendance_id: Attendance.first.id, attended: true, session: 'afternoon', absence_reason: nil },
+                                       { meeting_id: absent_meeting.id, date: Date.new(2024, 10, 16), attendance_id: Attendance.second.id, attended: false, session: nil, absence_reason: '体調不良のため。' }]
       expect(member.all_attendances).to eq(attendances_until_hibernation)
     end
   end
@@ -59,9 +59,9 @@ RSpec.describe Member, type: :model do
     end
 
     it 'returns recent attendances up to twelve' do
-      first_attendance = { meeting_id: rails_course.meetings.first.id, date: Date.new(2025, 12, 18), attendance_id: nil, present: nil, session: nil, absence_reason: nil }
-      second_attendance = { meeting_id: rails_course.meetings.second.id, date: Date.new(2025, 1, 1), attendance_id: nil, present: nil, session: nil, absence_reason: nil }
-      last_attendance = { meeting_id: rails_course.meetings.last.id, date: Date.new(2025, 6, 18), attendance_id: nil, present: nil, session: nil, absence_reason: nil }
+      first_attendance = { meeting_id: rails_course.meetings.first.id, date: Date.new(2025, 12, 18), attendance_id: nil, attended: nil, session: nil, absence_reason: nil }
+      second_attendance = { meeting_id: rails_course.meetings.second.id, date: Date.new(2025, 1, 1), attendance_id: nil, attended: nil, session: nil, absence_reason: nil }
+      last_attendance = { meeting_id: rails_course.meetings.last.id, date: Date.new(2025, 6, 18), attendance_id: nil, attended: nil, session: nil, absence_reason: nil }
 
       expect(member.recent_attendances.length).to eq 12
       expect(member.recent_attendances).not_to include(first_attendance)
