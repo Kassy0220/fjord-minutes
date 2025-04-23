@@ -171,7 +171,7 @@ RSpec.describe 'Attendances', type: :system do
         login_as member
       end
 
-      scenario 'from present to absent', :js do
+      scenario 'from attended to absent', :js do
         attendance = FactoryBot.create(:attendance, member:, meeting:)
         travel_to meeting.date do
           visit edit_minute_path(minute)
@@ -198,7 +198,7 @@ RSpec.describe 'Attendances', type: :system do
         end
       end
 
-      scenario 'from absent to present', :js do
+      scenario 'from absent to attended', :js do
         attendance = FactoryBot.create(:attendance, :absence, member:, meeting:)
         travel_to meeting.date do
           visit edit_minute_path(minute)
