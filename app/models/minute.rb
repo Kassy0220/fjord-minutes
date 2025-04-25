@@ -6,7 +6,7 @@ class Minute < ApplicationRecord
   DEFAULT_BRANCH_FOR_GITHUB_WIKI = 'master'
   CLOCK_DRIFT_BUFFER_SEC = 60
   TOKEN_EXPIRATION_TIME_SEC = 600
-  TEMPLATE_PATH = 'config/templates/minute.md'
+  MARKDOWN_TEMPLATE = 'config/templates/minute.md'
 
   belongs_to :meeting
   has_many :topics, dependent: :destroy
@@ -48,7 +48,7 @@ class Minute < ApplicationRecord
       other:,
       next_date:
     }
-    ERB.new(File.read(TEMPLATE_PATH)).result_with_hash(minute_data)
+    ERB.new(File.read(MARKDOWN_TEMPLATE)).result_with_hash(minute_data)
   end
 
   private
