@@ -5,7 +5,6 @@ class AuthenticationsController < Devise::OmniauthCallbacksController
   skip_before_action :verify_authenticity_token, only: [:create]
 
   def create
-    Rails.logger.info "request.env : #{request.env['omniauth.auth']}"
     @member_or_admin = if admin?(request.env['omniauth.auth'].info.email)
                          Admin.from_omniauth(request.env['omniauth.auth'])
                        else
