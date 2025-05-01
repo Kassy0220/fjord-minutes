@@ -14,6 +14,12 @@ class Member < ApplicationRecord
   scope :active, -> { where.not('EXISTS(SELECT 1 FROM hibernations WHERE member_id = members.id AND finished_at IS NULL)') }
 
   def self.from_omniauth(auth, params)
+    Rails.logger.info '-----  github user info start -----'
+    Rails.logger.info auth.provider
+    Rails.logger.info auth.uid
+    Rails.logger.info auth.info
+    Rails.logger.info '-----  github user info end -----'
+
     find_or_create_by(provider: auth.provider, uid: auth.uid) do |member|
       member.email = auth.info.email
       member.name = auth.info.nickname
