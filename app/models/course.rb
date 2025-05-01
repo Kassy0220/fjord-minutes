@@ -71,7 +71,7 @@ class Course < ApplicationRecord
   def get_next_meeting_date_from_cloned_minutes(date, repository_path)
     filename = "ふりかえり・計画ミーティング#{I18n.l(date)}.md"
     minute_content = File.read(File.join(repository_path, filename))
-    _, year, month, day = *minute_content.match(/# 次回のMTG\n\n- (\d{4})年(\d{2})月(\d{2})日/)
+    _, year, month, day = *minute_content.match(/# 次回のMTG.*- (\d{4})年(\d{2})月(\d{2})日/m)
     Date.new(year.to_i, month.to_i, day.to_i)
   end
 
