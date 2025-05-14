@@ -204,6 +204,17 @@ RSpec.describe 'Minutes', type: :system do
           expect(page).not_to have_selector 'button', text: '削除'
         end
       end
+
+      scenario 'cannot access to other course minutes' do
+        logout
+        other_course = FactoryBot.create(:front_end_course)
+        other_course_member = FactoryBot.create(:member, :another_member, course: other_course)
+        login_as other_course_member
+
+        visit edit_minute_path(minute)
+        expect(current_path).to eq root_path
+        expect(page).to have_content '自分が所属していないコースの議事録を編集することはできません'
+      end
     end
   end
 

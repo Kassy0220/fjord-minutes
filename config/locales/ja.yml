@@ -73,6 +73,9 @@ ja:
         finished_meeting: 終了したミーティングには出席予定を登録できません
         other_course: 自分が所属していないコースのミーティングには出席登録できません
   minutes:
+    edit:
+      failure:
+        other_course: 自分が所属していないコースの議事録を編集することはできません
     exports:
       create:
         success: GitHub Wikiに議事録を反映させました
