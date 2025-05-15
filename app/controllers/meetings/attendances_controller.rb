@@ -4,6 +4,7 @@ class Meetings::AttendancesController < Meetings::ApplicationController
   before_action :redirect_admin_access, only: %i[new create]
   before_action :prohibit_duplicate_access, only: %i[new create]
   before_action :prohibit_access_to_finished_meeting, only: %i[new create]
+  before_action :prohibit_other_course_member_access, only: %i[new create]
 
   def new
     @attendance_form = AttendanceForm.new(model: Attendance.new, meeting: @meeting, member: current_member)
@@ -39,5 +40,9 @@ class Meetings::AttendancesController < Meetings::ApplicationController
 
   def prohibit_access_to_finished_meeting
     redirect_to edit_minute_url(@meeting.minute), alert: t('.failure.finished_meeting') if @meeting.already_finished?
+  end
+
+  def prohibit_other_course_member_access
+    redirect_to root_url, alert: t('.failure.other_course') unless @meeting.course == current_member.course
   end
 end

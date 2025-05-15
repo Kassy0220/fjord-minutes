@@ -159,6 +159,19 @@ RSpec.describe 'Attendances', type: :system do
           expect(page).to have_content '終了したミーティングには出席予定を登録できません'
         end
       end
+
+      scenario 'member cannot create attendance to other course meeting' do
+        logout
+        other_course = FactoryBot.create(:front_end_course)
+        other_course_member = FactoryBot.create(:member, :another_member, course: other_course)
+        login_as other_course_member
+
+        travel_to meeting.date do
+          visit new_meeting_attendance_path(meeting)
+          expect(current_path).to eq root_path
+          expect(page).to have_content '自分が所属していないコースのミーティングには出席登録できません'
+        end
+      end
     end
 
     describe 'edit attendance' do
