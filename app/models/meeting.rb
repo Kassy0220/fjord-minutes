@@ -17,7 +17,7 @@ class Meeting < ApplicationRecord
 
   def notify_meeting_day
     notification_message = ERB.new(File.read(TEMPLATE_FOR_TODAY_MEETING))
-                              .result_with_hash({ discord_role_id:, course_name: course.name, url: new_meeting_attendance_url(self) })
+                              .result_with_hash({ discord_role_id: course.discord_role_id, course_name: course.name, url: new_meeting_attendance_url(self) })
     Discord::Notifier.message(notification_message, url: course.discord_webhook_url)
     Rails.logger.info("notify_today_meeting, #{course.name}, executed")
     update!(notified_at: Time.zone.now)
@@ -52,9 +52,5 @@ class Meeting < ApplicationRecord
     end
 
     meeting_days
-  end
-
-  def discord_role_id
-    ENV.fetch('TEAM_MEMBER_ROLE_ID', nil).to_i
   end
 end
