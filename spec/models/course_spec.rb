@@ -33,6 +33,18 @@ RSpec.describe Course, type: :model do
     end
   end
 
+  describe '#discord_role_id' do
+    before do
+      allow(ENV).to receive(:fetch).with('RAILS_COURSE_SCRUM_TEAM_ROLE_ID', nil).and_return('111_111')
+      allow(ENV).to receive(:fetch).with('FRONT_END_COURSE_SCRUM_TEAM_ROLE_ID', nil).and_return('222_222')
+    end
+
+    it 'returns Discord role id for each course' do
+      expect(FactoryBot.build(:rails_course).discord_role_id).to eq 111_111
+      expect(FactoryBot.build(:front_end_course).discord_role_id).to eq 222_222
+    end
+  end
+
   describe '#discord_webhook_url' do
     before do
       allow(ENV).to receive(:fetch).with('RAILS_COURSE_CHANNEL_URL', nil).and_return('https://discord.com/api/webhooks/111/abcdef')

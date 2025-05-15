@@ -25,6 +25,10 @@ class Course < ApplicationRecord
     { 'back_end' => ENV.fetch('BOOTCAMP_WIKI_URL'), 'front_end' => ENV.fetch('AGENT_WIKI_URL') }[kind]
   end
 
+  def discord_role_id
+    { 'back_end' => ENV.fetch('RAILS_COURSE_SCRUM_TEAM_ROLE_ID', nil).to_i, 'front_end' => ENV.fetch('FRONT_END_COURSE_SCRUM_TEAM_ROLE_ID', nil).to_i }[kind]
+  end
+
   def discord_webhook_url
     { 'back_end' => ENV.fetch('RAILS_COURSE_CHANNEL_URL', nil), 'front_end' => ENV.fetch('FRONT_END_COURSE_CHANNEL_URL', nil) }[kind]
   end
@@ -73,9 +77,5 @@ class Course < ApplicationRecord
     minute_content = File.read(File.join(repository_path, filename))
     _, year, month, day = *minute_content.match(/# 次回のMTG.*- (\d{4})年(\d{2})月(\d{2})日/m)
     Date.new(year.to_i, month.to_i, day.to_i)
-  end
-
-  def discord_role_id
-    ENV.fetch('TEAM_MEMBER_ROLE_ID', nil).to_i
   end
 end
