@@ -72,21 +72,23 @@ $ bin/rspec
 ## 環境変数
 アプリ内では以下の環境変数が利用されます。
 
-| 環境変数名                   | 説明                                                                    | 
-| ---------------------------- |-----------------------------------------------------------------------| 
-| AUTH_APP_ID                  | GitHub上で作成したOAthアプリのClient ID                                         | 
-| AUTH_APP_SECRET              | GitHub上で作成したOAthアプリのClient secrets                                    | 
-| KOMAGATA_EMAIL               | 管理者のGitHubアカウントのメールアドレスその1                                            | 
-| MACHIDA_EMAIL                | 管理者のGitHubアカウントのメールアドレスその2                                            | 
-| KASSY_EMAIL                  | 管理者のGitHubアカウントのメールアドレスその3                                            | 
-| BOOTCAMP_WIKI_URL            | [bootcampアプリのWikiリポジトリ](https://github.com/fjordllc/bootcamp/wiki)のURL | 
-| AGENT_WIKI_URL               | [agentアプリのWikiリポジトリ](https://github.com/fjordllc/agent/wiki)のURL      | 
-| GITHUB_USER_NAME             | 議事録をコミットするGitHubアカウントのユーザー名                                           | 
-| GITHUB_USER_EMAIL            | 議事録をコミットするGitHubアカウントのメールアドレス                                         | 
-| GITHUB_ACCESS_TOKEN          | GitHubアクセストークン                                                        | 
-| RAILS_COURSE_CHANNEL_URL     | Discordの`チーム開発-bootcamp`チャンネルのWebhook URL                             | 
-| FRONT_END_COURSE_CHANNEL_URL | Discordの`チーム開発-agent`チャンネルのWebhook URL                                | 
-| TEAM_MEMBER_ROLE_ID          | Discordの`スクラムチーム`ロールのID                                               | 
+| 環境変数名                               | 説明                                                                     | 
+|-------------------------------------|------------------------------------------------------------------------| 
+| AUTH_APP_ID                         | GitHub上で作成したOAthアプリのClient ID                                          | 
+| AUTH_APP_SECRET                     | GitHub上で作成したOAthアプリのClient secrets                                     | 
+| KOMAGATA_EMAIL                      | 管理者のGitHubアカウントのメールアドレスその1                                             | 
+| MACHIDA_EMAIL                       | 管理者のGitHubアカウントのメールアドレスその2                                             | 
+| KASSY_EMAIL                         | 管理者のGitHubアカウントのメールアドレスその3                                             | 
+| BOOTCAMP_WIKI_URL                   | [bootcampアプリのWikiリポジトリ](https://github.com/fjordllc/bootcamp/wiki)のURL | 
+| AGENT_WIKI_URL                      | [agentアプリのWikiリポジトリ](https://github.com/fjordllc/agent/wiki)のURL       | 
+| GITHUB_USER_NAME                    | 議事録をコミットするGitHubアカウントのユーザー名                                            | 
+| GITHUB_USER_EMAIL                   | 議事録をコミットするGitHubアカウントのメールアドレス                                          | 
+| GITHUB_APP_ID                       | GitHub APPのID                                                          | 
+| GITHUB_APP_INSTALLATIONS_ID         | GitHub APPのインストールID                                                    |
+| RAILS_COURSE_CHANNEL_URL            | Discordの`チーム開発-bootcamp`チャンネルのWebhook URL                              | 
+| FRONT_END_COURSE_CHANNEL_URL        | Discordの`チーム開発-agent`チャンネルのWebhook URL                                 | 
+| RAILS_COURSE_SCRUM_TEAM_ROLE_ID     | Discordの`bootcampスクラムチーム`ロールのID                                        | 
+| FRONT_END_COURSE_SCRUM_TEAM_ROLE_ID | Discordの`agentスクラムチーム`ロールのID                                           |
 
 詳しくは[環境変数の詳細](https://github.com/Kassy0220/fjord-minutes/wiki/%E7%92%B0%E5%A2%83%E5%A4%89%E6%95%B0%E3%81%AE%E8%A9%B3%E7%B4%B0)を参照してください。
 
