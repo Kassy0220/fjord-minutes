@@ -19,4 +19,13 @@ class Attendance < ApplicationRecord
   validates :progress_report, presence: true, unless: -> { attended? }
   validates :absence_reason, absence: true, if: -> { attended? }
   validates :progress_report, absence: true, if: -> { attended? }
+  validate :cannot_attend_other_course_meeting
+
+  private
+
+  def cannot_attend_other_course_meeting
+    return if member.course == meeting.course
+
+    errors.add(:meeting, :other_course)
+  end
 end
