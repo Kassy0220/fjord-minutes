@@ -94,8 +94,8 @@ $ bin/rspec
 - [Development環境でログインする方法](https://github.com/Kassy0220/fjord-minutes/wiki/Development%E7%92%B0%E5%A2%83%E3%81%A7%E3%83%AD%E3%82%B0%E3%82%A4%E3%83%B3%E3%81%99%E3%82%8B%E6%96%B9%E6%B3%95)
 
 ## 技術スタック
-- Ruby 3.3.5
-- Ruby on Rails 7.2.1
+- Ruby 3.4.2
+- Ruby on Rails 7.2.2.1
 - jsbundling-rails
     - esbuild
 - Hotwire
