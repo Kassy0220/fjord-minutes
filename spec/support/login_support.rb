@@ -20,6 +20,13 @@ module LoginSupport
     visit root_path
     find('button', text: "Railsエンジニア\nコースで登録").click
   end
+
+  def logout
+    visit root_path
+    page.accept_confirm do
+      click_button 'チーム開発を抜ける'
+    end
+  end
 end
 
 RSpec.configure do |config|

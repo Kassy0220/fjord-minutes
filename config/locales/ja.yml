@@ -71,6 +71,7 @@ ja:
       failure:
         duplicate_access: すでに出席予定を登録済みです
         finished_meeting: 終了したミーティングには出席予定を登録できません
+        other_course: 自分が所属していないコースのミーティングには出席登録できません
   minutes:
     exports:
       create:
