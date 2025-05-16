@@ -137,14 +137,14 @@ meetings.each do |meeting|
   end
 end
 
-Meeting.where(date: ..hibernated_member_hibernation.created_at).find_each do |meeting|
+meetings.where(date: ..hibernated_member_hibernation.created_at).find_each do |meeting|
   Attendance.find_or_create_by!(meeting:, member: hibernated_member) do |attendance|
     attendance.attended = true
     attendance.session = :afternoon
   end
 end
 
-Meeting.where.not(date: returned_member_hibernation.created_at..returned_member_hibernation.finished_at).find_each do |meeting|
+meetings.where.not(date: returned_member_hibernation.created_at..returned_member_hibernation.finished_at).find_each do |meeting|
   Attendance.find_or_create_by!(meeting:, member: returned_member) do |attendance|
     attendance.attended = true
     attendance.session = :night
