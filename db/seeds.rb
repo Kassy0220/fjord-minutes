@@ -38,10 +38,6 @@ members_data = [
   {
     email: 'returned_member@example.com',
     name: 'returned_member'
-  },
-  {
-    email: 'rookie_member@example.com',
-    name: 'rookie_member'
   }
 ]
 
@@ -60,9 +56,6 @@ end
 members.each do |member|
   member.update!(created_at: Time.zone.local(2025, 1, 1))
 end
-
-rookie_member = Member.find_by(email: 'rookie_member@example.com')
-rookie_member.update!(created_at: Time.zone.local(2026, 1, 10))
 
 # add admin data
 admins_data = [
