@@ -6,12 +6,11 @@
 
 # add course data
 courses_data = [{ name: 'Railsエンジニアコース', meeting_week: :odd, kind: :back_end }, { name: 'フロントエンドエンジニアコース', meeting_week: :even, kind: :front_end }]
-courses = courses_data.map do |course_data|
+rails_course, front_end_course = courses_data.map do |course_data|
   Course.find_or_create_by!(name: course_data[:name]) do |course|
     course.meeting_week = course_data[:meeting_week]
   end
 end
-rails_course = courses.first
 
 # add member data
 members_data = [
@@ -52,8 +51,17 @@ members = members_data.map do |member_data|
   end
 end
 
+Member.find_or_create_by(email: 'front_end_member@example.com') do |member|
+  member.password = 'password'
+  member.provider = 'developer'
+  member.uid = 'front_end_member@example.com'
+  member.name = 'front_end_member'
+  member.avatar_url = 'https://i.gyazo.com/40600d4c2f36e6ec49ec17af0ef610d3.png'
+  member.course = front_end_course
+end
+
 # Memberのcreated_atにシード実行の日時が保存されると期待した通りに出席を取得できない可能性があるため、created_atの日付を固定しておく
-members.each do |member|
+Member.find_each do |member|
   member.update!(created_at: Time.zone.local(2025, 1, 1))
 end
 
@@ -86,17 +94,17 @@ returned_member_hibernation = returned_member.hibernations.create!
 returned_member_hibernation.update!(created_at: Time.zone.local(2025, 6, 30), finished_at: Time.zone.local(2025, 8, 15))
 
 # add meeting data
-Meeting.find_or_create_by!(date: Time.zone.local(2025, 1, 15), course: rails_course)
-
-23.times do
-  meeting_date = rails_course.meetings.order(:date).last.next_date
-  Meeting.find_or_create_by!(date: meeting_date, course: rails_course)
+Course.find_each do |course|
+  first_meeting_date = course.kind == :back_end ? Time.zone.local(2025, 1, 15) : Time.zone.local(2025, 1, 22)
+  Meeting.find_or_create_by!(date: first_meeting_date, course:)
+  23.times do
+    meeting_date = course.meetings.order(:date).last.next_date
+    Meeting.find_or_create_by!(date: meeting_date, course:)
+  end
 end
 
-meetings = rails_course.meetings
-
 # add minute data
-minutes = meetings.map do |meeting|
+Meeting.find_each do |meeting|
   Minute.find_or_create_by!(meeting: meeting) do |minute|
     minute.release_branch = ''
     minute.release_note = ''
@@ -105,6 +113,7 @@ minutes = meetings.map do |meeting|
 end
 
 # add topic data
+minutes = rails_course.minutes
 Topic.find_or_create_by!(minute: minutes.last, topicable: members.first) { |topic| topic.content = 'CI上でテストが落ちてしまいます' }
 Topic.find_or_create_by!(minute: minutes.last, topicable: members.second) { |topic| topic.content = '動作確認のお手伝いをしてくださる方を募集中です' }
 Topic.find_or_create_by!(minute: minutes.last, topicable: admins.first) { |topic| topic.content = '合同企業説明会がありますので是非ご参加ください' }
@@ -113,6 +122,7 @@ Topic.find_or_create_by!(minute: minutes.last, topicable: admins.first) { |topic
 day_attendee = Member.find_by(email: 'day_attendee@example.com')
 night_attendee = Member.find_by(email: 'night_attendee@example.com')
 absentee = Member.find_by(email: 'absentee@example.com')
+meetings = rails_course.meetings
 
 meetings.each do |meeting|
   Attendance.find_or_create_by!(meeting:, member: day_attendee) do |attendance|
