@@ -113,10 +113,10 @@ Meeting.find_each do |meeting|
 end
 
 # add topic data
-minutes = rails_course.minutes
-Topic.find_or_create_by!(minute: minutes.last, topicable: members.first) { |topic| topic.content = 'CI上でテストが落ちてしまいます' }
-Topic.find_or_create_by!(minute: minutes.last, topicable: members.second) { |topic| topic.content = '動作確認のお手伝いをしてくださる方を募集中です' }
-Topic.find_or_create_by!(minute: minutes.last, topicable: admins.first) { |topic| topic.content = '合同企業説明会がありますので是非ご参加ください' }
+rails_course_latest_minute = rails_course.minutes.last
+Topic.find_or_create_by!(minute: rails_course_latest_minute, topicable: members.first) { |topic| topic.content = 'CI上でテストが落ちてしまいます' }
+Topic.find_or_create_by!(minute: rails_course_latest_minute, topicable: members.second) { |topic| topic.content = '動作確認のお手伝いをしてくださる方を募集中です' }
+Topic.find_or_create_by!(minute: rails_course_latest_minute, topicable: admins.first) { |topic| topic.content = '合同企業説明会がありますので是非ご参加ください' }
 
 # add attendance data
 day_attendee = Member.find_by(email: 'day_attendee@example.com')
