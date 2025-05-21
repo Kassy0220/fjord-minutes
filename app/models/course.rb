@@ -45,7 +45,7 @@ class Course < ApplicationRecord
     next_meeting.create_minute!
     Rails.logger.info("create_next_meeting_and_minute, #{name}, executed")
     notification_message = ERB.new(File.read(TEMPLATE_FOR_MINUTE_CREATION))
-                              .result_with_hash({ discord_role_id:, course_name: name, meeting_date: I18n.l(next_meeting_date, format: :long), url: new_meeting_attendance_url(next_meeting) })
+                              .result_with_hash({ course_name: name, meeting_date: I18n.l(next_meeting_date, format: :long), url: new_meeting_attendance_url(next_meeting) })
     Discord::Notifier.message(notification_message, url: discord_webhook_url)
   end
 
