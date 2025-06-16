@@ -21,6 +21,10 @@ class Course < ApplicationRecord
     { 'back_end' => 'https://github.com/fjordllc/bootcamp', 'front_end' => 'https://github.com/fjordllc/agent' }[kind]
   end
 
+  def kanban_url
+    { 'back_end' => 'https://github.com/orgs/fjordllc/projects/7', 'front_end' => 'https://github.com/orgs/fjordllc/projects/4' }[kind]
+  end
+
   def wiki_repository_url
     { 'back_end' => ENV.fetch('BOOTCAMP_WIKI_URL'), 'front_end' => ENV.fetch('AGENT_WIKI_URL') }[kind]
   end
