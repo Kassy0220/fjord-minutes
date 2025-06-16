@@ -37,7 +37,7 @@ RSpec.describe 'Minutes', type: :system do
 
       scenario 'can edit release branch and release note', :js do
         within('#release_branch') do
-          expect(page).to have_selector 'li', text: 'https://example.com/fjordllc/bootcamp/pull/1000'
+          expect(page).to have_link 'https://example.com/fjordllc/bootcamp/pull/1000', href: 'https://example.com/fjordllc/bootcamp/pull/1000'
           expect(page).not_to have_selector 'input[type="text"]'
 
           click_button '編集'
@@ -45,12 +45,12 @@ RSpec.describe 'Minutes', type: :system do
           fill_in 'release_branch_field', with: 'https://example.com/fjordllc/bootcamp/pull/9999'
           click_button '更新'
 
-          expect(page).to have_selector 'li', text: 'https://example.com/fjordllc/bootcamp/pull/9999'
+          expect(page).to have_link 'https://example.com/fjordllc/bootcamp/pull/9999', href: 'https://example.com/fjordllc/bootcamp/pull/9999'
           expect(page).not_to have_selector 'input[type="text"]'
         end
 
         within('#release_note') do
-          expect(page).to have_selector 'li', text: 'https://example.com/announcements/100'
+          expect(page).to have_link 'https://example.com/announcements/100', text: 'https://example.com/announcements/100'
           expect(page).not_to have_selector 'input[type="text"]'
 
           click_button '編集'
@@ -58,7 +58,7 @@ RSpec.describe 'Minutes', type: :system do
           fill_in 'release_note_field', with: 'https://example.com/fjordllc/bootcamp/pull/999'
           click_button '更新'
 
-          expect(page).to have_selector 'li', text: 'https://example.com/fjordllc/bootcamp/pull/999'
+          expect(page).to have_link 'https://example.com/fjordllc/bootcamp/pull/999', text: 'https://example.com/fjordllc/bootcamp/pull/999'
           expect(page).not_to have_selector 'input[type="text"]'
         end
       end
