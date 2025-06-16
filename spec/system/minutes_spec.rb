@@ -137,6 +137,15 @@ RSpec.describe 'Minutes', type: :system do
           expect(page).to have_content '次回開催日はスポーツの日です。もしミーティングをお休みにする場合は、開催日を変更しましょう。'
         end
       end
+
+      scenario 'kanban link is displayed for each course' do
+        expect(page).to have_link 'bootcampカンバン', href: 'https://github.com/orgs/fjordllc/projects/7'
+
+        front_end_course = FactoryBot.create(:front_end_course)
+        front_end_course_minute = FactoryBot.create(:minute, course: front_end_course)
+        visit edit_minute_path(front_end_course_minute)
+        expect(page).to have_link 'agentカンバン', href: 'https://github.com/orgs/fjordllc/projects/4'
+      end
     end
 
     context 'when logged in as member' do
@@ -214,6 +223,11 @@ RSpec.describe 'Minutes', type: :system do
         visit edit_minute_path(minute)
         expect(current_path).to eq root_path
         expect(page).to have_content '自分が所属していないコースの議事録を編集することはできません'
+      end
+
+      scenario 'kanban link is displayed' do
+        visit edit_minute_path(minute)
+        expect(page).to have_link 'bootcampカンバン', href: 'https://github.com/orgs/fjordllc/projects/7'
       end
     end
   end
