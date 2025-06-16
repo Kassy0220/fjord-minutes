@@ -107,7 +107,15 @@ function EditForm({ minuteId, description, content, course, setIsEditing }) {
 function ReleaseDetail({ content, setIsEditing, isAdmin }) {
   return (
     <li>
-      <span>{content}</span>
+      <span>
+        {content ? (
+          <a href={content} target="_blank" rel="noreferrer">
+            {content}
+          </a>
+        ) : (
+          content
+        )}
+      </span>
       {isAdmin && (
         <button
           type="button"
