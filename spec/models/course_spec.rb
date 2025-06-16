@@ -21,6 +21,13 @@ RSpec.describe Course, type: :model do
     end
   end
 
+  describe '#kanban_url' do
+    it 'returns GitHub Project URL for each course' do
+      expect(FactoryBot.build(:rails_course).kanban_url).to eq 'https://github.com/orgs/fjordllc/projects/7'
+      expect(FactoryBot.build(:front_end_course).kanban_url).to eq 'https://github.com/orgs/fjordllc/projects/4'
+    end
+  end
+
   describe '#wiki_repository_url' do
     before do
       allow(ENV).to receive(:fetch).with('BOOTCAMP_WIKI_URL').and_return('https://example.com/fjordllc/bootcamp-wiki.wiki.git')
