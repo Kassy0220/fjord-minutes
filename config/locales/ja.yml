@@ -93,3 +93,4 @@ ja:
       long: "%Y年%m月%d日(%a)"
       short: "%m/%d"
       ymd_hyphen: "%Y-%m-%d"
+      ymd_slash: "%Y/%m/%d"
