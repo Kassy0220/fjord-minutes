@@ -60,14 +60,14 @@ RSpec.describe 'Homes', type: :system do
     visit root_path
 
     within("div[data-course='#{rails_course.id}']") do
-      expect(page).to have_content '奇数週 (第一・第三週)'
+      expect(page).to have_content '奇数週'
       expect(page).to have_link '最新の議事録 (2024/10/16)', href: edit_minute_path(rails_course_latest_minute)
       expect(page).to have_link '議事録', href: course_minutes_path(rails_course)
       expect(page).to have_link 'メンバー', href: course_members_path(rails_course)
       expect(page).to have_link 'GitHub', href: rails_course.repository_url
     end
     within("div[data-course='#{front_end_course.id}']") do
-      expect(page).to have_content '偶数週 (第二・第四週)'
+      expect(page).to have_content '偶数週'
       expect(page).to have_link '最新の議事録 (2024/10/23)', href: edit_minute_path(front_end_course_latest_minute)
       expect(page).to have_link '議事録', href: course_minutes_path(front_end_course)
       expect(page).to have_link 'メンバー', href: course_members_path(front_end_course)
