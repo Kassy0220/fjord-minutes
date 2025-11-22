@@ -112,7 +112,7 @@ RSpec.describe 'Minutes', type: :system do
 
       scenario 'can edit next meeting date', :js do
         within('#next_meeting_date_form') do
-          expect(page).to have_content '2024年10月16日'
+          expect(page).to have_content '2024年10月16日 (水) (第42週)'
 
           click_button '編集'
           expect(page).to have_selector 'input[type="text"]'
@@ -124,7 +124,7 @@ RSpec.describe 'Minutes', type: :system do
           click_button '23日'
           click_button '更新'
           expect(page).not_to have_selector 'input'
-          expect(page).to have_content '2024年10月23日'
+          expect(page).to have_content '2024年10月23日 (水) (第43週)'
           expect(meeting.reload.next_date).to eq Date.new(2024, 10, 23)
         end
       end
@@ -136,8 +136,29 @@ RSpec.describe 'Minutes', type: :system do
           click_button '14日'
           click_button '更新'
 
-          expect(page).to have_content '2024年10月14日'
+          expect(page).to have_content '2024年10月14日 (月) (第42週)'
           expect(page).to have_content '次回開催日はスポーツの日です。もしミーティングをお休みにする場合は、開催日を変更しましょう。'
+        end
+      end
+
+      scenario 'message is displayed if next meeting is not meeting week' do
+        within('#next_meeting_date_form') do
+          click_button '編集'
+          fill_in 'next_meeting_date_field', with: Date.new(2024, 10, 28)
+          click_button '28日'
+          click_button '更新'
+
+          expect(page).to have_content '2024年10月28日 (月) (第44週)'
+          expect(page).to have_content '次回開催日は偶数週です。よろしいですか？'
+        end
+
+        front_end_course = FactoryBot.create(:front_end_course)
+        front_end_course_meeting = FactoryBot.create(:meeting, course: front_end_course, date: Date.new(2024, 10, 9))
+        front_end_course_minute = FactoryBot.create(:minute, meeting: front_end_course_meeting)
+        visit edit_minute_path(front_end_course_minute)
+        within('#next_meeting_date_form') do
+          expect(page).to have_content '2024年10月23日 (水) (第43週)'
+          expect(page).to have_content '次回開催日は奇数週です。よろしいですか？'
         end
       end
 
