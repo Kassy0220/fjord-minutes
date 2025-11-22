@@ -61,7 +61,7 @@ RSpec.describe Member, type: :model do
     it 'returns recent attendances up to twelve' do
       first_attendance = { meeting_id: rails_course.meetings.first.id, date: Date.new(2025, 12, 18), attendance_id: nil, attended: nil, session: nil, absence_reason: nil }
       second_attendance = { meeting_id: rails_course.meetings.second.id, date: Date.new(2025, 1, 1), attendance_id: nil, attended: nil, session: nil, absence_reason: nil }
-      last_attendance = { meeting_id: rails_course.meetings.last.id, date: Date.new(2025, 6, 18), attendance_id: nil, attended: nil, session: nil, absence_reason: nil }
+      last_attendance = { meeting_id: rails_course.meetings.last.id, date: Date.new(2025, 6, 4), attendance_id: nil, attended: nil, session: nil, absence_reason: nil }
 
       expect(member.recent_attendances.length).to eq 12
       expect(member.recent_attendances).not_to include(first_attendance)
@@ -78,9 +78,9 @@ RSpec.describe Member, type: :model do
     it 'returns attendances from the latest returned date if the member was hibernated' do
       FactoryBot.create(:hibernation, member:, created_at: Time.zone.local(2025, 1, 1), finished_at: Time.zone.local(2025, 1, 31))
       FactoryBot.create(:hibernation, member:, created_at: Time.zone.local(2025, 4, 1), finished_at: Time.zone.local(2025, 4, 30))
-      expect(member.recent_attendances.length).to eq 4
+      expect(member.recent_attendances.length).to eq 3
       attendance_dates = member.recent_attendances.pluck(:date)
-      expect(attendance_dates).to contain_exactly(Date.new(2025, 5, 7), Date.new(2025, 5, 21), Date.new(2025, 6, 4), Date.new(2025, 6, 18))
+      expect(attendance_dates).to contain_exactly(Date.new(2025, 5, 7), Date.new(2025, 5, 21), Date.new(2025, 6, 4))
     end
   end
 end
