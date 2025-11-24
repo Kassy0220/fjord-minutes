@@ -53,6 +53,7 @@
                                                 topics: @topics.as_json(only: [:id, :content, :topicable_id, :topicable_type], include: { topicable: { only: [:name] } }),
                                                 currentDevelopmentMemberId: current_development_member.id,
                                                 currentDevelopmentMemberType: current_development_member.class.name}.to_json do %><% end %>
+    <%= content_tag :div, id: 'topic_form', data: { minuteId: @minute.id }.to_json do %><% end %>
 
     <h2>その他</h2>
     <%= content_tag :div, id: 'other_form', data: {minuteId: @minute.id, content: @minute.other, isAdmin: admin_signed_in?}.to_json do %><% end %>
