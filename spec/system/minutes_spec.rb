@@ -23,7 +23,7 @@ RSpec.describe 'Minutes', type: :system do
         within('#release_note') do
           expect(page).to have_selector 'button', text: '編集'
         end
-        within('#topics') do
+        within('#topic_form') do
           expect(page).to have_selector 'button', text: '作成'
         end
         within('#other_form') do
@@ -66,11 +66,14 @@ RSpec.describe 'Minutes', type: :system do
       scenario 'can create, edit and delete topic', :js do
         within('#topics') do
           expect(page).to have_content '話題にしたいこと・心配事はありません。'
-
+        end
+        within('#topic_form') do
           expect(page).to have_selector 'input[type="text"]'
           expect(find('button', text: '作成')).to be_disabled
           fill_in 'new_topic_field', with: '今週ミートアップがありますのでぜひご参加を！'
           click_button '作成'
+        end
+        within('#topics') do
           expect(page).not_to have_content '話題にしたいこと・心配事はありません。'
           expect(page).to have_selector 'li', text: '今週ミートアップがありますのでぜひご参加を！(admin)'
           expect(page).to have_selector 'button', text: '編集'
@@ -166,7 +169,7 @@ RSpec.describe 'Minutes', type: :system do
         within('#release_note') do
           expect(page).not_to have_selector 'button', text: '編集'
         end
-        within('#topics') do
+        within('#topic_form') do
           expect(page).to have_selector 'button', text: '作成'
         end
         within('#other_form') do
@@ -183,11 +186,14 @@ RSpec.describe 'Minutes', type: :system do
 
         within('#topics') do
           expect(page).to have_content '話題にしたいこと・心配事はありません。'
-
+        end
+        within('#topic_form') do
           expect(page).to have_selector 'input[type="text"]'
           expect(find('button', text: '作成')).to be_disabled
           fill_in 'new_topic_field', with: 'CI上でテストが落ちています、皆さんはいかがでしょうか？'
           click_button '作成'
+        end
+        within('#topics') do
           expect(page).not_to have_content '話題にしたいこと・心配事はありません。'
           expect(page).to have_selector 'li', text: 'CI上でテストが落ちています、皆さんはいかがでしょうか？(alice)'
           expect(page).to have_selector 'button', text: '編集'
