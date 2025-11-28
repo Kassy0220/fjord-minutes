@@ -59,7 +59,7 @@
     <%= content_tag :div, id: 'other_form', data: {minuteId: @minute.id, content: @minute.other, isAdmin: admin_signed_in?}.to_json do %><% end %>
 
     <h2>次回のMTG</h2>
-    <%= content_tag :div, id: 'next_meeting_date_form', data: {minuteId: @minute.id, meetingId: @minute.meeting.id, nextMeetingDate: @minute.meeting.next_date, meetingWeekParity: @minute.course.meeting_week, isAdmin: admin_signed_in?}.to_json do %><% end %>
+    <%= content_tag :div, id: 'next_meeting_date_form', data: {minuteId: @minute.id, meetingId: @minute.meeting.id, meetingDate: @minute.meeting.date, nextMeetingDate: @minute.meeting.next_date, isAdmin: admin_signed_in?}.to_json do %><% end %>
 
     <h1>計画ミーティング</h1>
     <ul>
