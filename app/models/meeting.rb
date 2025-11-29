@@ -27,31 +27,16 @@ class Meeting < ApplicationRecord
   private
 
   def set_next_date
-    self.next_date = date.day <= 14 ? date + 2.weeks : next_month_meeting_date
-  end
+    # 53週 → 1週のように、cweekの偶奇が年を跨いでも変わらない場合に対応
+    next_meeting_date =
+      if date.cweek == 52 && (date + 1.week).cweek == 53
+        date + 3.weeks
+      elsif date.cweek == 53
+        date + 1.week
+      else
+        date + 2.weeks
+      end
 
-  def next_month_meeting_date
-    year = date.next_month.year
-    next_month = date.next_month.month
-
-    meeting_days = all_meeting_days_in_month(year, next_month)
-    course.meeting_week == 'odd' ? Time.zone.local(year, next_month, meeting_days.first) : Time.zone.local(year, next_month, meeting_days.second)
-  end
-
-  def all_meeting_days_in_month(year, month)
-    meeting_days = []
-
-    first_day = Time.zone.local(year, month, 1)
-    last_day = first_day.end_of_month
-
-    meeting_day = first_day
-    meeting_day += 1.day until meeting_day.wday == DAY_OF_THE_WEEK_FOR_MEETING
-
-    while meeting_day <= last_day
-      meeting_days << meeting_day.day
-      meeting_day += 7.days
-    end
-
-    meeting_days
+    self.next_date = next_meeting_date
   end
 end
