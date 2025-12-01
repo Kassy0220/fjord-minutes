@@ -112,17 +112,17 @@ RSpec.describe 'Minutes', type: :system do
 
       scenario 'can edit next meeting date', :js do
         within('#next_meeting_date_form') do
-          expect(page).to have_content '2024年10月16日 (水) (第42週)'
+          expect(page).to have_content '2024年10月16日 (水)'
 
           click_button '編集'
-          expect(page).to have_button '2024年10月16日 (第42週)'
-          expect(page).to have_button '2024年10月30日 (第44週)'
-          expect(page).to have_button '2024年11月13日 (第46週)'
-          expect(page).to have_button '2024年11月27日 (第48週)'
-          click_button '2024年10月30日 (第44週)'
+          expect(page).to have_button '2024年10月16日'
+          expect(page).to have_button '2024年10月30日'
+          expect(page).to have_button '2024年11月13日'
+          expect(page).to have_button '2024年11月27日'
+          click_button '2024年10月30日'
           click_button '更新'
           expect(page).not_to have_button '更新'
-          expect(page).to have_content '2024年10月30日 (水) (第44週)'
+          expect(page).to have_content '2024年10月30日 (水)'
           expect(meeting.reload.next_date).to eq Date.new(2024, 10, 30)
         end
       end
@@ -132,14 +132,14 @@ RSpec.describe 'Minutes', type: :system do
         minute = FactoryBot.create(:minute, meeting:)
         visit edit_minute_path(minute)
         within('#next_meeting_date_form') do
-          expect(page).to have_content '2026年01月28日 (水) (第5週)'
+          expect(page).to have_content '2026年01月28日 (水)'
           click_button '編集'
           # ボタンのテキストで絞り込みが難しいため、data属性で特定する
           button_displaying_holiday = find('button[data-meeting-date="2026-02-11"]')
           expect(button_displaying_holiday.text).to include '建国記念の日'
           button_displaying_holiday.click
           click_button '更新'
-          expect(page).to have_content '2026年02月11日 (水) (第7週)'
+          expect(page).to have_content '2026年02月11日 (水)'
           expect(page).to have_content '次回開催日は建国記念の日です。もしミーティングをお休みにする場合は、開催日を変更しましょう。'
         end
       end
@@ -150,24 +150,24 @@ RSpec.describe 'Minutes', type: :system do
         minute = FactoryBot.create(:minute, meeting: odd_week_meeting)
         visit edit_minute_path(minute)
         within('#next_meeting_date_form') do
-          expect(page).to have_content '2025年12月17日 (水) (第51週)'
+          expect(page).to have_content '2025年12月17日 (水)'
           click_button '編集'
-          expect(page).to have_button '2025年12月17日 (第51週)'
-          expect(page).to have_button '2025年12月31日 (第1週)'
-          expect(page).to have_button '2026年01月14日 (第3週)'
-          expect(page).to have_button '2026年01月28日 (第5週)'
+          expect(page).to have_button '2025年12月17日'
+          expect(page).to have_button '2025年12月31日'
+          expect(page).to have_button '2026年01月14日'
+          expect(page).to have_button '2026年01月28日'
         end
 
         even_week_meeting = FactoryBot.create(:front_end_course).meetings.create!(date: Date.new(2025, 12, 10))
         minute = FactoryBot.create(:minute, meeting: even_week_meeting)
         visit edit_minute_path(minute)
         within('#next_meeting_date_form') do
-          expect(page).to have_content '2025年12月24日 (水) (第52週)'
+          expect(page).to have_content '2025年12月24日 (水)'
           click_button '編集'
-          expect(page).to have_button '2025年12月24日 (第52週)'
-          expect(page).to have_button '2026年01月07日 (第2週)'
-          expect(page).to have_button '2026年01月21日 (第4週)'
-          expect(page).to have_button '2026年02月04日 (第6週)'
+          expect(page).to have_button '2025年12月24日'
+          expect(page).to have_button '2026年01月07日'
+          expect(page).to have_button '2026年01月21日'
+          expect(page).to have_button '2026年02月04日'
         end
       end
 
@@ -177,24 +177,24 @@ RSpec.describe 'Minutes', type: :system do
         minute = FactoryBot.create(:minute, meeting: odd_week_meeting)
         visit edit_minute_path(minute)
         within('#next_meeting_date_form') do
-          expect(page).to have_content '2026年12月30日 (水) (第53週)'
+          expect(page).to have_content '2026年12月30日 (水)'
           click_button '編集'
-          expect(page).to have_button '2026年12月30日 (第53週)'
-          expect(page).to have_button '2027年01月06日 (第1週)'
-          expect(page).to have_button '2027年01月20日 (第3週)'
-          expect(page).to have_button '2027年02月03日 (第5週)'
+          expect(page).to have_button '2026年12月30日'
+          expect(page).to have_button '2027年01月06日'
+          expect(page).to have_button '2027年01月20日'
+          expect(page).to have_button '2027年02月03日'
         end
 
         even_week_meeting = FactoryBot.create(:front_end_course).meetings.create!(date: Date.new(2026, 12, 9))
         minute = FactoryBot.create(:minute, meeting: even_week_meeting)
         visit edit_minute_path(minute)
         within('#next_meeting_date_form') do
-          expect(page).to have_content '2026年12月23日 (水) (第52週)'
+          expect(page).to have_content '2026年12月23日 (水)'
           click_button '編集'
-          expect(page).to have_button '2026年12月23日 (第52週)'
-          expect(page).to have_button '2027年01月13日 (第2週)'
-          expect(page).to have_button '2027年01月27日 (第4週)'
-          expect(page).to have_button '2027年02月10日 (第6週)'
+          expect(page).to have_button '2026年12月23日'
+          expect(page).to have_button '2027年01月13日'
+          expect(page).to have_button '2027年01月27日'
+          expect(page).to have_button '2027年02月10日'
         end
       end
 

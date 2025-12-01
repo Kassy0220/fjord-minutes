@@ -122,7 +122,7 @@ function EditForm({
                 }`}
                 data-meeting-date={date}
               >
-                {`${dayjs(date).format('YYYY年MM月DD日')} (第${dayjs(date).isoWeek()}週)`}
+                {`${dayjs(date).format('YYYY年MM月DD日')}`}
                 {holidayJP.isHoliday(new Date(date)) && (
                   <p className="flex !mt-2 !mb-0 pl-2 py-2 bg-yellow-50 border border-yellow-200 rounded">
                     <svg
@@ -172,12 +172,11 @@ function defaultNextMeetingDate(date) {
 function NextMeetingDate({ date, setIsEditing, isAdmin }) {
   const formattedDate = dayjs(date).format('YYYY年MM月DD日')
   const weekday = dayjs(date).format('dd')
-  const weekOfTheYear = dayjs(date).isoWeek()
   const isHoliday = holidayJP.isHoliday(new Date(date))
 
   return (
     <>
-      <span>{`${formattedDate} (${weekday}) (第${weekOfTheYear}週)`}</span>
+      <span>{`${formattedDate} (${weekday})`}</span>
       {isAdmin && (
         <button
           type="button"
