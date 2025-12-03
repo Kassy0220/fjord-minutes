@@ -120,6 +120,7 @@ function EditForm({
                     ? 'bg-blue-500 text-white border-blue-600 font-semibold'
                     : 'bg-gray-50 border-gray-200 hover:bg-blue-100'
                 }`}
+                data-meeting-date={date}
               >
                 {`${dayjs(date).format('YYYY年MM月DD日')} (第${dayjs(date).isoWeek()}週)`}
                 {holidayJP.isHoliday(new Date(date)) && (
