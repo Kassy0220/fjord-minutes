@@ -115,50 +115,86 @@ RSpec.describe 'Minutes', type: :system do
           expect(page).to have_content '2024年10月16日 (水) (第42週)'
 
           click_button '編集'
-          expect(page).to have_selector 'input[type="text"]'
-          # 日付編集フォームの実装はflowbite-reactのDatepickerを使っているが、このコンポーネントは<input type="text">を返すようになっている
-          # 以下の手順で日付編集フォームを操作することができたので、一旦以下の方法でテストを実装する
-          # fill_in で日付編集フォームの日付選択欄を開く
-          # click_buttonで日付を選択する
-          fill_in 'next_meeting_date_field', with: Date.new(2024, 10, 23)
-          click_button '23日'
+          expect(page).to have_button '2024年10月16日 (第42週)'
+          expect(page).to have_button '2024年10月30日 (第44週)'
+          expect(page).to have_button '2024年11月13日 (第46週)'
+          expect(page).to have_button '2024年11月27日 (第48週)'
+          click_button '2024年10月30日 (第44週)'
           click_button '更新'
-          expect(page).not_to have_selector 'input'
-          expect(page).to have_content '2024年10月23日 (水) (第43週)'
-          expect(meeting.reload.next_date).to eq Date.new(2024, 10, 23)
+          expect(page).not_to have_button '更新'
+          expect(page).to have_content '2024年10月30日 (水) (第44週)'
+          expect(meeting.reload.next_date).to eq Date.new(2024, 10, 30)
         end
       end
 
       scenario 'message is displayed if next meeting is holiday' do
+        meeting = rails_course.meetings.create!(date: Date.new(2026, 1, 14))
+        minute = FactoryBot.create(:minute, meeting:)
+        visit edit_minute_path(minute)
         within('#next_meeting_date_form') do
+          expect(page).to have_content '2026年01月28日 (水) (第5週)'
           click_button '編集'
-          fill_in 'next_meeting_date_field', with: Date.new(2024, 10, 14)
-          click_button '14日'
+          # ボタンのテキストで絞り込みが難しいため、data属性で特定する
+          button_displaying_holiday = find('button[data-meeting-date="2026-02-11"]')
+          expect(button_displaying_holiday.text).to include '建国記念の日'
+          button_displaying_holiday.click
           click_button '更新'
-
-          expect(page).to have_content '2024年10月14日 (月) (第42週)'
-          expect(page).to have_content '次回開催日はスポーツの日です。もしミーティングをお休みにする場合は、開催日を変更しましょう。'
+          expect(page).to have_content '2026年02月11日 (水) (第7週)'
+          expect(page).to have_content '次回開催日は建国記念の日です。もしミーティングをお休みにする場合は、開催日を変更しましょう。'
         end
       end
 
-      scenario 'message is displayed if next meeting is not meeting week' do
+      # 2025年は52週まで
+      scenario 'possible meeting dates across the year boundary are displayed correctly when year has 52 weeks' do
+        odd_week_meeting = rails_course.meetings.create!(date: Date.new(2025, 12, 3))
+        minute = FactoryBot.create(:minute, meeting: odd_week_meeting)
+        visit edit_minute_path(minute)
         within('#next_meeting_date_form') do
+          expect(page).to have_content '2025年12月17日 (水) (第51週)'
           click_button '編集'
-          fill_in 'next_meeting_date_field', with: Date.new(2024, 10, 28)
-          click_button '28日'
-          click_button '更新'
-
-          expect(page).to have_content '2024年10月28日 (月) (第44週)'
-          expect(page).to have_content '次回開催日は偶数週です。よろしいですか？'
+          expect(page).to have_button '2025年12月17日 (第51週)'
+          expect(page).to have_button '2025年12月31日 (第1週)'
+          expect(page).to have_button '2026年01月14日 (第3週)'
+          expect(page).to have_button '2026年01月28日 (第5週)'
         end
 
-        front_end_course = FactoryBot.create(:front_end_course)
-        front_end_course_meeting = FactoryBot.create(:meeting, course: front_end_course, date: Date.new(2024, 10, 9))
-        front_end_course_minute = FactoryBot.create(:minute, meeting: front_end_course_meeting)
-        visit edit_minute_path(front_end_course_minute)
+        even_week_meeting = FactoryBot.create(:front_end_course).meetings.create!(date: Date.new(2025, 12, 10))
+        minute = FactoryBot.create(:minute, meeting: even_week_meeting)
+        visit edit_minute_path(minute)
         within('#next_meeting_date_form') do
-          expect(page).to have_content '2024年10月23日 (水) (第43週)'
-          expect(page).to have_content '次回開催日は奇数週です。よろしいですか？'
+          expect(page).to have_content '2025年12月24日 (水) (第52週)'
+          click_button '編集'
+          expect(page).to have_button '2025年12月24日 (第52週)'
+          expect(page).to have_button '2026年01月07日 (第2週)'
+          expect(page).to have_button '2026年01月21日 (第4週)'
+          expect(page).to have_button '2026年02月04日 (第6週)'
+        end
+      end
+
+      # 2026年は53週まで
+      scenario 'possible meeting dates across the year boundary are displayed correctly when year has 53 weeks' do
+        odd_week_meeting = rails_course.meetings.create!(date: Date.new(2026, 12, 16))
+        minute = FactoryBot.create(:minute, meeting: odd_week_meeting)
+        visit edit_minute_path(minute)
+        within('#next_meeting_date_form') do
+          expect(page).to have_content '2026年12月30日 (水) (第53週)'
+          click_button '編集'
+          expect(page).to have_button '2026年12月30日 (第53週)'
+          expect(page).to have_button '2027年01月06日 (第1週)'
+          expect(page).to have_button '2027年01月20日 (第3週)'
+          expect(page).to have_button '2027年02月03日 (第5週)'
+        end
+
+        even_week_meeting = FactoryBot.create(:front_end_course).meetings.create!(date: Date.new(2026, 12, 9))
+        minute = FactoryBot.create(:minute, meeting: even_week_meeting)
+        visit edit_minute_path(minute)
+        within('#next_meeting_date_form') do
+          expect(page).to have_content '2026年12月23日 (水) (第52週)'
+          click_button '編集'
+          expect(page).to have_button '2026年12月23日 (第52週)'
+          expect(page).to have_button '2027年01月13日 (第2週)'
+          expect(page).to have_button '2027年01月27日 (第4週)'
+          expect(page).to have_button '2027年02月10日 (第6週)'
         end
       end
 
