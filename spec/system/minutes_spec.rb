@@ -111,19 +111,22 @@ RSpec.describe 'Minutes', type: :system do
       end
 
       scenario 'can edit next meeting date', :js do
+        meeting = rails_course.meetings.create!(date: Date.new(2024, 10, 9))
+        minute = FactoryBot.create(:minute, meeting:)
+        visit edit_minute_path(minute)
         within('#next_meeting_date_form') do
-          expect(page).to have_content '2024年10月16日 (水)'
+          expect(page).to have_content '2024年10月23日 (水)'
 
           click_button '編集'
-          expect(page).to have_button '2024年10月16日'
-          expect(page).to have_button '2024年10月30日'
-          expect(page).to have_button '2024年11月13日'
-          expect(page).to have_button '2024年11月27日'
-          click_button '2024年10月30日'
+          expect(page).to have_button '2024年10月23日'
+          expect(page).to have_button '2024年11月06日'
+          expect(page).to have_button '2024年11月20日'
+          expect(page).to have_button '2024年12月04日'
+          click_button '2024年11月06日'
           click_button '更新'
           expect(page).not_to have_button '更新'
-          expect(page).to have_content '2024年10月30日 (水)'
-          expect(meeting.reload.next_date).to eq Date.new(2024, 10, 30)
+          expect(page).to have_content '2024年11月06日 (水)'
+          expect(meeting.reload.next_date).to eq Date.new(2024, 11, 6)
         end
       end
 
