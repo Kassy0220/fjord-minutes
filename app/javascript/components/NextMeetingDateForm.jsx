@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from 'react'
+import { useState, useCallback } from 'react'
 import dayjs from 'dayjs'
 import ja from 'dayjs/locale/ja'
 import weekday from 'dayjs/plugin/weekday'
@@ -9,7 +9,6 @@ import sendRequest from '../sendRequest.js'
 import useChannel from '../hooks/useChannel.js'
 import isLeapYear from 'dayjs/plugin/isLeapYear'
 import isoWeeksInYear from 'dayjs/plugin/isoWeeksInYear'
-import getPossibleMeetingDates from '../getPossibleMeetingDates.js'
 
 dayjs.locale(ja)
 dayjs.extend(weekday)
@@ -20,11 +19,10 @@ dayjs.extend(isLeapYear)
 export default function NextMeetingDateForm({
   minuteId,
   meetingId,
-  meetingDate,
+  scheduledDates,
   nextMeetingDate,
   isAdmin,
 }) {
-  const thisMeetingDate = useRef(meetingDate)
   const [date, setDate] = useState(nextMeetingDate)
   const [isEditing, setIsEditing] = useState(false)
 
@@ -42,7 +40,7 @@ export default function NextMeetingDateForm({
           <EditForm
             minuteId={minuteId}
             meetingId={meetingId}
-            meetingDate={thisMeetingDate.current}
+            scheduledDates={scheduledDates}
             nextMeetingDate={date}
             setIsEditing={setIsEditing}
           />
@@ -69,17 +67,11 @@ export default function NextMeetingDateForm({
 function EditForm({
   minuteId,
   meetingId,
-  meetingDate,
+  scheduledDates,
   nextMeetingDate,
   setIsEditing,
 }) {
   const [selectedDate, setSelectedDate] = useState(nextMeetingDate)
-
-  // 次回開催候補日は、(現在のミーティング開催週数 + 2) から4回分
-  // 例えば、ミーティングの開催週が第3週である場合、次回開催候補日は第5週、第7週、第9週、第11週となる
-  const possibleMeetingDates = getPossibleMeetingDates(
-    defaultNextMeetingDate(meetingDate)
-  )
 
   const handleDateClick = function (date) {
     setSelectedDate(date)
@@ -108,7 +100,7 @@ function EditForm({
   return (
     <div className="w-[400px]">
       <ul className="list-none p-0 m-0 mb-4 space-y-2">
-        {possibleMeetingDates.map((date) => {
+        {scheduledDates.map((date) => {
           const isSelected = date === selectedDate
           return (
             <li key={date}>
@@ -155,18 +147,6 @@ function EditForm({
       </button>
     </div>
   )
-}
-
-function defaultNextMeetingDate(date) {
-  // 週数が 52 → 53 → 1 → 2 となる場合
-  if (dayjs(date).isoWeek() === 52 && dayjs(date).isoWeeksInYear() === 53) {
-    return dayjs(date).add(3, 'week')
-    // 週数が 53 → 1 となる場合
-  } else if (dayjs(date).isoWeek() === 53) {
-    return dayjs(date).add(1, 'week')
-  } else {
-    return dayjs(date).add(2, 'week')
-  }
 }
 
 function NextMeetingDate({ date, setIsEditing, isAdmin }) {
@@ -216,7 +196,7 @@ function NextMeetingDate({ date, setIsEditing, isAdmin }) {
 NextMeetingDateForm.propTypes = {
   minuteId: PropTypes.number,
   meetingId: PropTypes.number,
-  meetingDate: PropTypes.string,
+  scheduledDates: PropTypes.array,
   nextMeetingDate: PropTypes.string,
   meetingWeekParity: PropTypes.string,
   isAdmin: PropTypes.bool,
@@ -225,7 +205,7 @@ NextMeetingDateForm.propTypes = {
 EditForm.propTypes = {
   minuteId: PropTypes.number,
   meetingId: PropTypes.number,
-  meetingDate: PropTypes.string,
+  scheduledDates: PropTypes.array,
   nextMeetingDate: PropTypes.string,
   setIsEditing: PropTypes.func,
 }
