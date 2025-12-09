@@ -9,7 +9,7 @@ class API::Minutes::MeetingsController < API::Minutes::ApplicationController
       render json: meeting.as_json(root: 'meeting', only: [:id]), status: :ok
       MinuteChannel.broadcast_to(@minute, body: { meeting: meeting.as_json(only: %i[next_date]) })
     else
-      render json: { errors: topic.errors.full_messages }, status: :unprocessable_entity
+      render json: { errors: topic.errors.full_messages }, status: :unprocessable_content
     end
   end
 

@@ -16,7 +16,7 @@ class Meetings::AttendancesController < Meetings::ApplicationController
     if @attendance_form.save
       redirect_to edit_minute_url(@meeting.minute), notice: t('.success')
     else
-      render :new, status: :unprocessable_entity
+      render :new, status: :unprocessable_content
     end
   end
 
@@ -24,10 +24,6 @@ class Meetings::AttendancesController < Meetings::ApplicationController
 
   def attendance_form_params
     params.require(:attendance_form).permit(:status, :absence_reason, :progress_report)
-  end
-
-  def already_registered_attendance
-    @meeting.attendances.exists?(member_id: current_member.id)
   end
 
   def redirect_admin_access
