@@ -2,6 +2,7 @@
 
 class Course < ApplicationRecord
   include Rails.application.routes.url_helpers
+
   CLONED_BOOTCAMP_WIKI_PATH = Rails.root.join('bootcamp_wiki_repository').freeze
   CLONED_AGENT_WIKI_PATH = Rails.root.join('agent_wiki_repository').freeze
   TEMPLATE_FOR_MINUTE_CREATION = 'config/templates/minute_creation_message.md'

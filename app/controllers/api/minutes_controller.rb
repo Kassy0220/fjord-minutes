@@ -10,7 +10,7 @@ class API::MinutesController < API::ApplicationController
       render json: minute.as_json(root: 'minute', only: [:id]), status: :ok
       MinuteChannel.broadcast_to(minute, body: { minute: minute.as_json(only: %i[release_branch release_note other]) })
     else
-      render json: { errors: minute.errors.full_messages }, status: :unprocessable_entity
+      render json: { errors: minute.errors.full_messages }, status: :unprocessable_content
     end
   end
 

@@ -8,7 +8,7 @@ class API::Minutes::TopicsController < API::Minutes::ApplicationController
       render json: topic.as_json(root: 'topic', only: [:id]), status: :created
       broadcast_to_channel
     else
-      render json: { errors: topic.errors.full_messages }, status: :unprocessable_entity
+      render json: { errors: topic.errors.full_messages }, status: :unprocessable_content
     end
   end
 
@@ -18,7 +18,7 @@ class API::Minutes::TopicsController < API::Minutes::ApplicationController
       render json: topic.as_json(root: 'topic', only: [:id]), status: :ok
       broadcast_to_channel
     else
-      render json: { errors: topic.errors.full_messages }, status: :unprocessable_entity
+      render json: { errors: topic.errors.full_messages }, status: :unprocessable_content
     end
   end
 

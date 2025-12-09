@@ -13,7 +13,7 @@ class AttendancesController < ApplicationController
     if @attendance_form.save
       redirect_to edit_minute_path(@attendance.minute), notice: t('.success')
     else
-      render :edit, status: :unprocessable_entity
+      render :edit, status: :unprocessable_content
     end
   end
 
