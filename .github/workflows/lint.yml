@@ -11,7 +11,7 @@ jobs:
         with:
           bundler-cache: true
       - name: Setup node environment
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version-file: '.node-version'
       - name: Cache JavaScript dependencies
