@@ -14,12 +14,15 @@
     "eslint-plugin-react": "^7.37.0",
     "eslint-plugin-react-hooks": "^4.6.2",
     "globals": "^15.9.0",
-    "prettier": "3.3.3"
+    "prettier": "3.3.3",
+    "vitest": "^4.0.14"
   },
   "scripts": {
     "build": "esbuild app/javascript/*.* --bundle --sourcemap --format=esm --outdir=app/assets/builds --public-path=/assets --jsx=automatic",
     "lint:eslint": "eslint app/javascript/",
-    "lint:prettier": "prettier -c app/javascript/"
+    "lint:prettier": "prettier -c app/javascript/",
+    "test": "vitest",
+    "test:run": "vitest run"
   },
   "dependencies": {
     "@holiday-jp/holiday_jp": "^2.4.0",
