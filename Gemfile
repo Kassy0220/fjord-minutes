@@ -27,7 +27,7 @@ gem 'sprockets-rails'
 gem 'stimulus-rails'
 # 一旦Tailwindのバージョン3で固定するため、以下のバージョンを指定
 # 将来Tailwindバージョン4にアップグレードする
-gem 'tailwindcss-rails', '~> 3.3.1'
+gem 'tailwindcss-rails', '~> 4.4.0'
 gem 'turbo-rails'
 gem 'tzinfo-data', platforms: %i[windows jruby]
 
