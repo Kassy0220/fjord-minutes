@@ -39,14 +39,14 @@ RSpec.describe 'Members', type: :system do
         expect(page).to have_selector 'dd[data-attendance-on="2025-01-01"]', text: '昼'
         expect(page).to have_selector 'dt[data-attendance-on="2025-01-15"]', text: '01/15'
         expect(page).to have_selector 'dd[data-attendance-on="2025-01-15"]', text: '夜'
-        expect(page).to have_selector 'dt[data-attendance-on="2025-02-05"]', text: '02/05'
-        expect(page).to have_selector 'dd[data-attendance-on="2025-02-05"]', text: '欠席'
-        expect(page).to have_selector 'dt[data-attendance-on="2025-02-19"]', text: '02/19'
-        expect(page).to have_selector 'dd[data-attendance-on="2025-02-19"]', text: '---'
+        expect(page).to have_selector 'dt[data-attendance-on="2025-01-29"]', text: '01/29'
+        expect(page).to have_selector 'dd[data-attendance-on="2025-01-29"]', text: '欠席'
+        expect(page).to have_selector 'dt[data-attendance-on="2025-02-12"]', text: '02/12'
+        expect(page).to have_selector 'dd[data-attendance-on="2025-02-12"]', text: '---'
 
         attendance = Attendance.find_by(attended: false)
         expect(page).not_to have_selector "div#absence_reason_for_attendance_#{attendance.id}", text: '体調不良のため。'
-        within('dd[data-attendance-on="2025-02-05"]') do
+        within('dd[data-attendance-on="2025-01-29"]') do
           find("span[data-tooltip-target='absence_reason_for_attendance_#{attendance.id}']").hover
           expect(page).to have_selector "div#absence_reason_for_attendance_#{attendance.id}", text: '体調不良のため。'
         end
@@ -84,14 +84,14 @@ RSpec.describe 'Members', type: :system do
           expect(page).to have_selector 'dd[data-attendance-on]', count: 12
           expect(page).to have_selector 'dt[data-attendance-on="2025-01-01"]', text: '01/01'
           expect(page).to have_selector 'dd[data-attendance-on="2025-01-01"]', text: '昼'
-          expect(page).to have_selector 'dt[data-attendance-on="2025-06-18"]', text: '06/18'
-          expect(page).to have_selector 'dd[data-attendance-on="2025-06-18"]', text: '昼'
+          expect(page).to have_selector 'dt[data-attendance-on="2025-06-04"]', text: '06/04'
+          expect(page).to have_selector 'dd[data-attendance-on="2025-06-04"]', text: '昼'
         end
         within('div[data-attendance-table="2"]') do
           expect(page).to have_selector 'dt[data-attendance-on]', count: 1
           expect(page).to have_selector 'dd[data-attendance-on]', count: 1
-          expect(page).to have_selector 'dt[data-attendance-on="2025-07-02"]', text: '07/02'
-          expect(page).to have_selector 'dd[data-attendance-on="2025-07-02"]', text: '昼'
+          expect(page).to have_selector 'dt[data-attendance-on="2025-06-18"]', text: '06/18'
+          expect(page).to have_selector 'dd[data-attendance-on="2025-06-18"]', text: '昼'
         end
       end
 
@@ -186,17 +186,17 @@ RSpec.describe 'Members', type: :system do
         expect(page).not_to have_selector 'dt[data-attendance-on="2025-01-01"]', text: '01/01'
         expect(page).to have_selector 'dt[data-attendance-on="2025-01-15"]', text: '01/15'
         expect(page).to have_selector 'dd[data-attendance-on="2025-01-15"]', text: '昼'
-        expect(page).to have_selector 'dt[data-attendance-on="2025-07-02"]', text: '07/02'
-        expect(page).to have_selector 'dd[data-attendance-on="2025-07-02"]', text: '昼'
+        expect(page).to have_selector 'dt[data-attendance-on="2025-06-18"]', text: '06/18'
+        expect(page).to have_selector 'dd[data-attendance-on="2025-06-18"]', text: '昼'
       end
       within("li[data-member='#{another_member.id}']") do
-        expect(page).to have_selector 'dt[data-attendance-on]', count: 7
-        expect(page).to have_selector 'dd[data-attendance-on]', count: 7
+        expect(page).to have_selector 'dt[data-attendance-on]', count: 6
+        expect(page).to have_selector 'dd[data-attendance-on]', count: 6
         expect(page).not_to have_selector 'dt[data-attendance-on="2025-03-19"]', text: '03/19'
-        expect(page).to have_selector 'dt[data-attendance-on="2025-04-02"]', text: '04/02'
-        expect(page).to have_selector 'dd[data-attendance-on="2025-04-02"]', text: '夜'
-        expect(page).to have_selector 'dt[data-attendance-on="2025-07-02"]', text: '07/02'
-        expect(page).to have_selector 'dd[data-attendance-on="2025-07-02"]', text: '夜'
+        expect(page).to have_selector 'dt[data-attendance-on="2025-04-09"]', text: '04/09'
+        expect(page).to have_selector 'dd[data-attendance-on="2025-04-09"]', text: '夜'
+        expect(page).to have_selector 'dt[data-attendance-on="2025-06-18"]', text: '06/18'
+        expect(page).to have_selector 'dd[data-attendance-on="2025-06-18"]', text: '夜'
       end
     end
 

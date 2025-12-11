@@ -5,6 +5,7 @@ class Meeting < ApplicationRecord
 
   DAY_OF_THE_WEEK_FOR_MEETING = { sun: 0, mon: 1, tue: 2, wed: 3, thu: 4, fri: 5, sat: 6 }[:wed]
   TEMPLATE_FOR_TODAY_MEETING = 'config/templates/today_meeting_message.md'
+  SCHEDULED_DATES_PERIOD = 3.months
 
   before_create :set_next_date
 
@@ -24,34 +25,31 @@ class Meeting < ApplicationRecord
     update!(notified_at: Time.zone.now)
   end
 
+  def scheduled_dates(limit: 1)
+    (date.next_day..(date + SCHEDULED_DATES_PERIOD)).select { |date| meeting_day?(date) }.shift(limit)
+  end
+
   private
 
   def set_next_date
-    self.next_date = date.day <= 14 ? date + 2.weeks : next_month_meeting_date
+    # 53週 → 1週のように、cweekの偶奇が年を跨いでも変わらない場合に対応
+    next_meeting_date =
+      if date.cweek == 52 && (date + 1.week).cweek == 53
+        date + 3.weeks
+      elsif date.cweek == 53
+        date + 1.week
+      else
+        date + 2.weeks
+      end
+
+    self.next_date = next_meeting_date
   end
 
-  def next_month_meeting_date
-    year = date.next_month.year
-    next_month = date.next_month.month
-
-    meeting_days = all_meeting_days_in_month(year, next_month)
-    course.meeting_week == 'odd' ? Time.zone.local(year, next_month, meeting_days.first) : Time.zone.local(year, next_month, meeting_days.second)
-  end
-
-  def all_meeting_days_in_month(year, month)
-    meeting_days = []
-
-    first_day = Time.zone.local(year, month, 1)
-    last_day = first_day.end_of_month
-
-    meeting_day = first_day
-    meeting_day += 1.day until meeting_day.wday == DAY_OF_THE_WEEK_FOR_MEETING
-
-    while meeting_day <= last_day
-      meeting_days << meeting_day.day
-      meeting_day += 7.days
+  def meeting_day?(date)
+    if course.meeting_week == 'odd'
+      date.cweek.odd? && date.wday == DAY_OF_THE_WEEK_FOR_MEETING
+    else
+      date.cweek.even? && date.wday == DAY_OF_THE_WEEK_FOR_MEETING
     end
-
-    meeting_days
   end
 end
