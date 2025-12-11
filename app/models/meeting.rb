@@ -26,7 +26,7 @@ class Meeting < ApplicationRecord
   end
 
   def scheduled_dates(limit: 1)
-    (date.next_day..date + SCHEDULED_DATES_PERIOD).select { |date| meeting_day?(date) }.shift(limit)
+    (date.next_day..(date + SCHEDULED_DATES_PERIOD)).select { |date| meeting_day?(date) }.shift(limit)
   end
 
   private
