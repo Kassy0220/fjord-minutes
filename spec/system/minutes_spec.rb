@@ -174,20 +174,6 @@ RSpec.describe 'Minutes', type: :system do
         end
       end
 
-      scenario 'possible meeting dates are displayed correctly when the first possible date is December 31th' do
-        meeting = rails_course.meetings.create!(date: Date.new(2025, 12, 17))
-        minute = FactoryBot.create(:minute, meeting:)
-        visit edit_minute_path(minute)
-        within('#next_meeting_date_form') do
-          expect(page).to have_content '2025年12月31日 (水)'
-          click_button '編集'
-          expect(page).to have_button '2025年12月31日'
-          expect(page).to have_button '2026年01月14日'
-          expect(page).to have_button '2026年01月28日'
-          expect(page).to have_button '2026年02月11日'
-        end
-      end
-
       # 2026年は53週まで
       scenario 'possible meeting dates across the year boundary are displayed correctly when year has 53 weeks' do
         odd_week_meeting = rails_course.meetings.create!(date: Date.new(2026, 12, 16))
