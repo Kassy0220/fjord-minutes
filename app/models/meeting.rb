@@ -32,17 +32,7 @@ class Meeting < ApplicationRecord
   private
 
   def set_next_date
-    # 53週 → 1週のように、cweekの偶奇が年を跨いでも変わらない場合に対応
-    next_meeting_date =
-      if date.cweek == 52 && (date + 1.week).cweek == 53
-        date + 3.weeks
-      elsif date.cweek == 53
-        date + 1.week
-      else
-        date + 2.weeks
-      end
-
-    self.next_date = next_meeting_date
+    self.next_date = scheduled_dates.first
   end
 
   def meeting_day?(date)

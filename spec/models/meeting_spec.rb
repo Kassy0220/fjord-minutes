@@ -21,6 +21,21 @@ RSpec.describe Meeting, type: :model do
       end
     end
 
+    context 'when cweek parity alternates normally over year boundary' do
+      # 一年の週数が52週ある年の場合、年を跨いでも週の偶奇が2週間で変わる
+      it 'next_date is two weeks later' do
+        odd_week_meeting = described_class.create!(date: Time.zone.local(2025, 12, 17), course: rails_course)
+        expect(odd_week_meeting.date.cweek).to eq 51
+        expect(odd_week_meeting.next_date).to eq Date.new(2025, 12, 31)
+        expect(odd_week_meeting.next_date.cweek).to eq 1 # 2026/1/1 は木曜日であるため、2025/12/29-31 は2026年の1週目となる
+
+        even_week_meeting = described_class.create!(date: Time.zone.local(2025, 12, 24), course: front_end_course)
+        expect(even_week_meeting.date.cweek).to eq 52
+        expect(even_week_meeting.next_date).to eq Date.new(2026, 1, 7)
+        expect(even_week_meeting.next_date.cweek).to eq 2
+      end
+    end
+
     context 'when cweek parity does not alternate due to year boundary' do
       # 53週 → 1週 というように、奇数週が続く場合
       it 'next_date is a week later' do
@@ -36,21 +51,6 @@ RSpec.describe Meeting, type: :model do
         expect(meeting.date.cweek).to eq 52
         expect(meeting.next_date).to eq Date.new(2027, 1, 13)
         expect(meeting.next_date.cweek).to eq 2
-      end
-    end
-
-    context 'when cweek parity alternates normally over year boundary' do
-      # 一年の週数が52週ある年の場合、年を跨いでも週の偶奇が2週間で変わる
-      it 'next_date is two weeks later' do
-        odd_week_meeting = described_class.create!(date: Time.zone.local(2025, 12, 17), course: rails_course)
-        expect(odd_week_meeting.date.cweek).to eq 51
-        expect(odd_week_meeting.next_date).to eq Date.new(2025, 12, 31)
-        expect(odd_week_meeting.next_date.cweek).to eq 1 # 2026/1/1 は木曜日であるため、2025/12/29-31 は2026年の1週目となる
-
-        even_week_meeting = described_class.create!(date: Time.zone.local(2025, 12, 24), course: front_end_course)
-        expect(even_week_meeting.date.cweek).to eq 52
-        expect(even_week_meeting.next_date).to eq Date.new(2026, 1, 7)
-        expect(even_week_meeting.next_date.cweek).to eq 2
       end
     end
   end
