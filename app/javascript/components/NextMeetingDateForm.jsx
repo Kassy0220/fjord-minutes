@@ -2,19 +2,13 @@ import { useState, useCallback } from 'react'
 import dayjs from 'dayjs'
 import ja from 'dayjs/locale/ja'
 import weekday from 'dayjs/plugin/weekday'
-import isoWeek from 'dayjs/plugin/isoWeek'
 import holidayJP from '@holiday-jp/holiday_jp'
 import PropTypes from 'prop-types'
 import sendRequest from '../sendRequest.js'
 import useChannel from '../hooks/useChannel.js'
-import isLeapYear from 'dayjs/plugin/isLeapYear'
-import isoWeeksInYear from 'dayjs/plugin/isoWeeksInYear'
 
 dayjs.locale(ja)
 dayjs.extend(weekday)
-dayjs.extend(isoWeek)
-dayjs.extend(isoWeeksInYear)
-dayjs.extend(isLeapYear)
 
 export default function NextMeetingDateForm({
   minuteId,
