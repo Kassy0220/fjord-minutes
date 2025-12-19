@@ -92,4 +92,54 @@ RSpec.describe Meeting, type: :model do
       end
     end
   end
+
+  describe '#scheduled_date' do
+    context 'when meeting is held on odd weeks' do
+      let(:course) { FactoryBot.create(:rails_course) }
+
+      it 'correctly returns scheduled meeting dates' do
+        meeting = FactoryBot.create(:meeting, course:, date: Date.new(2025, 6, 4))
+        expected_dates = [Date.new(2025, 6, 18), Date.new(2025, 7, 2), Date.new(2025, 7, 16), Date.new(2025, 7, 30)]
+        expect(meeting.scheduled_dates(limit: 4)).to eq expected_dates
+      end
+
+      it 'correctly returns meeting dates that span across year' do
+        # 週数が52で年を跨ぐ場合
+        # 2025/12/17 (ISO週番号: 51) → 2025/12/31 (ISO週番号: 1)
+        meeting = FactoryBot.create(:meeting, course:, date: Date.new(2025, 12, 17))
+        expected_dates = [Date.new(2025, 12, 31), Date.new(2026, 1, 14), Date.new(2026, 1, 28), Date.new(2026, 2, 11)]
+        expect(meeting.scheduled_dates(limit: 4)).to eq expected_dates
+
+        # 週数が53で年を跨ぐ場合
+        # 2026/12/30 (ISO週番号: 53）→ 2027/1/6 (ISO週番号: 1)
+        meeting = FactoryBot.create(:meeting, course:, date: Date.new(2026, 12, 30))
+        expected_dates = [Date.new(2027, 1, 6), Date.new(2027, 1, 20), Date.new(2027, 2, 3), Date.new(2027, 2, 17)]
+        expect(meeting.scheduled_dates(limit: 4)).to eq expected_dates
+      end
+    end
+
+    context 'when meeting is held on even weeks' do
+      let(:course) { FactoryBot.create(:front_end_course) }
+
+      it 'correctly returns scheduled meeting dates correctly' do
+        meeting = FactoryBot.create(:meeting, course:, date: Date.new(2025, 6, 11))
+        expected_dates = [Date.new(2025, 6, 25), Date.new(2025, 7, 9), Date.new(2025, 7, 23), Date.new(2025, 8, 6)]
+        expect(meeting.scheduled_dates(limit: 4)).to eq expected_dates
+      end
+
+      it 'correctly returns meeting dates that span across year' do
+        # 週数が52で年を跨ぐ場合
+        # 2025/12/24 (ISO週番号: 52) → 2026/1/7 (ISO週番号: 2)
+        meeting = FactoryBot.create(:meeting, course:, date: Date.new(2025, 12, 24))
+        expected_dates = [Date.new(2026, 1, 7), Date.new(2026, 1, 21), Date.new(2026, 2, 4), Date.new(2026, 2, 18)]
+        expect(meeting.scheduled_dates(limit: 4)).to eq expected_dates
+
+        # 週数が53で年を跨ぐ場合
+        # 2026/12/23 (ISO週番号: 52）→ 2027/1/13 (ISO週番号: 2)
+        meeting = FactoryBot.create(:meeting, course:, date: Date.new(2026, 12, 23))
+        expected_dates = [Date.new(2027, 1, 13), Date.new(2027, 1, 27), Date.new(2027, 2, 10), Date.new(2027, 2, 24)]
+        expect(meeting.scheduled_dates(limit: 4)).to eq expected_dates
+      end
+    end
+  end
 end
