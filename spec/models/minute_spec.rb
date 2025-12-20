@@ -12,7 +12,7 @@ RSpec.describe Minute, type: :model do
 
   describe '#to_markdown' do
     let(:rails_course) { FactoryBot.create(:rails_course) }
-    let(:meeting) { FactoryBot.create(:meeting, course: rails_course) }
+    let(:meeting) { FactoryBot.create(:meeting, date: Date.new(2024, 10, 9), course: rails_course) }
     let(:minute) { FactoryBot.create(:minute, meeting:) }
 
     it 'returns markdown of minute' do
@@ -75,7 +75,7 @@ RSpec.describe Minute, type: :model do
 
         ## 次回のMTG
 
-        - 2024年10月16日(水)
+        - 2024年10月23日(水)
           - 昼の部：15:00-16:00
           - 夜の部：22:00-23:00
 

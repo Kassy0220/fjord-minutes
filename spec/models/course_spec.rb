@@ -100,7 +100,7 @@ RSpec.describe Course, type: :model do
     end
 
     context 'when create the second and subsequent meeting' do
-      let(:latest_meeting) { FactoryBot.create(:meeting, course: rails_course) }
+      let(:latest_meeting) { FactoryBot.create(:meeting, date: Date.new(2024, 10, 9), course: rails_course) }
 
       it 'create next meeting and minute' do
         allow(Discord::Notifier).to receive(:message).and_return(nil)
@@ -108,7 +108,7 @@ RSpec.describe Course, type: :model do
         travel_to latest_meeting.date.tomorrow do
           expect { rails_course.create_next_meeting_and_minute }.to change(rails_course.meetings, :count).by(1).and change(rails_course.minutes, :count).by(1)
         end
-        expect(Meeting.last.date).to eq Date.new(2024, 10, 16)
+        expect(Meeting.last.date).to eq Date.new(2024, 10, 23)
       end
 
       it 'does not create next meeting and minute if the latest meeting is not finished' do
