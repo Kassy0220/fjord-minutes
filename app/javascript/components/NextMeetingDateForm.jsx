@@ -110,7 +110,7 @@ function EditForm({
               >
                 {`${dayjs(date).format('YYYY年MM月DD日')}`}
                 {holidayJP.isHoliday(new Date(date)) && (
-                  <p className="flex !mt-2 !mb-0 pl-2 py-2 bg-yellow-50 border border-yellow-200 rounded">
+                  <p className="flex mt-2! mb-0! pl-2 py-2 bg-yellow-50 border border-yellow-200 rounded-sm">
                     <svg
                       className="w-6 h-6 text-yellow-300 dark:text-white inline-block mr-1"
                       aria-hidden="true"
@@ -161,7 +161,7 @@ function NextMeetingDate({ date, setIsEditing, isAdmin }) {
         </button>
       )}
       {isHoliday && (
-        <p className="flex !m-0 pl-2 py-2 bg-yellow-50 rounded">
+        <p className="flex m-0! pl-2 py-2 bg-yellow-50 rounded-sm">
           <svg
             className="w-6 h-6 text-yellow-300 dark:text-white inline-block mr-1"
             aria-hidden="true"

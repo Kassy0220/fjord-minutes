@@ -28,9 +28,9 @@
     <% if member_signed_in? && !@minute.meeting.already_finished? %>
       <div class="my-12">
         <% if attendance = @minute.attendances.find_by(member: current_member) %>
-          <%= link_to '出席予定を変更する', edit_attendance_path(attendance), class: "!text-white !bg-blue-700 py-4 px-8 border border-blue-700 rounded-lg hover:!no-underline hover:!bg-blue-800" %>
+          <%= link_to '出席予定を変更する', edit_attendance_path(attendance), class: "text-white! bg-blue-700! py-4 px-8 border border-blue-700 rounded-lg hover:no-underline! hover:bg-blue-800!" %>
         <% else %>
-          <%= link_to '出席予定を登録する', new_meeting_attendance_path(@minute.meeting), class: "!text-white !bg-blue-700 py-4 px-8 border border-blue-700 rounded-lg hover:!no-underline hover:!bg-blue-800" %>
+          <%= link_to '出席予定を登録する', new_meeting_attendance_path(@minute.meeting), class: "text-white! bg-blue-700! py-4 px-8 border border-blue-700 rounded-lg hover:no-underline! hover:bg-blue-800!" %>
         <% end %>
       </div>
     <% end %>
