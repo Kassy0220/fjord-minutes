@@ -1,6 +1,6 @@
 <div id="course_tab" class="pt-4 mb-8 bg-gray-100">
   <div class="border-b border-gray-300">
-    <ul class="flex flex-wrap text-center pl-0 !list-none md:max-w-5xl md:mx-auto">
+    <ul class="flex flex-wrap text-center pl-0 list-none! md:max-w-5xl md:mx-auto">
       <% Course.all.order(:id).each do |course| %>
         <li class="me-2">
           <%= link_to course.name, polymorphic_path([course, resource]), class: active_tab == course ? 'active_course_tab_item' : 'inactive_course_tab_item' %>

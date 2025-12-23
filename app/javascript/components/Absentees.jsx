@@ -29,7 +29,7 @@ function Absentee({ absentee, course_kind }) {
   return (
     <li className="mb-4">
       <a href={`https://github.com/${absentee.name}`}>{`@${absentee.name}`}</a>
-      <ul className="!mt-2">
+      <ul className="mt-2!">
         <li>
           欠席理由
           <ul>
