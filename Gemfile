@@ -17,7 +17,7 @@ gem 'meta-tags'
 gem 'omniauth'
 gem 'omniauth-github'
 # バージョン 2.0.0 に更新するとエラーが発生するため、一旦 1.0.2 で固定しておく
-gem 'omniauth-rails_csrf_protection', '1.0.2'
+gem 'omniauth-rails_csrf_protection', '2.0.1'
 gem 'pg', '~> 1.1'
 gem 'puma', '>= 5.0'
 gem 'rails', '7.2.3'
