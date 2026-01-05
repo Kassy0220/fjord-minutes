@@ -17,6 +17,10 @@
   ::file-selector-button {
     border-color: var(--color-gray-200, currentcolor);
   }
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--color-gray-400);
+  }
 }
 
 @utility field-sizing-content {
@@ -41,7 +45,7 @@
 }
 
 @utility input_type_text {
-  @apply bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-500 inline-block max-w-full field-sizing-content p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500;
+  @apply bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-500 inline-block max-w-full field-sizing-content p-2.5;
 }
 
 @utility active_course_tab_item {
