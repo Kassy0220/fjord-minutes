@@ -79,7 +79,12 @@ test:
 # for a full overview on how database connection configuration can be specified.
 #
 production:
-  <<: *default
-  database: fjord_minutes_production
-  username: fjord_minutes
-  password: <%= ENV["FJORD_MINUTES_DATABASE_PASSWORD"] %>
+  primary: &primary_production
+    <<: *default
+    database: fjord_minutes_production
+    username: fjord_minutes
+    password: <%= ENV["FJORD_MINUTES_DATABASE_PASSWORD"] %>
+  cable:
+    <<: *primary_production
+    database: fjord_minutes_production_cable
+    migrations_paths: db/cable_migrate
