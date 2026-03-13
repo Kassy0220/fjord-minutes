@@ -21,13 +21,8 @@ default: &default
 
 
 development:
-  primary:
-    <<: *default
-    database: fjord_minutes_development
-  cable:
-    <<: *default
-    database: fjord_minutes_development_cable
-    migrations_paths: db/cable_migrate
+  <<: *default
+  database: fjord_minutes_development
 
   # The specified database role being used to connect to PostgreSQL.
   # To create additional roles in PostgreSQL see `$ createuser --help`.
@@ -84,12 +79,7 @@ test:
 # for a full overview on how database connection configuration can be specified.
 #
 production:
-  primary: &primary_production
-    <<: *default
-    database: fjord_minutes_production
-    username: fjord_minutes
-    password: <%= ENV["FJORD_MINUTES_DATABASE_PASSWORD"] %>
-  cable:
-    <<: *primary_production
-    database: fjord_minutes_production_cable
-    migrations_paths: db/cable_migrate
+  <<: *default
+  database: fjord_minutes_production
+  username: fjord_minutes
+  password: <%= ENV["FJORD_MINUTES_DATABASE_PASSWORD"] %>
